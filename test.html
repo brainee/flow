@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <canvas id="canvas" width="300" height="300" style="border:1px red solid;"></canvas>
+
+    <script src="lib/fabric.js"></script>
+    <script>
+        var canvas = new fabric.StaticCanvas('canvas');
+
+        var rect = new fabric.Rect({
+            top : 100,
+            left : 100,
+            width : 60,
+            height : 70,
+            fill : 'red',
+            angle: 0
+        });
+        canvas.add(rect);
+
+        var rect2 = new fabric.Rect({
+            top : 100,
+            left : 200,
+            width : 30,
+            height : 70,
+            //fill:'blue',
+            stroke : 'red',
+            angle: 0
+        });
+        //canvas.add(rect,rect2);        
+        rect.set('fill', 'blue');
+        rect.set({ strokeWidth: 5, stroke: 'rgba(100,200,200,0.5)' });
+        rect.set('angle', 15).set('flipY', false);
+        //console.log(canvas.getObjects());
+        //canvas.selection = false; // disable group selection
+        //rect.set('selectable', false); // make object unselectable
+
+
+        var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
+        path.set({ left: 120, top: 120 });
+        path.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
+        canvas.add(path);
+    </script>
+</body>
+</html>
