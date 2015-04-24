@@ -35,15 +35,15 @@
         // }); 
         // canvas.add(group);
 
-        var LabeledRect = fabric.util.createClass(fabric.Rect, {
+        var ArrowRect = fabric.util.createClass(fabric.Rect, {
 
-          type: 'labeledRect',
+          type: 'ArrowRect',
 
           initialize: function(options) {
-            options || (options = { });
+            options || (options = {});
 
             this.callSuper('initialize', options);
-            this.set('label', options.label || '');
+            this.set('label', options.label || {});
           },
 
           toObject: function() {
@@ -55,18 +55,18 @@
           _render: function(ctx) {
             this.callSuper('_render', ctx);
 
-            ctx.font = '20px Helvetica';
-            ctx.fillStyle = '#333';
-            ctx.fillText(this.label, -this.width/2, -this.height/2 + 20);
+            ctx.font = '60px Helvetica';
+            ctx.fillStyle = '#ff0000';
+            ctx.fillText(this.label, this.width/3+14, this.height/3);
           }
         });
-        
-        var labeledRect = new LabeledRect({
+
+        var labeledRect = new ArrowRect({
           width: 100,
           height: 50,
           left: 100,
           top: 100,
-          label: 'test',
+          label: '→',
           fill: '#faa'
         });
         canvas.add(labeledRect);
