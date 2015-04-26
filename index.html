@@ -13,6 +13,7 @@
     <script>
         // var canvas = new fabric.StaticCanvas('canvas');
         var canvas = new fabric.Canvas('canvas');
+        canvas.selection = false;
         // canvas.renderAll();
         //var arrow=new fabric.Text("→",{fontSize: 60,fontWeight: 'bold',stroke: '#c3bfbf',strokeWidth: 3,top:85,left:145});
         // var group = new fabric.Group([ rect, arrow ], {
@@ -35,6 +36,7 @@
                 setPos(step1,100,100);
                 var rectConf=_.extend(getRectConf(),getPos(step1));          
                 fnDrawStep(step1,rectConf);
+                fnDrawText(step1.typeName,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
                 getTransits(step1);    
             }else{
                 alert("没有初始节点！")
@@ -47,17 +49,32 @@
         function fnDrawStep(step,rectConf){
             rectConf.id=step.id;
             getPos(step);
-            canvas.add(makeRect(rectConf));
+            var shap=makeRect(rectConf);
+            canvas.add(shap);
+            shap.on('mouse:down',function(options){
+                //location.href=step.commandUrl;
+                console.log(step.commandUrl);
+            });
+            shap.on('selected',function(options){
+                //location.href=step.commandUrl;
+                console.log(step.commandUrl);
+            });
+            //shap.set('selectable', false);
+            return shap;
         }
         function fnDrawArrow(step1,step2,conf){            
-            var arrow=new fabric.Text("→",_.extend({fontSize:conf.fontSize||oConf.arrow.fontSize,stroke: '#c3bfbf', strokeWidth: oConf.arrow.strokeWidth},conf));
-            arrow.id=step1.id+'.'+step2.id;
-            canvas.add(arrow);
+            var shap=new fabric.Text("→",_.extend({fontSize:conf.fontSize||oConf.arrow.fontSize,stroke: '#c3bfbf', strokeWidth: oConf.arrow.strokeWidth},conf));
+            shap.id=step1.id+'.'+step2.id;
+            canvas.add(shap);
+            shap.set('selectable', false);
+            return shap;
         }   
         function fnDrawText(text,conf){            
-            var arrow=new fabric.Text(text,_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'green'},conf));
-            //arrow.id=step1.id+'.'+step2.id;
-            canvas.add(arrow);
+            var shap=new fabric.Text(text,_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'#c3bfbf'},conf));
+            //shap.id=step1.id+'.'+step2.id;
+            canvas.add(shap);
+            shap.set('selectable', false);
+            return shap;
         } 
         function getPos(step){
             return {left:step.left,top:step.top,width:step.width,height:step.height}
@@ -91,6 +108,7 @@
                             setPos(step2,(step.left+step.width+iDistanse),step.top+2*step.height*i);
                             var rectConf=_.extend(getRectConf(),getPos(step2)); 
                             fnDrawStep(step2,rectConf);
+                            fnDrawText(step2.typeName,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
                             var hborder=(Math.pow(2,i)-1)*step2.height;
                             var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
                             var scaleX=biasborder/oConf.arrow.fontSize;
@@ -106,7 +124,7 @@
                             var confArrow={angle:angle,left:left,top:top,scaleX:scaleX};
                             fnDrawArrow(step,step2,confArrow);
                             //write the event state
-                            fnDrawText(n.eventName,{left:confArrow.left+iDistanse/2-oConf.arrow.strokeWidth,top:step2.top-hborder/2,stroke:n.eventID==1?'green':'red'});
+                            fnDrawText(n.eventName,{left:confArrow.left+iDistanse/2-oConf.arrow.strokeWidth,top:step2.top-hborder/2-oConf.text.fontSize/2,stroke:n.eventID==1?'green':'red'});
                             getTransits(step2); 
                         }
                     });//endof each
