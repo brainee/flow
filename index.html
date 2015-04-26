@@ -13,74 +13,24 @@
     <script>
         // var canvas = new fabric.StaticCanvas('canvas');
         var canvas = new fabric.Canvas('canvas');
-
-        var oCfgs={};
-        // oCfgs.rect={
-        //     top : 100,
-        //     left : 100,
-        //     width : 50,
-        //     height : 50,
-        //     fill : 'red',
-        //     angle: 0
-        // };
-        // var rect = new fabric.Rect(oCfgs.rect);  
-        // oCfgs.line='M 0 0 L 200 100 L 170 200 z';
         // canvas.renderAll();
-        oCfgs.line='M {0} {1} L {2} {3}';
         //var arrow=new fabric.Text("→",{fontSize: 60,fontWeight: 'bold',stroke: '#c3bfbf',strokeWidth: 3,top:85,left:145});
-        var rect=makeRect(100,100);
-        // var arrow=new fabric.Text("→",{fontSize: 60,fontWeight: 'bold',stroke: '#c3bfbf',strokeWidth: 3,top:85,left:145});   
         // var group = new fabric.Group([ rect, arrow ], {
         //   left: 200,
         //   top: 100
         // }); 
         // canvas.add(group);
-
-        var ArrowRect = fabric.util.createClass(fabric.Rect, {
-
-          type: 'ArrowRect',
-
-          initialize: function(options) {
-            options || (options = {});
-
-            this.callSuper('initialize', options);
-            this.set('label', options.label || {});
-          },
-
-          toObject: function() {
-            return fabric.util.object.extend(this.callSuper('toObject'), {
-              label: this.get('label')
-            });
-          },
-
-          _render: function(ctx) {
-            this.callSuper('_render', ctx);
-
-            ctx.font = '60px Helvetica';
-            ctx.fillStyle = '#ff0000';
-            ctx.fillText(this.label, this.width/3+14, this.height/3);
-          }
-        });
-
-        var labeledRect = new ArrowRect({
-          width: 100,
-          height: 50,
-          left: 100,
-          top: 100,
-          label: '→',
-          fill: '#faa'
-        });
-        //canvas.add(labeledRect);
         var log=function(){
-            console.log.apply(console,arguments);
+            //console.log.apply(console,arguments);
         }
-        var aStep=[],iArrowWidth=50;
+        var aStep=[],iArrowWidth=100;
+        var oConf={};oConf.arrow={strokeWidth:5,fontSize:50};
         $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workFlow')||1), function(res){
           log(res);
           if(res.returnCode=='success'){
             aStep=aStep.concat(res.data);
             var step1=_.findWhere(res.data,{typeID:1});  
-            setPos(step1,100,0);
+            setPos(step1,100,100);
             var rectConf=_.extend(getRectConf(),getPos(step1));          
             fnDrawStep(step1,rectConf);
             getTransits(step1);
@@ -94,10 +44,10 @@
             canvas.add(makeRect(rectConf));
         }
         function fnDrawArrow(step1,step2,conf){            
-            var arrow=new fabric.Text("→",_.extend({fontSize:conf.fontSize||60,stroke: '#c3bfbf', strokeWidth: 3},conf));
+            var arrow=new fabric.Text("→",_.extend({fontSize:conf.fontSize||oConf.arrow.fontSize,stroke: '#c3bfbf', strokeWidth: oConf.arrow.strokeWidth},conf));
             arrow.id=step1.id+'.'+step2.id;
             canvas.add(arrow);
-        }
+        }   
         
         function getPos(step){
             return {left:step.left,top:step.top,width:step.width,height:step.height}
@@ -131,8 +81,18 @@
                         var rectConf=_.extend(getRectConf(),getPos(step2)); 
                         fnDrawStep(step2,rectConf);
                         var hborder=(Math.pow(2,i)-1)*step2.height;
-                        var biasborder=Math.sqrt(Math.pow(iArrowWidth,2),Math.pow(hborder,2));
-                        var conf={angle:(i==0?0:45),left:step.left+step.width,top:step.top+step.height/2-25,fontSize:biasborder};
+                        var biasborder=Math.sqrt(Math.pow(iArrowWidth,2)+Math.pow(hborder,2));
+                        var scaleX=biasborder/oConf.arrow.fontSize;
+                        var left=step.left+step.width-oConf.arrow.strokeWidth;//100时-strokeWidth占用宽度-oConf.arrow.strokeWidth
+                        var totalArrawWidth=oConf.arrow.fontSize+oConf.arrow.strokeWidth*2;
+                        var diff=(totalArrawWidth-step.height)/2+15;
+                        var top=step.top-step.height/2+diff;//fontSize
+                        var angle=Math.atan(hborder/iArrowWidth)*180/Math.PI;
+                        // left=angle>0?(left+iArrowWidth/2):left;
+                        // top=angle>0?(top+step.height+hborder/2):top;  
+                        left=angle>0?(left+15):left;
+                        top=angle>0?(top+step.height/2):top;                          
+                        var conf={angle:angle,left:left,top:top,scaleX:scaleX};
                         fnDrawArrow(step,step2,conf);
                         getTransits(step2);
                     });
