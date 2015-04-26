@@ -23,8 +23,9 @@
         var log=function(){
             //console.log.apply(console,arguments);
         }
-        var aStep=[],iArrowWidth=100;
+        var aStep=[],iDistanse=100;
         var oConf={};oConf.arrow={strokeWidth:5,fontSize:50};
+        oConf.text={fontSize:14};
         $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workFlow')||1), function(res){
           log(res);
           if(res.returnCode=='success'){
@@ -53,7 +54,11 @@
             arrow.id=step1.id+'.'+step2.id;
             canvas.add(arrow);
         }   
-        
+        function fnDrawText(text,conf){            
+            var arrow=new fabric.Text(text,_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'green'},conf));
+            //arrow.id=step1.id+'.'+step2.id;
+            canvas.add(arrow);
+        } 
         function getPos(step){
             return {left:step.left,top:step.top,width:step.width,height:step.height}
         }
@@ -83,26 +88,28 @@
                         var step2=_.findWhere(aStep,{id:n.nextStepID}); 
                         log(step2);
                         if(step2){
-                            setPos(step2,(step.left+step.width+iArrowWidth),step.top+2*step.height*i);
+                            setPos(step2,(step.left+step.width+iDistanse),step.top+2*step.height*i);
                             var rectConf=_.extend(getRectConf(),getPos(step2)); 
                             fnDrawStep(step2,rectConf);
                             var hborder=(Math.pow(2,i)-1)*step2.height;
-                            var biasborder=Math.sqrt(Math.pow(iArrowWidth,2)+Math.pow(hborder,2));
+                            var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
                             var scaleX=biasborder/oConf.arrow.fontSize;
                             var left=step.left+step.width-oConf.arrow.strokeWidth;//100时-strokeWidth占用宽度-oConf.arrow.strokeWidth
                             var totalArrawWidth=oConf.arrow.fontSize+oConf.arrow.strokeWidth*2;
                             var diff=(totalArrawWidth-step.height)/2+15;
                             var top=step.top-step.height/2+diff;//fontSize
-                            var angle=Math.atan(hborder/iArrowWidth)*180/Math.PI;
-                            // left=angle>0?(left+iArrowWidth/2):left;
+                            var angle=Math.atan(hborder/iDistanse)*180/Math.PI;
+                            // left=angle>0?(left+iDistanse/2):left;
                             // top=angle>0?(top+step.height+hborder/2):top;  
                             left=angle>0?(left+15):left;
                             top=angle>0?(top+step.height/2):top;                          
-                            var conf={angle:angle,left:left,top:top,scaleX:scaleX};
-                            fnDrawArrow(step,step2,conf);
+                            var confArrow={angle:angle,left:left,top:top,scaleX:scaleX};
+                            fnDrawArrow(step,step2,confArrow);
+                            //write the event state
+                            fnDrawText(n.eventName,{left:confArrow.left+iDistanse/2-oConf.arrow.strokeWidth,top:step2.top-hborder/2,stroke:n.eventID==1?'green':'red'});
                             getTransits(step2); 
                         }
-                    });
+                    });//endof each
                 }
             });
         }
