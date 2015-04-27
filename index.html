@@ -121,17 +121,17 @@
                             fnDrawText(step2.typeName,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
                             var hborder=(Math.pow(2,i)-1)*step2.height;
                             var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
-                            var scaleX=biasborder/oConf.arrow.fontSize;
-                            var left=step.left+step.width-oConf.arrow.strokeWidth;//100时-strokeWidth占用宽度-oConf.arrow.strokeWidth
+                            var scaleX=biasborder/iDistanse;
+                            var left=step.left+step.width;//100时-strokeWidth占用宽度-oConf.arrow.strokeWidth
                             var totalArrawWidth=oConf.arrow.fontSize+oConf.arrow.strokeWidth*2;
-                            var diff=(totalArrawWidth-step.height)/2+15;
-                            var top=step.top-step.height/2+diff;//fontSize
+                            // var diff=(totalArrawWidth-step.height)/2+15;
+                            // var top=step.top-step.height/2+diff;//fontSize
+                            var top=step.top+step.height/2;
                             var angle=Math.atan(hborder/iDistanse)*180/Math.PI;
-                            // left=angle>0?(left+iDistanse/2):left;
-                            // top=angle>0?(top+step.height+hborder/2):top;  
+
                             left=angle>0?(left+15):left;
                             top=angle>0?(top+step.height/2):top;                          
-                            var confArrow={angle:angle,left:left,top:top,scaleX:scaleX};
+                            var confArrow={angle:angle,left:left,top:top,scaleX:scaleX,callback:true};
                             fnDrawArrow(step,step2,confArrow);
                             //write the event state
                             fnDrawText(n.eventName,{left:confArrow.left+iDistanse/2-oConf.arrow.strokeWidth,top:step2.top-hborder/2-oConf.text.fontSize/2,stroke:n.eventID==1?'green':'red'});
