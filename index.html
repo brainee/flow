@@ -21,30 +21,27 @@
         //   top: 100
         // }); 
         // canvas.add(group);
-        var log=function(){
-            //console.log.apply(console,arguments);
+        start();
+        function start(){
+            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workFlow')||1), function(res){
+              log(res);
+              if(res.returnCode=='success'){
+                aStep=aStep.concat(res.data);            
+                var step1=_.findWhere(res.data,{typeID:1});  
+                if(step1){
+                    setPos(step1,100,100);
+                    var rectConf=_.extend(getRectConf(),getPos(step1));          
+                    fnDrawStep(step1,rectConf);
+                    fnDrawText(step1.typeName,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
+                    getTransits(step1);    
+
+                }else{
+                    alert("没有初始节点！");
+                }
+
+              }
+            });
         }
-        var aStep=[],iDistanse=100;
-        var oConf={};oConf.arrow={strokeWidth:5,fontSize:50};
-        oConf.text={fontSize:14};
-        $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workFlow')||1), function(res){
-          log(res);
-          if(res.returnCode=='success'){
-            aStep=aStep.concat(res.data);            
-            var step1=_.findWhere(res.data,{typeID:1});  
-            if(step1){
-                setPos(step1,100,100);
-                var rectConf=_.extend(getRectConf(),getPos(step1));          
-                fnDrawStep(step1,rectConf);
-                fnDrawText(step1.typeName,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
-                getTransits(step1);    
-            }else{
-                alert("没有初始节点！")
-            }
-
-          }
-        })
-
 
         function fnDrawStep(step,rectConf){
             rectConf.id=step.id;
@@ -62,12 +59,25 @@
             //shap.set('selectable', false);
             return shap;
         }
-        function fnDrawArrow(step1,step2,conf){            
-            var shap=new fabric.Text("→",_.extend({fontSize:conf.fontSize||oConf.arrow.fontSize,stroke: '#c3bfbf', strokeWidth: oConf.arrow.strokeWidth},conf));
-            shap.id=step1.id+'.'+step2.id;
-            canvas.add(shap);
-            shap.set('selectable', false);
-            return shap;
+        function fnDrawArrow(step1,step2,conf){    
+            var shap;
+            if(conf.callback){
+                var flag=typeof conf.callback=='function'?flag:false;
+                makeArrowAsyn({callback:flag||function(c){
+                    shap=c;
+                    shap.set(conf);
+                    shap.id=step1.id+'.'+step2.id;
+                    canvas.add(shap);
+                    shap.set('selectable', false);
+                    return shap;
+                }});
+            }else{
+                shap=makeArrow(conf);
+                shap.id=step1.id+'.'+step2.id;
+                canvas.add(shap);
+                shap.set('selectable', false);
+                return shap;
+            }   
         }   
         function fnDrawText(text,conf){            
             var shap=new fabric.Text(text,_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'#c3bfbf'},conf));

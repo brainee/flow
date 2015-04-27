@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>
+     流程查看
+</title>
+    <script type="text/javascript" src="../../../Script/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../../Script/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="../../../Script/contextMenu/jquery.contextMenu.js"></script>
+    <script type="text/javascript" src="../../../Script/jsPlumb.js"></script>
+    <script type="text/javascript" src="../../../Script/common.js"></script>
+    <script type="text/javascript" src="../../../Script/tooltip.js"></script>
+    <link href="../../../Style/Flow.css" rel="stylesheet" type="text/css"><link href="../../../Script/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        html, body, form
+        {
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            background-color: White;
+        }        
+        
+    </style>
+</head>
+<body>
+    <form method="post" action="FlowView.aspx?ReadyOnly=1&amp;FlowInstanceID=26864" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTA1NDkzNTkwMmRkafluar17KEoGof5mMmHVAHMblcc=">
+</div>
+
+<div class="aspNetHidden">
+
+     <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="63758048">
+</div>
+    <script type="text/javascript">
+        //禁止右键ContextMenu
+        document.oncontextmenu = function () {
+            return false;
+        }
+
+        $(document).ready(function () {
+            draw();            
+        });
+
+        function setContextMenu() {
+            //处理步骤菜单
+            $.contextMenu({
+                selector: '[type=processNode]',
+                callback: function (key, options) {
+                    //var id = $(this).attr("stepID");
+                    if (key == "sendMail") {
+                        //发送邮件
+                        var to = $(this).attr("stepUserMail");
+                        var subject = "DBT流程管理-" + $(this).attr("stepInstanceName");
+                        var body = "";
+                        sendMail(to, subject, body);
+
+                    }
+                    else if (key == "sendLync") {
+                        alert("功能开发中");
+                    }
+                },
+                items: {
+                    "sendMail": { name: "发送邮件", icon: "email" },
+                    "sendLync": { name: "发送Lync消息", icon: "lync" }
+                }
+            });
+
+            //自动步骤菜单
+            $.contextMenu({
+                selector: '[type=autoNode]',
+                callback: function (key, options) {
+                    var stepInstanceID = $(this).attr("stepInstanceID");
+                    if (key == "viewLog") {
+                        top.openDialog('Aspx/View/IntfInvokeLog.aspx?StepInstanceID=' + stepInstanceID, '接口调用日志', '950px', '300px');
+                    }
+                    else if (key == "redo") {
+                        var processFlag = $(this).attr("processFlag");
+                        if (processFlag == 4) {
+                            if (confirm("您确定重新执行该步骤吗？")) {
+                                $.post("../Manage/FlowAjaxHandler.ashx", { "Action": "RedoAutoStep", "StepInstanceID": stepInstanceID }, function (data, textStatus) {
+                                    if (data == "ok") {
+                                        alert("任务已加入执行计划，请稍后查看");
+                                        window.location = window.location;
+                                    }
+                                    else {
+                                        alert("Error!" + data);
+                                    }
+                                })
+                            }
+                        }
+                        else {
+                            alert("操作无效，仅执行错误的步骤才可重新执行！");
+                        }
+                    }
+                    else if (key == "skip") {
+                        var processFlag = $(this).attr("processFlag");
+                        if (processFlag == 4) {
+                            if (confirm("您确定跳过该步骤吗？")) {
+                                $.post("../Manage/FlowAjaxHandler.ashx", { "Action": "SkipStep", "StepInstanceID": stepInstanceID }, function (data, textStatus) {
+                                    if (data == "ok") {                                        
+                                        window.location = window.location;
+                                    }
+                                    else {
+                                        alert("Error!" + data);
+                                    }
+                                })
+                            }
+                        }
+                        else {
+                            alert("操作无效，仅执行错误的步骤才可跳过！")
+                        }
+                    }
+
+                },
+                items: {
+                    "viewLog": { name: "查看日志", icon: "email" },
+                    "redo": { name: "重新执行", icon: "lync" },
+                    "skip": { name: "跳过步骤", icon: "lync" }
+                }
+            });
+        }
+
+
+        function draw() {
+            var flowInstanceID = getUrlParam("FlowInstanceID");
+            $.getJSON("../Manage/FlowAjaxHandler.ashx?Action=GetStepInstanceList&FlowInstanceID=" + flowInstanceID, function (data) {
+
+                var fillColor = "gray";
+                jsPlumb.Defaults.Connector = ["Straight", { curviness: 50}];
+                jsPlumb.Defaults.DragOptions = { cursor: "pointer", zIndex: 2000 };
+                jsPlumb.Defaults.PaintStyle = { strokeStyle: fillColor, lineWidth: 2 };
+                jsPlumb.Defaults.EndpointStyle = { radius: 0.3, fillStyle: fillColor };
+
+                var anchors = [[1, 0.5, -1, -1], [1, 0.5, -1, -1], [0, 0.5, -1, -1], [1, 0.5, -1, -1]];
+                var arrowCommon = { foldback: 0.7, fillStyle: fillColor, width: 10 };
+                var aConnection = { overlays: [["Arrow", { location: 1 }, arrowCommon]] };
+                var left = 20;
+                var top = 80;
+
+                //开始绘图
+                $.each(data, function (i, node) {
+
+                    var nodeStep = document.createElement('div');       //大框
+                    var nodeContent = document.createElement('div');    //图标
+                    var nodeText = document.createElement('div');       //文本
+
+                    //设置大框属性
+                    $(nodeStep)
+                             .attr("id", "stepNode_" + node.stepInstanceID)
+                        .attr("stepInstanceID", node.stepInstanceID)
+                        .attr("stepInstanceNum", node.stepInstanceNum)
+                        .attr("stepInstanceName", node.stepInstanceName)
+                        .attr("stepUserMail", node.stepUserMail)
+                             .css({ "left": node.left, "top": node.top })
+                             .attr("title", node.title)
+                        .attr("processFlag",node.processFlag)
+                        .addClass("node_step")
+
+                    //如果是处理节点或自动节点
+                    if (node.stepInstanceType == 0) {
+                        $(nodeStep).attr("type", "processNode");
+                    }
+                    else if (node.stepInstanceType == 2) {
+                        $(nodeStep).attr("type", "autoNode");
+                    }
+
+                    //设置文本区属性
+                    $(nodeText)
+                        .addClass("node_text")
+                        .html(node.stepInstanceNum + "、" + node.stepInstanceName);
+
+                    //设置图标区属性  node.processFlag 0:待处理 1:处理中 2:已完成（只有多前驱的自动节点，才有可能是0）
+                    
+                    if (node.stepInstanceType == 0) {           //普通节点                        
+                        if (node.processFlag == 0) {    //未开始
+                            $(nodeContent).addClass("node_process");
+                        }
+                        else if (node.processFlag == 1) {   //处理中
+                            $(nodeContent).addClass("node_process").append("<img src='../../../Image/Flow/loading.gif' class='loading'>");
+                        }
+                        else if (node.processFlag == 2) {    //完成
+                            $(nodeContent).addClass("node_process_ok");
+                        }
+                        else if (node.processFlag == 3) {    //强制结束
+                            $(nodeContent).addClass("node_process_forceend");
+                        }
+                    }
+
+                    else if (node.stepInstanceType == 1) {          //会签节点                        
+                        if (node.processFlag == 0) {    //未开始
+                            $(nodeContent).addClass("node_countersign");
+                        }
+                        else if (node.processFlag == 1) {   //处理中
+                            $(nodeContent).addClass("node_countersign").append("<img src='../../../Image/Flow/loading.gif' class='loading'>");
+                        }
+                        else if (node.processFlag == 2) {    //完成
+                            $(nodeContent).addClass("node_countersign_ok");
+                        }
+                        else if (node.processFlag == 3) {    //强制结束
+                            $(nodeContent).addClass("node_countersign_forceend");
+                        }
+
+                        //会签小框的div
+                        $.each(node.counterSignList, function (i, counterSign) {
+                            var nodeCounterSing = document.createElement('div');
+                            $(nodeCounterSing)
+                                .addClass("countersign")
+                                .attr("title", counterSign.stepName)
+                                .attr("type", "counterSignNode");
+                            $(nodeContent).append(nodeCounterSing);
+                        })
+                    }
+                    else if (node.stepInstanceType == 2) {       //自动节点                           
+                        if (node.processFlag == 0) {     //未开始
+                            $(nodeContent).addClass("node_auto");
+                        }
+                        else if (node.processFlag == 1) {   //处理中
+                            $(nodeContent).addClass("node_auto").append("<img src='../../../Image/Flow/loading.gif' class='loading'>");
+                        }
+                        else if (node.processFlag == 2) {    //完成
+                            $(nodeContent).addClass("node_auto_ok");
+                        }
+                        else if (node.processFlag == 3) {    //强制结束
+                            $(nodeContent).addClass("node_auto_forceend");
+                        }
+                        else if (node.processFlag == 4 || node.processFlag == 5) {    //执行错误 或 失败通过
+                            $(nodeContent).addClass("node_auto_error");
+                        }
+                    }
+                    else if (node.stepInstanceType == -1) {     //结束节点                        
+                        $(nodeContent).addClass("node_end");
+                        $(nodeText).html(node.stepInstanceName);                        
+                        $(nodeStep).attr("title", "");
+                    }
+
+                    //大框添加图标区文本和区
+                    $(nodeStep).append(nodeContent).append(nodeText);
+
+                    //将大框添加到绘图区
+                    $("#paintarea").append(nodeStep);
+                });
+
+                //连线
+                $.each(data, function (i, node) {
+
+                    if (node.parentIDList != null) {
+                        $.each(node.parentIDList, function (i, parentID) {
+
+                            var targetID = "stepNode_" + node.stepInstanceID;
+
+                            jsPlumb.connect({
+                                source: "stepNode_" + parentID,
+                                target: targetID,
+                                anchor: anchors
+                            }, aConnection);
+                        })
+                    }
+                });
+
+                //设置大框拖动               
+                jsPlumb.draggable(jsPlumb.getSelector("[class=node_step]"));
+
+                //设置右键菜单
+                setContextMenu();
+
+                //初始化tooltip
+                jQuery.tooltip();
+            });
+        }
+
+
+        //启动outlook发送邮件
+        function sendMail(to,subject,body) {
+            var subject = subject;            
+            mailTo.href = "mailto:" + to + "?subject=" + subject + "&body=" + body;
+            mailTo.click();
+        }
+    </script>
+    <div id="paintarea" style="height: 100%;">
+    <div id="stepNode_151397" stepinstanceid="151397" stepinstancenum="1" stepinstancename="PD填写申请单" stepusermail="kplu@ctrip.com;" title="<div><b>PD填写申请单</b><br>状态：已完成<br>主办：kplu(vlkp陆昆朋)<br>开始：2015-04-27 13:48:35<br>结束：2015-04-27 13:48:35<br>耗时：0秒</div>" processflag="2" class="node_step ui-draggable" type="processNode" style="left: 15px; top: 40px;"><div class="node_process_ok"></div><div class="node_text">1、PD填写申请单</div></div><div id="stepNode_151398" stepinstanceid="151398" stepinstancenum="2" stepinstancename="同步DDS" stepusermail="" title="<div><b>同步DDS</b><br>状态：已完成<br>开始：2015-04-27 13:48:35<br>结束：2015-04-27 13:48:40<br>耗时：5秒</div>" processflag="2" class="node_step ui-draggable" type="autoNode" style="left: 165px; top: 40px;"><div class="node_auto_ok"></div><div class="node_text">2、同步DDS</div></div><div id="stepNode_151399" stepinstanceid="151399" stepinstancenum="3" stepinstancename="DDS建表" stepusermail="" title="<div><b>DDS建表</b><br>状态：已完成<br>开始：2015-04-27 13:48:40<br>结束：2015-04-27 13:48:54<br>耗时：13秒</div>" processflag="2" class="node_step ui-draggable" type="autoNode" style="left: 315px; top: 40px;"><div class="node_auto_ok"></div><div class="node_text">3、DDS建表</div></div><div id="stepNode_151400" stepinstanceid="151400" stepinstancenum="4" stepinstancename="[结束流程]" stepusermail="" title="" processflag="2" class="node_step ui-draggable" style="left: 465px; top: 40px;"><div class="node_end"></div><div class="node_text">[结束流程]</div></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 104.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 164.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><svg style="position:absolute;left:78px;top:75px" width="114" height="15" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml" class="_jsPlumb_connector "><path d="M 27 7.5 L 87 7.5" pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="none" stroke="gray" stroke-width="2"></path><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" d="M87,7.5 L67,12.5 L73,7.5 L67,2.5 L87,7.5" class="" stroke="gray" fill="gray"></path></svg><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 254.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 314.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><svg style="position:absolute;left:228px;top:75px" width="114" height="15" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml" class="_jsPlumb_connector "><path d="M 27 7.5 L 87 7.5" pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="none" stroke="gray" stroke-width="2"></path><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" d="M87,7.5 L67,12.5 L73,7.5 L67,2.5 L87,7.5" class="" stroke="gray" fill="gray"></path></svg><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 404.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 464.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><svg style="position:absolute;left:378px;top:75px" width="114" height="15" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml" class="_jsPlumb_connector "><path d="M 27 7.5 L 87 7.5" pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="none" stroke="gray" stroke-width="2"></path><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" d="M87,7.5 L67,12.5 L73,7.5 L67,2.5 L87,7.5" class="" stroke="gray" fill="gray"></path></svg></div>
+    <a href="mailto:" id="mailTo"></a>
+    </form>
+
+
+<ul class="context-menu-list context-menu-root" style="display: none;"><li class="context-menu-item icon icon-email"><span>发送邮件</span></li><li class="context-menu-item icon icon-lync"><span>发送Lync消息</span></li></ul><ul class="context-menu-list context-menu-root" style="display: none;"><li class="context-menu-item icon icon-email"><span>查看日志</span></li><li class="context-menu-item icon icon-lync"><span>重新执行</span></li><li class="context-menu-item icon icon-lync"><span>跳过步骤</span></li></ul></body></html>
