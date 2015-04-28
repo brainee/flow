@@ -30,7 +30,7 @@
                 var step1=_.findWhere(res.data,{typeID:1});  
                 if(step1){
                     setPos(step1,100,100);
-                    var rectConf=_.extend(getRectConf(),getPos(step1));          
+                    var rectConf=_.extend(getConf(),getPos(step1));          
                     fnDrawStep(step1,rectConf);
                     fnDrawText(step1.typeName,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
                     getTransits(step1);    
@@ -47,7 +47,7 @@
             rectConf.id=step.id;
             // var shap=makeRect(rectConf);
             // canvas.add(shap);
-            var imgs=[{typeID:1,url:'lib/image/node_process_ok.png'},{typeID:2,url:'lib/image/node_end.png'},{typeID:3,url:'lib/image/node_auto_ok.png'}];
+            var imgs=[{typeID:1,url:'lib/image/node_process.png'},{typeID:2,url:'lib/image/node_end.png'},{typeID:3,url:'lib/image/node_auto.png'}];
             var img=_.findWhere(imgs,{typeID:step.typeID})||{};
             makeImage({url:img.url||'',callback:function(c){
                 var shap=c;
@@ -96,7 +96,7 @@
             return {left:step.left,top:step.top,width:step.width,height:step.height}
         }
         function setPos(step,left,top,width,height){
-            var conf=getRectConf();
+            var conf=getConf();
             step.left=left||conf.left;
             step.top=top||conf.top;
             step.width=width||conf.width;
@@ -120,7 +120,7 @@
                         var step2=_.findWhere(aStep,{id:n.nextStepID}); 
                         if(step2){
                             setPos(step2,(step.left+step.width+iDistanse),step.top+2*step.height*i);
-                            var rectConf=_.extend(getRectConf(),getPos(step2)); 
+                            var rectConf=_.extend(getConf(),getPos(step2)); 
                             fnDrawStep(step2,rectConf);
                             fnDrawText(step2.typeName,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
                             var hborder=(Math.pow(2,i)-1)*step2.height;
