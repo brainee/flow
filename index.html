@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title></title>
 </head>
 <body>
-    <canvas id="canvas" width="900" height="500" style="border:1px red solid;"></canvas>
+    <canvas id="canvas" width="1200" height="500" style="border:1px red solid;"></canvas>
 
     <script src="lib/fabric.js"></script>
     <script src="lib/jquery-1.3.2.js"></script>
@@ -23,32 +24,47 @@
         // canvas.add(group);
         start();
         function start(){
-            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workFlow')||1), function(res){
-              log(res);
+            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workflow')||1), function(res){              
               if(res.returnCode=='success'){
-                aStep=aStep.concat(res.data);            
-                var step1=_.findWhere(res.data,{typeID:1});  
-                if(step1){
-                    setPos(step1,100,100);
-                    var rectConf=_.extend(getConf(),getPos(step1));          
-                    fnDrawStep(step1,rectConf);
-                    fnDrawText(step1.typeName,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
-                    getTransits(step1);    
+                aAllStep=aAllStep.concat(res.data); 
+                getHistory(function() {
+                    // body...
+                    var step1=_.findWhere(aAllStep,{typeID:1});  
+                    if(step1){
+                        setPos(step1,100,100);
+                        var rectConf=_.extend(getConf(),getPos(step1));          
+                        fnDrawStep(step1,rectConf);
+                        fnDrawText(step1.name,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
+                        getTransits(step1);    
 
-                }else{
-                    alert("没有初始节点！");
-                }
-
+                    }else{
+                        alert("没有流程数据！");
+                    }
+                });
               }
             });
         }
-
+        function getHistory(callback){
+            $.getJSON('http://www.e-ai.net/WorkFlow/listAllTaskHistory.action?task={0}'.format(fnParam('task')||1), function(res){              
+              if(res.returnCode=='success'){
+                aHistory=aHistory.concat(res.data);                        
+              }else{
+                //aHistory=[];
+              }
+              callback(aHistory);    
+            });
+        }
         function fnDrawStep(step,rectConf){
             rectConf.id=step.id;
+            aHasDrawn.push(step.id);
             // var shap=makeRect(rectConf);
             // canvas.add(shap);
-            var imgs=[{typeID:1,url:'lib/image/node_process.png'},{typeID:2,url:'lib/image/node_end.png'},{typeID:3,url:'lib/image/node_auto.png'}];
+            var imgs=[{typeID:1,url:'lib/image/node_process.png'},{typeID:2,url:'lib/image/node_auto.png'},{typeID:3,url:'lib/image/node_end.png'}];
             var img=_.findWhere(imgs,{typeID:step.typeID})||{};
+            var oHistory=_.findWhere(aHistory,{stepID:step.id});
+            if(oHistory){
+                img.url=img.url.replace('.png','_ok.png');
+            }
             makeImage({url:img.url||'',callback:function(c){
                 var shap=c;
                 shap.set(rectConf);
@@ -86,7 +102,7 @@
             }   
         }   
         function fnDrawText(text,conf){            
-            var shap=new fabric.Text(text,_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'#c3bfbf'},conf));
+            var shap=new fabric.Text(text||'',_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'#c3bfbf'},conf));
             //shap.id=step1.id+'.'+step2.id;
             canvas.add(shap);
             shap.set('selectable', false);
@@ -106,8 +122,8 @@
             var color="red";
             switch(typeID){
                 case 1:color='blue';break;
-                case 2:color='red';break;
-                case 3:color='green';break;
+                case 2:color='green';break;
+                case 3:color='red';break;
             }
             return color;
         }
@@ -116,13 +132,16 @@
                 
                 if(res.returnCode=='success'){
                     _.each(res.data,function(n,i){                        
-                        //n.nextStepID//nextStepName
-                        var step2=_.findWhere(aStep,{id:n.nextStepID}); 
+                        //n.nextStepID//nextStepName                        
+                        if(aHasDrawn.indexOf(n.nextStepID)>-1){
+                            return true;
+                        }
+                        var step2=_.findWhere(aAllStep,{id:n.nextStepID}); 
                         if(step2){
                             setPos(step2,(step.left+step.width+iDistanse),step.top+2*step.height*i);
                             var rectConf=_.extend(getConf(),getPos(step2)); 
                             fnDrawStep(step2,rectConf);
-                            fnDrawText(step2.typeName,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
+                            fnDrawText(step2.name,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
                             var hborder=(Math.pow(2,i)-1)*step2.height;
                             var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
                             var scaleX=biasborder/iDistanse;
