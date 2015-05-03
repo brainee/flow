@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>查看流程图</title>
     <link rel="stylesheet" href="lib/site/1.1/release/framework.min.css">
     <link rel="stylesheet" href="lib/site/site.css">
 </head>
@@ -75,7 +75,7 @@
                         //draw the top text
                         fnDrawText(step1.name,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
                         //draw the bottom text
-                        fnDrawText(addBr(step1.owner+"："+step1.description),{left:step1.left,top:step1.top+step1.height,fontSize:14});
+                        fnDrawText(addBr(step1.owner+"："+step1.description),{left:step1.left,top:step1.top+step1.height,fontSize:12});
                         getTransits(step1);    
 
                     }else{
@@ -200,7 +200,7 @@
                             //draw the top text
                             fnDrawText(step2.name,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
                             //draw the bottom text
-                            fnDrawText(addBr(step2.owner+'：'+step2.description),{left:step2.left,top:step2.top+step2.height,fontSize:14});
+                            fnDrawText(addBr(step2.owner+'：'+step2.description),{left:step2.left,top:step2.top+step2.height,fontSize:12});
 
                             var hborder=(Math.pow(2,i)-1)*step2.height;
                             var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
