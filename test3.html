@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>
+    流程设计图
+</title>
+    <script type="text/javascript" src="lib/script/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="lib/script/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="lib/script/contextMenu/jquery.contextMenu.js"></script>
+    <script type="text/javascript" src="lib/script/jsPlumb.js"></script>
+    <script type="text/javascript" src="lib/script/common.js"></script>
+    <script type="text/javascript" src="lib/script/tooltip.js"></script>
+   
+    <link rel="stylesheet" href="lib/script/artDialog4.1.7/skins/default.css?4.1.7"><script src="lib/script/artDialog4.1.7/artDialog.source.js?skin=default" type="text/javascript"></script> 
+    <script src="lib/script/artDialog4.1.7/plugins/iframeTools.source.js" type="text/javascript"></script>
+    <link href="lib/style/jquery-ui/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css"><link href="lib/style/flow.css" rel="stylesheet" type="text/css"><link href="lib/script/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css"></head>
+<body style="cursor: auto;"><div class="" style="display: none; position: absolute;"><div class="aui_outer"><table class="aui_border"><tbody><tr><td class="aui_nw"></td><td class="aui_n"></td><td class="aui_ne"></td></tr><tr><td class="aui_w"></td><td class="aui_c"><div class="aui_inner"><table class="aui_dialog"><tbody><tr><td colspan="2" class="aui_header"><div class="aui_titleBar"><div class="aui_title" style="cursor: move; display: block;"></div><a class="aui_close" href="javascript:/*artDialog*/;" style="display: block;">×</a></div></td></tr><tr><td class="aui_icon" style="display: none;"><div class="aui_iconBg" style="background: none;"></div></td><td class="aui_main" style="width: auto; height: auto;"><div class="aui_content" style="padding: 20px 25px;"></div></td></tr><tr><td colspan="2" class="aui_footer"><div class="aui_buttons" style="display: none;"></div></td></tr></tbody></table></div></td><td class="aui_e"></td></tr><tr><td class="aui_sw"></td><td class="aui_s"></td><td class="aui_se" style="cursor: se-resize;"></td></tr></tbody></table></div></div>
+    <form method="post" action="http://dbticket.sh.ctripcorp.com/Aspx/Manage/Flow/ViewGraph.aspx?FlowID=21" id="form1">
+
+    <script type="text/javascript">
+
+        //禁止右键ContextMenu
+        document.oncontextmenu = function () {            
+            return false;
+        }
+
+        $(document).ready(function () {
+            draw();
+        });
+
+        //设置右键菜单
+        function setContextMenu() {
+            //节点type说明
+            //type_process：普通节点
+            //type_countersign：会签节点外框
+            //type_countersign_node：会签内部小节点
+
+            //设置普通节点右键菜单
+            $.contextMenu({
+                selector: '[type=type_process],[type=type_auto]',
+                callback: function (key, options) {
+                    var id = $(this).attr("stepID");
+                    var flowId = getUrlParam("FlowID");
+                    var stepNum = $(this).attr("stepNum");
+                    var type = $(this).attr("type")
+                    var stepName = $(this).attr("stepName");
+                    if (key == "edit") {
+                        //步骤基本属性
+                        art.dialog.open('StepEdit.aspx?StepID=' + id + '&FlowID=' + flowId, { title: '步骤属性设置', width: '60%', height: '60%' });
+                    }
+                    else if (key == "setwritefield") {
+                        //可写字段
+                        art.dialog.data('type', 'write');
+                        var tit = '编辑可写字段 - 步骤' + stepNum + ':' + stepName;
+                        art.dialog.open('FieldConfig.aspx?type=write&stepID=' + id, { title: tit, width: '60%', height: '60%' });
+                    }
+                    else if (key == "setprivatefield") {
+                        //保密字段
+                        art.dialog.data('type', 'private');
+                        var tit = '编辑保密字段 - 步骤' + stepNum + ':' + stepName;
+                        art.dialog.open('FieldConfig.aspx?type=private&stepID=' + id, { title: tit, width: '60%', height: '60%' });
+                    }
+                    else if (key == "validation") {
+                        //表单验证
+                        alert("表单验证" + id);
+                    }
+                    else if (key == "delete") {
+                        //删除步骤
+                        if (confirm("您确定删除步骤吗？")) {
+                            deleteStep(id);
+                        }
+                    }
+
+                },
+                items: {
+                    "edit": { name: "步骤基本属性", icon: "quit" },
+                    "setwritefield": { name: "可写字段", icon: "quit" },
+                    "setprivatefield": { name: "保密字段", icon: "quit" },
+                    "validation": { name: "表单验证", icon: "quit" },
+                    "sep1": "---------",
+                    "delete": { name: "删除步骤", icon: "quit" }
+                }
+            });
+
+
+            //设置会签内部小节点右键菜单
+            $.contextMenu({
+                selector: '[type=type_countersign]',
+                callback: function (key, options) {
+                    var id = $(this).attr("stepID");
+                    if (key == "edit") {
+                        //步骤基本属性
+                        art.dialog.open('StepEdit.aspx?stepID=' + id, { title: '步骤属性设置', width: '60%', height: '60%' });
+                    }
+                    else if (key == "add") {
+                        //添加会签节点
+                    }
+                    else if (key == "delete") {
+                        //删除步骤
+                    }
+
+                },
+                items: {
+                    "edit": { name: "步骤基本属性", icon: "quit" },
+                    "add": { name: "添加会签节点", icon: "quit" },
+                    "sep1": "---------",
+                    "delete": { name: "删除步骤", icon: "quit" }
+                }
+            });
+
+
+
+            //设置会签内部小节点右键菜单
+            $.contextMenu({
+                selector: '[type=type_countersign_node]',
+                callback: function (key, options) {
+                    var stepID = $(this).attr("stepID");
+                    var counterSignID = $(this).attr("counterSignID");
+                    if (key == "edit") {
+                        //会签节点属性
+                        art.dialog.open('CounterSignStepEdit.aspx?counterSignID=' + counterSignID + '&stepID='+stepID, { title: '步骤属性设置', width: '60%', height: '60%' });
+                    }
+                    else if (key == "setwritefield") {
+                        //可写字段
+                    }
+                    else if (key == "setprivatefield") {
+                        //保密字段
+                    }
+                    else if (key == "validation") {
+                        //表单验证
+                    }
+                    else if (key == "delete") {
+                        //删除会签节点
+                    }
+
+                },
+                items: {
+                    "edit": { name: "会签节点属性", icon: "quit" },
+                    "setwritefield": { name: "可写字段", icon: "quit" },
+                    "setprivatefield": { name: "保密字段", icon: "quit" },
+                    "validation": { name: "表单验证", icon: "quit" },                    
+                    "sep1": "---------",
+                    "delete": { name: "删除会签节点", icon: "quit" }
+                }
+            });
+        }
+
+        //绘图
+        function draw() {
+            var flowID = getUrlParam("FlowID")||21;
+            $.getJSON("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx?Action=GetStepList&FlowID=" + flowID, function (data) {
+
+                var fillColor = "gray";
+                jsPlumb.Defaults.Connector = ["Straight", { curviness: 50}];
+                jsPlumb.Defaults.DragOptions = { cursor: "pointer", zIndex: 2000 };
+                jsPlumb.Defaults.PaintStyle = { strokeStyle: fillColor, lineWidth: 2 };
+                jsPlumb.Defaults.EndpointStyle = { radius: 0.3, fillStyle: fillColor };
+
+                var arrowCommon = { foldback: 0.7, fillStyle: fillColor, width: 10 };
+
+
+
+                var left = 20;
+                var top = 80;
+
+                //开始绘图
+                $.each(data, function (i, node) {
+
+                    var nodeStep = document.createElement('div');       //大框
+                    var nodeContent = document.createElement('div');    //图标
+                    var nodeText = document.createElement('div');       //文本
+
+                    //设置大框属性
+                    $(nodeStep)
+                        .attr("id", "stepNode_" + node.stepID)
+                        .attr("stepID", node.stepID)
+                        .attr("stepNum", node.stepNum)
+                        .attr("stepName", node.stepName)
+                        .attr("positon", "1")
+                        .css({ "left": node.left, "top": node.top })
+                        .attr("title", node.title)
+                        .addClass("node_step");
+
+                    //设置文本区属性
+                    $(nodeText)
+                        .attr("stepID", node.stepID)
+                        .addClass("node_text")
+                    //.html(node.stepID + "、" + node.content);
+                        .html(node.stepNum + "、" + node.stepName);
+
+                    //设置图标区属性
+                    if (node.stepType == 0) {
+                        //普通节点
+                        $(nodeStep).attr("type", "type_process")
+                        $(nodeContent).attr("stepID", node.stepID).addClass("node_process");
+                    }
+                    else if (node.stepType == 1) {
+                        //会签节点
+                        $(nodeStep).attr("type", "type_countersign")
+                        $(nodeContent).addClass("node_countersign").attr("stepID", node.stepID);
+
+                        $.each(node.counterSignList, function (i, counterSign) {
+                            var nodeCounterSing = document.createElement('div');    //会签小框的div
+                            $(nodeCounterSing)
+                                .addClass("countersign")
+                                 .attr("StepID", counterSign.StepID)
+                                .attr("counterSignID", counterSign.counterSignID)
+                                .attr("type", "type_countersign_node")
+                                .attr("title", counterSign.stepName);
+                            $(nodeContent).append(nodeCounterSing);
+                        })
+                    }
+                    else if (node.stepType == 2) {
+                        //自动节点
+                        $(nodeStep).attr("type", "type_auto")
+                        $(nodeContent).attr("stepID", node.stepID).addClass("node_auto");
+                    }
+                    else {
+                        //结束节点                        
+                        $(nodeStep).attr("type", "type_end")
+                        $(nodeContent).attr("stepID", node.stepID).addClass("node_end");
+                        $(nodeText).html(node.stepName);
+                        $(nodeStep).attr("title", "");
+                    }
+
+                    //大框添加图标区文本和区
+                    $(nodeStep).append(nodeContent).append(nodeText);
+
+                    //将大框添加到绘图区
+                    $("#paintarea").append(nodeStep);
+                });
+
+                //连线
+                $.each(data, function (i, node) {
+
+                    if (node.nextNodeList != null) {
+                        $.each(node.nextNodeList, function (i, nextNode) {
+                            var targetID = "stepNode_" + nextNode.stepID;
+                            var aConnection;
+                            if (nextNode.condition != null && nextNode.condition != "") {
+
+                                aConnection = {
+                                    //connector:"Flowchart",      //设置为折线图
+                                    overlays: [
+                                        ["Arrow", { location: 1 }, arrowCommon],
+                                        ["Label", { label: "<div class='aLabel' title=\"" + nextNode.condition + "\">" + nextNode.conditionName + "<div>", location: 0.3}]
+                                        ]
+                                };
+                            }
+                            else {
+                                //aConnection = { connector:"Flowchart", overlays: [["Arrow", { location: 1 }, arrowCommon]] };
+                                aConnection = { overlays: [["Arrow", { location: 1 }, arrowCommon]] };
+                            }
+
+                            jsPlumb.connect({
+                                source: "stepNode_" + node.stepID,
+                                target: targetID,
+                                anchor: "AutoDefault"
+                            }, aConnection);
+                        })
+                    }
+
+                });
+
+                //设置大框拖动               
+                jsPlumb.draggable(jsPlumb.getSelector("[positon=1]"), { grid: [10, 10] });      //设置附着网格
+
+                //设置右键菜单
+                if (getUrlParam("EnableMenu") == "true") {
+                    setContextMenu();
+                }
+
+                //初始化tooltip
+                jQuery.tooltip();
+            });
+        }
+
+        //保存布局
+        function saveLayout() {            
+            var nodes = $("[positon=1]");          
+
+            var id = "";
+            var left = "";
+            var top = "";
+
+            $.each(nodes, function (i, node) {
+                id += $(node).attr("stepID") + ",";
+                left += node.style.pixelLeft + ",";
+                top += node.style.pixelTop + ",";
+            })
+
+            $.post("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx", { "Action": "SaveLayout", "id": id, "left": left, "top": top }, function (data, textStatus) {
+                showInfo("布局保存成功");
+            })
+        }
+
+        function deleteStep(stepID) {
+            $.post("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx", { "Action": "DeleteStep", "stepID": stepID}, function (data, textStatus) {
+                $("#paintarea").empty();
+                draw();
+            })
+        }
+
+        function refresh() {
+            $("#paintarea").empty();
+            draw();
+            showInfo("界面刷新成功");
+        }
+
+        //显示保存布局消息
+        function showInfo(info) {        
+            $("#info").html(info).fadeIn(1000);
+            setTimeout(function () { $("#info").fadeOut(1000) }, 2000);
+        }
+        
+        function loadWindow(url) {
+            //var oWindow = parent.window.radopen(url, "");
+            //oWindow.setSize(650, 450);
+            //oWindow.center();
+        }
+       
+    </script>
+    <span id="info" class="info"></span>
+    <div id="paintarea" style="height: 100%;">
+    </div>
+    </form>
+
+
+<div style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; cursor: move; opacity: 0; background: rgb(255, 255, 255);"></div></body></html>

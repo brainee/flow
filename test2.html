@@ -21,7 +21,15 @@
     </style>
 </head>
 <body>
+    <form method="post" action="http://dbticket.sh.ctripcorp.com/Aspx/View/FlowView.aspx?ReadyOnly=1&amp;FlowInstanceID=26864" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTA1NDkzNTkwMmRkafluar17KEoGof5mMmHVAHMblcc=">
+</div>
 
+<div class="aspNetHidden">
+
+     <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="63758048">
+</div>
     <script type="text/javascript">
         //禁止右键ContextMenu
         document.oncontextmenu = function () {
@@ -113,14 +121,14 @@
 
 
         function draw() {
-            var flowInstanceID = getUrlParam("FlowInstanceID");//26864
+            var flowInstanceID = getUrlParam("FlowInstanceID")||26864;//26864
             $.getJSON("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx?Action=GetStepInstanceList&FlowInstanceID=" + flowInstanceID, function (data) {
 
                 var fillColor = "gray";
                 jsPlumb.Defaults.Connector = ["Straight", { curviness: 50}];
                 jsPlumb.Defaults.DragOptions = { cursor: "pointer", zIndex: 2000 };
                 jsPlumb.Defaults.PaintStyle = { strokeStyle: fillColor, lineWidth: 2 };
-                jsPlumb.Defaults.EndpointStyle = { radius: 0.3, fillStyle: fillColor };
+                jsPlumb.Defaults.EndpointStyle = { radius:0.3, fillStyle: fillColor };
 
                 var anchors = [[1, 0.5, -1, -1], [1, 0.5, -1, -1], [0, 0.5, -1, -1], [1, 0.5, -1, -1]];
                 var arrowCommon = { foldback: 0.7, fillStyle: fillColor, width: 10 };
@@ -268,7 +276,9 @@
         }
     </script>
     <div id="paintarea" style="height: 100%;">
-    
+    </div>
+    <a href="mailto:" id="mailTo"></a>
+    </form>
 
 
 <ul class="context-menu-list context-menu-root" style="display: none;"><li class="context-menu-item icon icon-email"><span>发送邮件</span></li><li class="context-menu-item icon icon-lync"><span>发送Lync消息</span></li></ul><ul class="context-menu-list context-menu-root" style="display: none;"><li class="context-menu-item icon icon-email"><span>查看日志</span></li><li class="context-menu-item icon icon-lync"><span>重新执行</span></li><li class="context-menu-item icon icon-lync"><span>跳过步骤</span></li></ul></body></html>
