@@ -17,19 +17,11 @@
             padding: 0px;
             background-color: White;
         }        
-        
+        /*http://dbticket.sh.ctripcorp.com/Aspx*/
     </style>
 </head>
 <body>
-    <form method="post" action="FlowView.aspx?ReadyOnly=1&amp;FlowInstanceID=26864" id="form1">
-<div class="aspNetHidden">
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTA1NDkzNTkwMmRkafluar17KEoGof5mMmHVAHMblcc=">
-</div>
 
-<div class="aspNetHidden">
-
-     <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="63758048">
-</div>
     <script type="text/javascript">
         //禁止右键ContextMenu
         document.oncontextmenu = function () {
@@ -70,13 +62,13 @@
                 callback: function (key, options) {
                     var stepInstanceID = $(this).attr("stepInstanceID");
                     if (key == "viewLog") {
-                        top.openDialog('Aspx/View/IntfInvokeLog.aspx?StepInstanceID=' + stepInstanceID, '接口调用日志', '950px', '300px');
+                        top.openDialog('http://dbticket.sh.ctripcorp.com/Aspx/View/IntfInvokeLog.aspx?StepInstanceID=' + stepInstanceID, '接口调用日志', '950px', '300px');
                     }
                     else if (key == "redo") {
                         var processFlag = $(this).attr("processFlag");
                         if (processFlag == 4) {
                             if (confirm("您确定重新执行该步骤吗？")) {
-                                $.post("../Manage/FlowAjaxHandler.ashx", { "Action": "RedoAutoStep", "StepInstanceID": stepInstanceID }, function (data, textStatus) {
+                                $.post("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx", { "Action": "RedoAutoStep", "StepInstanceID": stepInstanceID }, function (data, textStatus) {
                                     if (data == "ok") {
                                         alert("任务已加入执行计划，请稍后查看");
                                         window.location = window.location;
@@ -95,7 +87,7 @@
                         var processFlag = $(this).attr("processFlag");
                         if (processFlag == 4) {
                             if (confirm("您确定跳过该步骤吗？")) {
-                                $.post("../Manage/FlowAjaxHandler.ashx", { "Action": "SkipStep", "StepInstanceID": stepInstanceID }, function (data, textStatus) {
+                                $.post("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx", { "Action": "SkipStep", "StepInstanceID": stepInstanceID }, function (data, textStatus) {
                                     if (data == "ok") {                                        
                                         window.location = window.location;
                                     }
@@ -121,8 +113,8 @@
 
 
         function draw() {
-            var flowInstanceID = getUrlParam("FlowInstanceID");
-            $.getJSON("../Manage/FlowAjaxHandler.ashx?Action=GetStepInstanceList&FlowInstanceID=" + flowInstanceID, function (data) {
+            var flowInstanceID = getUrlParam("FlowInstanceID");//26864
+            $.getJSON("http://dbticket.sh.ctripcorp.com/Aspx/Manage/FlowAjaxHandler.ashx?Action=GetStepInstanceList&FlowInstanceID=" + flowInstanceID, function (data) {
 
                 var fillColor = "gray";
                 jsPlumb.Defaults.Connector = ["Straight", { curviness: 50}];
@@ -175,7 +167,7 @@
                             $(nodeContent).addClass("node_process");
                         }
                         else if (node.processFlag == 1) {   //处理中
-                            $(nodeContent).addClass("node_process").append("<img src='../../../Image/Flow/loading.gif' class='loading'>");
+                            $(nodeContent).addClass("node_process").append("<img src='lib/image/loading.gif' class='loading'>");
                         }
                         else if (node.processFlag == 2) {    //完成
                             $(nodeContent).addClass("node_process_ok");
@@ -190,7 +182,7 @@
                             $(nodeContent).addClass("node_countersign");
                         }
                         else if (node.processFlag == 1) {   //处理中
-                            $(nodeContent).addClass("node_countersign").append("<img src='../../../Image/Flow/loading.gif' class='loading'>");
+                            $(nodeContent).addClass("node_countersign").append("<img src='lib/image/loading.gif' class='loading'>");
                         }
                         else if (node.processFlag == 2) {    //完成
                             $(nodeContent).addClass("node_countersign_ok");
@@ -214,7 +206,7 @@
                             $(nodeContent).addClass("node_auto");
                         }
                         else if (node.processFlag == 1) {   //处理中
-                            $(nodeContent).addClass("node_auto").append("<img src='../../../Image/Flow/loading.gif' class='loading'>");
+                            $(nodeContent).addClass("node_auto").append("<img src='lib/image/loading.gif' class='loading'>");
                         }
                         else if (node.processFlag == 2) {    //完成
                             $(nodeContent).addClass("node_auto_ok");
@@ -276,9 +268,7 @@
         }
     </script>
     <div id="paintarea" style="height: 100%;">
-    <div id="stepNode_151397" stepinstanceid="151397" stepinstancenum="1" stepinstancename="PD填写申请单" stepusermail="kplu@ctrip.com;" title="<div><b>PD填写申请单</b><br>状态：已完成<br>主办：kplu(vlkp陆昆朋)<br>开始：2015-04-27 13:48:35<br>结束：2015-04-27 13:48:35<br>耗时：0秒</div>" processflag="2" class="node_step ui-draggable" type="processNode" style="left: 15px; top: 40px;"><div class="node_process_ok"></div><div class="node_text">1、PD填写申请单</div></div><div id="stepNode_151398" stepinstanceid="151398" stepinstancenum="2" stepinstancename="同步DDS" stepusermail="" title="<div><b>同步DDS</b><br>状态：已完成<br>开始：2015-04-27 13:48:35<br>结束：2015-04-27 13:48:40<br>耗时：5秒</div>" processflag="2" class="node_step ui-draggable" type="autoNode" style="left: 165px; top: 40px;"><div class="node_auto_ok"></div><div class="node_text">2、同步DDS</div></div><div id="stepNode_151399" stepinstanceid="151399" stepinstancenum="3" stepinstancename="DDS建表" stepusermail="" title="<div><b>DDS建表</b><br>状态：已完成<br>开始：2015-04-27 13:48:40<br>结束：2015-04-27 13:48:54<br>耗时：13秒</div>" processflag="2" class="node_step ui-draggable" type="autoNode" style="left: 315px; top: 40px;"><div class="node_auto_ok"></div><div class="node_text">3、DDS建表</div></div><div id="stepNode_151400" stepinstanceid="151400" stepinstancenum="4" stepinstancename="[结束流程]" stepusermail="" title="" processflag="2" class="node_step ui-draggable" style="left: 465px; top: 40px;"><div class="node_end"></div><div class="node_text">[结束流程]</div></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 104.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 164.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><svg style="position:absolute;left:78px;top:75px" width="114" height="15" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml" class="_jsPlumb_connector "><path d="M 27 7.5 L 87 7.5" pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="none" stroke="gray" stroke-width="2"></path><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" d="M87,7.5 L67,12.5 L73,7.5 L67,2.5 L87,7.5" class="" stroke="gray" fill="gray"></path></svg><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 254.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 314.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><svg style="position:absolute;left:228px;top:75px" width="114" height="15" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml" class="_jsPlumb_connector "><path d="M 27 7.5 L 87 7.5" pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="none" stroke="gray" stroke-width="2"></path><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" d="M87,7.5 L67,12.5 L73,7.5 L67,2.5 L87,7.5" class="" stroke="gray" fill="gray"></path></svg><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 404.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><div class="_jsPlumb_endpoint  ui-draggable ui-droppable" style="position: absolute; height: 0.6px; width: 0.6px; left: 464.7px; top: 82.2px;"><svg style="position:absolute;left:0px;top:0px" width="0.6" height="0.6" pointer-events="all" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml"><circle cx="0.3" cy="0.3" r="0.3" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="gray" stroke="none"></circle></svg></div><svg style="position:absolute;left:378px;top:75px" width="114" height="15" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/1999/xhtml" class="_jsPlumb_connector "><path d="M 27 7.5 L 87 7.5" pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" style="" fill="none" stroke="gray" stroke-width="2"></path><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/1999/xhtml" d="M87,7.5 L67,12.5 L73,7.5 L67,2.5 L87,7.5" class="" stroke="gray" fill="gray"></path></svg></div>
-    <a href="mailto:" id="mailTo"></a>
-    </form>
+    
 
 
 <ul class="context-menu-list context-menu-root" style="display: none;"><li class="context-menu-item icon icon-email"><span>发送邮件</span></li><li class="context-menu-item icon icon-lync"><span>发送Lync消息</span></li></ul><ul class="context-menu-list context-menu-root" style="display: none;"><li class="context-menu-item icon icon-email"><span>查看日志</span></li><li class="context-menu-item icon icon-lync"><span>重新执行</span></li><li class="context-menu-item icon icon-lync"><span>跳过步骤</span></li></ul></body></html>

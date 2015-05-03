@@ -23,7 +23,7 @@
 {	
 	height:30px;
 	vertical-align:middle;	
-	background-image:url(../image/common/bg_bar.png);	
+	background-image:url(../image/bg_bar.png);	
 }
 
 .tab_list
@@ -62,21 +62,21 @@
 /*普通节点图标区*/
 .node_process
 {
-    background:url(../Image/Flow/node_process.png) center no-repeat;    
+    background:url(../image/node_process.png) center no-repeat;    
     width: 90px;
     height: 60px;
 }
 
 .node_process_ok
 {
-    background:url(../Image/Flow/node_process_ok.png) center no-repeat;    
+    background:url(../image/node_process_ok.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
 
 .node_process_forceend
 {
-    background:url(../Image/Flow/node_process_forceend.png) center no-repeat;    
+    background:url(../image/node_process_forceend.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
@@ -84,28 +84,28 @@
 /*会签节点图标区*/
 .node_auto
 {
-    background:url(../Image/Flow/node_auto.png) center no-repeat;    
+    background:url(../image/node_auto.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
 
 .node_auto_ok
 {
-    background:url(../Image/Flow/node_auto_ok.png) center no-repeat;    
+    background:url(../image/node_auto_ok.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
 
 .node_auto_error
 {
-    background:url(../Image/Flow/node_auto_error.png) center no-repeat;    
+    background:url(../image/node_auto_error.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
 
 .node_auto_forceend
 {
-    background:url(../Image/Flow/node_auto_forceend.png) center no-repeat;    
+    background:url(../image/node_auto_forceend.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
@@ -125,14 +125,14 @@
     width: 70px;
     height: 65px;
     padding:5px 10px;    
-    background:url(../Image/Flow/node_countersign_ok.png) center no-repeat;     
+    background:url(../image/node_countersign_ok.png) center no-repeat;     
 }
 
 
 /*结束节点图标区*/
 .node_end
 {
-    background:url(../Image/Flow/node_end.png) center no-repeat;    
+    background:url(../image/node_end.png) center no-repeat;    
     width: 90px;
     height: 60px;    
 }
@@ -149,7 +149,7 @@
 /*会签小节点*/
 .countersign
 {   
-    background:url(../Image/Flow/node_countersign.png) center no-repeat;    
+    background:url(../image/node_countersign.png) center no-repeat;    
     width: 23px;
     height: 22px;
     float:left;      
