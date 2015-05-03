@@ -1,0 +1,234 @@
+﻿body
+{
+    font-size:12px;
+}
+.tbMain
+{
+    border: solid 1px #688CAF; 
+    width: 100%;
+    height: 100%
+} 
+
+.content button
+{
+    width: 100%;
+    line-height: 14px;
+    padding-top: 2px;
+    text-align: left;
+    padding-left: 4px;
+}
+
+/*流程设计器*/
+.topMenu
+{	
+	height:30px;
+	vertical-align:middle;	
+	background-image:url(../image/common/bg_bar.png);	
+}
+
+.tab_list
+{
+    float:left;
+	padding:4px 5px;
+	width:70px;
+	margin-left:2px;
+	font-size:13px;
+	text-align:center;
+	border: solid 0px #346789;    
+    border-radius: 0.3em;   
+}
+
+.tab_graph
+{
+    float:left;
+    text-align:center;
+	padding:3px 2px;
+	width:70px;
+	margin-left:10px;
+	font-size:13px;
+	background-color:Green;	
+	color:#fff;
+	border: solid 1px #346789;    
+    border-radius: 0.3em;   
+}
+
+/*节点外框*/
+.node_step
+{
+    position: absolute;
+    cursor: pointer;
+}
+
+/*普通节点图标区*/
+.node_process
+{
+    background:url(../Image/Flow/node_process.png) center no-repeat;    
+    width: 90px;
+    height: 60px;
+}
+
+.node_process_ok
+{
+    background:url(../Image/Flow/node_process_ok.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+.node_process_forceend
+{
+    background:url(../Image/Flow/node_process_forceend.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+/*会签节点图标区*/
+.node_auto
+{
+    background:url(../Image/Flow/node_auto.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+.node_auto_ok
+{
+    background:url(../Image/Flow/node_auto_ok.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+.node_auto_error
+{
+    background:url(../Image/Flow/node_auto_error.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+.node_auto_forceend
+{
+    background:url(../Image/Flow/node_auto_forceend.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+
+    
+/*会签节点图标区*/
+.node_countersign
+{
+    width: 70px;
+    height: 65px;
+    padding:5px 10px;      
+}
+
+.node_countersign_ok
+{
+    width: 70px;
+    height: 65px;
+    padding:5px 10px;    
+    background:url(../Image/Flow/node_countersign_ok.png) center no-repeat;     
+}
+
+
+/*结束节点图标区*/
+.node_end
+{
+    background:url(../Image/Flow/node_end.png) center no-repeat;    
+    width: 90px;
+    height: 60px;    
+}
+
+/*节点文本*/
+.node_text
+{
+    font-size:12px;
+    text-align:center;
+    height:25px;
+    width: 90px;
+}
+
+/*会签小节点*/
+.countersign
+{   
+    background:url(../Image/Flow/node_countersign.png) center no-repeat;    
+    width: 23px;
+    height: 22px;
+    float:left;      
+}
+
+/*保存布局提示信息框*/
+.info
+{
+    float:right;
+    font-size:12px;
+    padding:5px 10px;	
+	display:none;
+	background-color: green;
+	color:White;
+    border: solid 1px #346789;
+    filter: alpha(opacity=50);
+    border-radius: 0.3em;
+    box-shadow: 1px 2px 19px #aaa;
+}
+
+.aLabel
+{
+    border:solid 1px #7191B3;
+    background-color:#E6EEF7;
+    color:black;
+    padding:4px 8px;
+    cursor:pointer;    
+    border-radius: 0.3em;
+    box-shadow: 1px 2px 5px #aaa;    
+}
+
+._jsPlumb_overlay
+{
+    z-index:1;
+}
+
+.green
+{
+    color:#2E9845;
+}
+
+.loading
+{
+    height:15px;
+    width:15px;
+    position:absolute;
+    bottom:30px;
+    right:18px;
+}
+
+
+#tooltip
+{
+    z-index: 65535;
+    position: absolute;
+    border: 1px solid #333;
+    background: #f7f5d1;
+    padding: 4px 5px;
+    color: #333;
+    display: none;
+    font-size:12px;
+    line-height:20px;
+    min-width:150px;
+    max-width:250px;
+}
+
+
+
+/* 操作-按钮 */
+.btn_green,.btn_gray
+{
+    border:0px !important;
+    font:12px "Microsoft Yahei", arial, sans-serif !important;
+    margin-top:2px;padding:0 10px 1px 10px;
+    width:70px;
+}
+
+.btn_green {background-color:#4EAA39;height:26px;color:White;}
+.btn_green:hover{background-color:#449531;}
+
+.btn_gray {background-color:#ccc;height:26px;color:White;}
+.btn_gray:hover{background-color:#aaa;}

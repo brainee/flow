@@ -24,7 +24,17 @@
         // canvas.add(group);
         start();
         function start(){
-            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(fnParam('workflow')||1), function(res){              
+            $.getJSON('http://www.e-ai.net/WorkFlow/getTask.action?id={0}'.format(iTask), function(res){
+                if(res.returnCode=='success'&&res.data&&!isNaN(res.data.workFlowID)){
+                    iWorkFlow=res.data.workFlowID;  
+                    startDraw();
+                }else{                    
+                    alert('还没有创建任务！');
+                }               
+            });
+        }
+        function startDraw(){
+            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(iWorkFlow), function(res){              
               if(res.returnCode=='success'){
                 aAllStep=aAllStep.concat(res.data); 
                 getHistory(function() {
@@ -34,7 +44,10 @@
                         setPos(step1,100,100);
                         var rectConf=_.extend(getConf(),getPos(step1));          
                         fnDrawStep(step1,rectConf);
+                        //draw the top text
                         fnDrawText(step1.name,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
+                        //draw the bottom text
+                        fnDrawText(addBr(step1.owner+"："+step1.description),{left:step1.left,top:step1.top+step1.height,fontSize:14});
                         getTransits(step1);    
 
                     }else{
@@ -45,7 +58,7 @@
             });
         }
         function getHistory(callback){
-            $.getJSON('http://www.e-ai.net/WorkFlow/listAllTaskHistory.action?task={0}'.format(fnParam('task')||1), function(res){              
+            $.getJSON('http://www.e-ai.net/WorkFlow/listAllTaskHistory.action?task={0}'.format(iTask), function(res){              
               if(res.returnCode=='success'){
                 aHistory=aHistory.concat(res.data);                        
               }else{
@@ -71,11 +84,11 @@
                 canvas.add(shap);
                 shap.on('mouse:down',function(options){
                     //location.href=step.commandUrl;
-                    console.log(step.commandUrl);
+                    log(step.commandUrl);
                 });
                 shap.on('selected',function(options){
                     //location.href=step.commandUrl;
-                    console.log(step.commandUrl);
+                    log(step.commandUrl);
                 });
             }});
             //shap.set('selectable', false);
@@ -100,9 +113,24 @@
                 shap.set('selectable', false);
                 return shap;
             }   
-        }   
-        function fnDrawText(text,conf){            
-            var shap=new fabric.Text(text||'',_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'#c3bfbf'},conf));
+        }  
+        function addBr(text){
+            text=text||'';
+            var len=Math.ceil(text.length/oConf.text.lineWidth),last=text.length,newstr='';
+            len=len==1?0:len;
+            while(len--){                
+                var code=text.slice(len*oConf.text.lineWidth,last);
+                newstr=code+'\n'+newstr;
+                last=len*oConf.text.lineWidth;
+                //text=text.replace(code,code+'\n');
+            }
+            log(text);
+            return newstr||text;  
+        } 
+        function fnDrawText(text,conf){  
+            //text=addBr(text);
+            var shap=new fabric.Text(text,_.extend({fontSize:conf.fontSize||oConf.text.fontSize,stroke: conf.stroke||'#c3bfbf',
+            fontFamily:'宋体',strokeWidth:0},conf));
             //shap.id=step1.id+'.'+step2.id;
             canvas.add(shap);
             shap.set('selectable', false);
@@ -141,7 +169,11 @@
                             setPos(step2,(step.left+step.width+iDistanse),step.top+2*step.height*i);
                             var rectConf=_.extend(getConf(),getPos(step2)); 
                             fnDrawStep(step2,rectConf);
+                            //draw the top text
                             fnDrawText(step2.name,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
+                            //draw the bottom text
+                            fnDrawText(addBr(step2.owner+'：'+step2.description),{left:step2.left,top:step2.top+step2.height,fontSize:14});
+
                             var hborder=(Math.pow(2,i)-1)*step2.height;
                             var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
                             var scaleX=biasborder/iDistanse;
@@ -156,7 +188,7 @@
                             var confArrow={angle:angle,left:left,top:top,scaleX:scaleX,callback:true};
                             fnDrawArrow(step,step2,confArrow);
                             //write the event state
-                            fnDrawText(n.eventName,{left:confArrow.left+iDistanse/3,top:step2.top+hborder/2,stroke:n.eventID==1?'green':'red'});
+                            fnDrawText(n.eventName,{left:confArrow.left+iDistanse/3,top:step2.top+hborder/2,stroke:n.eventID==1?'green':'red',strokeWidth:1});
                             getTransits(step2); 
                         }
                     });//endof each
