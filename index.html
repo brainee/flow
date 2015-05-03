@@ -8,7 +8,7 @@
 <body>
     <div class="w_wrapper1" style="min-width:980px;">   
         <div class="w_header">
-            <div class="w_pageTitle w_ac">abd</div>
+            <div class="w_pageTitle w_ac"></div>
         </div>
         <div class="w_content"> 
 <!--             <div class="w_layoutB_180"> 
@@ -51,7 +51,7 @@
         // canvas.add(group);
         start();
         function start(){
-            $.getJSON('http://www.e-ai.net/WorkFlow/getTask.action?id={0}'.format(iTask), function(res){
+            fnJson('http://www.e-ai.net/WorkFlow/getTask.action?id={0}'.format(iTask), function(res){
                 if(res.returnCode=='success'&&res.data&&!isNaN(res.data.workFlowID)){
                     iWorkFlow=res.data.workFlowID;  
                     startDraw();
@@ -59,10 +59,10 @@
                 }else{                    
                     alert('还没有创建任务！');
                 }               
-            });
+            });            
         }
         function startDraw(){
-            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(iWorkFlow), function(res){              
+            fnJson('http://www.e-ai.net/WorkFlow/Domain/listAllStep.action?workFlow={0}'.format(iWorkFlow), function(res){              
               if(res.returnCode=='success'){
                 aAllStep=aAllStep.concat(res.data); 
                 getHistory(function() {
@@ -75,7 +75,8 @@
                         //draw the top text
                         fnDrawText(step1.name,{left:step1.left,top:step1.top-oConf.text.fontSize*1.5});
                         //draw the bottom text
-                        fnDrawText(addBr(step1.owner+"："+step1.description),{left:step1.left,top:step1.top+step1.height,fontSize:12});
+                        var name=step1.owner.split('#')[0]||'';
+                        fnDrawText(addBr(name+"："+step1.description),{left:step1.left,top:step1.top+step1.height,fontSize:12});
                         getTransits(step1);    
 
                     }else{
@@ -86,7 +87,7 @@
             });
         }
         function getHistory(callback){
-            $.getJSON('http://www.e-ai.net/WorkFlow/listAllTaskHistory.action?task={0}'.format(iTask), function(res){              
+            fnJson('http://www.e-ai.net/WorkFlow/listAllTaskHistory.action?task={0}'.format(iTask), function(res){              
               if(res.returnCode=='success'){
                 aHistory=aHistory.concat(res.data);                        
               }else{
@@ -184,7 +185,7 @@
             return color;
         }
         function getTransits(step){
-            $.getJSON('http://www.e-ai.net/WorkFlow/Domain/listAllStepTransit.action?currentStep={0}'.format(step.id), function(res){
+            fnJson('http://www.e-ai.net/WorkFlow/Domain/listAllStepTransit.action?currentStep={0}'.format(step.id), function(res){
                 
                 if(res.returnCode=='success'){
                     _.each(res.data,function(n,i){                        
@@ -200,7 +201,8 @@
                             //draw the top text
                             fnDrawText(step2.name,{left:step2.left,top:step2.top-oConf.text.fontSize*1.5});
                             //draw the bottom text
-                            fnDrawText(addBr(step2.owner+'：'+step2.description),{left:step2.left,top:step2.top+step2.height,fontSize:12});
+                            var name=step2.owner.split('#')[0]||'';
+                            fnDrawText(addBr(name+'：'+step2.description),{left:step2.left,top:step2.top+step2.height,fontSize:12});
 
                             var hborder=(Math.pow(2,i)-1)*step2.height;
                             var biasborder=Math.sqrt(Math.pow(iDistanse,2)+Math.pow(hborder,2));
