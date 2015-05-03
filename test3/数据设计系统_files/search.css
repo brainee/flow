@@ -1,0 +1,73 @@
+﻿ body
+       {
+          font-family:微软雅黑;
+          font-size:12px;	
+       }
+       
+       .btn
+       {
+          border-top:solid 3px #d6d6d6;
+          border-bottom:solid 3px #d6d6d6;
+          border-left:solid 1px #d6d6d6;
+          border-right:solid 1px #d6d6d6;
+          width:136px;
+          background-color:White;
+       }
+       .text
+       {
+          border:solid 1px #d6d6d6;
+          width:256px;          
+       }
+       
+       .textS
+       {
+          border:solid 1px #d6d6d6;
+          width:360px;
+          height:26px;
+       }
+
+       #searchDiv
+       {
+        position:absolute;
+        z-index:999;
+        border:solid 1px lightblue;
+        background-color:#ffffff;
+       }
+       
+       #searchDiv p
+      {
+        height:30px;
+        width:560px;
+        margin:0px;
+        padding:0px;
+        vertical-align:text-bottom;
+        font-size:13px;
+        font-weight:bolder;
+        cursor:pointer;
+      }
+      
+      
+      #showHead
+      {
+      	margin-top:8px;
+      	background:#ffffff url(../back.bmp) 0px -92px repeat-x;
+      	height:37px; width:688px;
+       border-left:solid 1px #000000;
+       border-right:solid 1px #000000;
+       padding-top:7px;
+      }
+      
+      #showResult
+      {
+      	 width:688px;
+      	 border:solid 1px #000000;
+      	 height:186px;
+      	 margin:0px;
+         padding:0px;
+         line-height:2em;
+      }
+      
+      #uls
+      {
+        position:absolute;
+      }

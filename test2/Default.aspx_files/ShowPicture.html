@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0111)http://dbticket.sh.ctripcorp.com/Aspx/View/ShowPicture.aspx?PictureFlag=FlowView&FlowID=21&FlowInstanceID=27075 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+
+</title><link href="Flow.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="common.js"></script>
+    <style>
+        html, body, form
+        {
+            height: 100%;
+            overflow: hidden;
+            padding:0px;
+            margin:0px;
+        }
+        .toggle_btns
+        {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+        }        
+    </style>
+</head>
+<body>
+    <form method="post" action="ShowPicture.html" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTIwNjAyODU4M2RkMZB+h6CJrEluJjGN/sd9yx8nCy4=">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="9FE40A3A">
+</div>
+    <script type="text/javascript" language="javascript">
+        var FlowID = getUrlParam('FlowID')
+        var FlowInstanceID = getUrlParam('FlowInstanceID')
+        var PictureFlag = getUrlParam('PictureFlag')
+        function SetView(flag) {
+            var url = "";
+            if (flag == "ViewGraph") {
+                url = "/Aspx/Manage/Flow/ViewGraph.aspx?FlowID=" + FlowID;
+                $("#mainframe").attr("src", url);
+                $("#btnViewGraph").removeClass().addClass("btn_green");
+                $("#btnFlowView").removeClass().addClass("btn_gray");
+            }
+            else {
+                url = "FlowView.aspx?ReadyOnly=1&FlowInstanceID=" + FlowInstanceID;
+                $("#mainframe").attr("src", url);
+                $("#btnViewGraph").removeClass().addClass("btn_gray");
+                $("#btnFlowView").removeClass().addClass("btn_green");
+            }
+        }
+
+        $(document).ready(function () {
+            SetView(PictureFlag);
+        })
+    </script>
+    <iframe id="mainframe" name="mainframe" style="width: 100%; height: 100%;" frameborder="0" src="FlowView.html"></iframe>
+    <div class="toggle_btns">
+        <input id="btnViewGraph" type="button" value="设计图" class="btn_gray" onclick="SetView(&#39;ViewGraph&#39;)">
+        <input id="btnFlowView" type="button" value="运行图" class="btn_green" onclick="SetView(&#39;FlowView&#39;)">
+    </div>
+    </form>
+
+
+</body></html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)http://dbticket.sh.ctripcorp.com/DDS/Default.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	数据设计系统
+</title><meta name="viewport" content="initial-scale=1,maximum-scale=1"><meta http-equiv="P3P" content="CP=&quot;IDC DSP COR CURa ADMa  OUR IND PHY ONL COM STA&quot;"><link rel="stylesheet" type="text/css" href="style.css" media="all">     
+	<!--[if IE 6]><link rel="stylesheet" type="text/css" href="styles/ie6.css" /><![endif]-->
+
+	<link rel="stylesheet" href="print.css" type="text/css" media="print"><link href="pop.css" rel="stylesheet" type="text/css"><link href="search.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="jquery-1.4.1.js"></script>
+	<script type="text/javascript" src="oz.js"></script>
+	<script type="text/javascript" src="config.js"></script>
+	<script type="text/javascript" src="ctripdbdesigner.js"></script>
+
+	<script language="javascript" type="text/javascript">
+	function OK()
+	{
+        $("#prevsave").click();
+    }
+    function Cancel() {
+        $("#background").css("visibility", "hidden");
+        $("#savedesign").css("display", "none");
+    }
+
+    var template = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+                + "<sql>"
+                + "<datatypes db=\"mssql\">"
+                + "<group label=\" \" color=\"rgb(246,249,254)\">"
+                + "<type label=\" \" length=\"0\" sql=\" \" re=\"INT\" quote=\"\" bytes=\"1\" note=\"Integer data: 0 to 255\" /></group>"
+                + "<group label=\"Integer\" color=\"rgb(238,238,170)\">"
+                + "<type label=\"TinyInt\" length=\"0\" sql=\"tinyint\" re=\"INT\" quote=\"\" bytes=\"1\" note=\"Integer data: 0 to 255\" />"
+	            + "<type label=\"SmallInt\" length=\"0\" sql=\"smallint\" re=\"INT\" quote=\"\" bytes=\"2\" note=\"Integer data: -32,768 to 32,767\" />"
+	            + "<type label=\"Int\" length=\"0\" sql=\"int\" re=\"INT\" quote=\"\" bytes=\"4\" note=\"Integer data: -2,147,483,648 to 2,147,483,647\" />"
+	            + "<type label=\"BigInt\" length=\"0\" sql=\"bigint\" re=\"INT\" quote=\"\" bytes=\"8\" note=\"Integer data: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\" />"
+                + "</group>"
+                + "<group label=\"Monetary\" color=\"rgb(238,238,170)\">"
+	            + "<type label=\"Money\" length=\"0\" sql=\"money\" re=\"FLOAT\" quote=\"\" bytes=\"8\" note=\"Integer data: -922,337,203,685,477.5808 to 922,337,203,685,477.5807\" />"
+	            + "<type label=\"SmallMoney\" length=\"0\" sql=\"smallmoney\" re=\"FLOAT\" quote=\"\" bytes=\"4\" note=\"-214,748.3648 to 214,748.3647\" />"
+                + "</group>"
+                + "<group label=\"Numeric\" color=\"rgb(238,238,170)\">"
+	            + "<type label=\"Float\" length=\"0\" sql=\"float\" re=\"FLOAT\" quote=\"\" bytes=\"8\" note=\"Floating precision number data: -4.94E+324 to 4.94E+324\" />"
+	            + "<type label=\"Decimal\" length=\"1\" sql=\"decimal\" re=\"DEC\" quote=\"\" bytes=\"n*\" note=\"Fixed precision and scale numeric data: -10^38 +1 to 10^38 -1 (decimal and numeric are synonyms)\" />"
+	            + "<type label=\"Numeric\" length=\"1\" sql=\"numeric\" re=\"DEC\" quote=\"\" bytes=\"n*\" note=\"Fixed precision and scale numeric data: -10^38 +1 to 10^38 -1 (decimal and numeric are synonyms)\" />"
+                + "</group>"
+                + "<group label=\"Character\" color=\"rgb(255,200,200)\">"
+	            + "<type label=\"Char\" length=\"0\" sql=\"char\" quote=\"'\" bytes=\"n\" note=\"Fixed-length character data with a maximum length of 8,000 characters\" />"
+	            + "<type label=\"Varchar\" length=\"1\" sql=\"varchar\" quote=\"'\" bytes=\"m &lt;= n\" note=\"Variable-length data with a maximum of 8,000 characters\" />"
+	            + "<type label=\"Text\" length=\"1\" sql=\"text\"  quote=\"'\"  bytes=\"&lt;= 2,147,483,647\" note=\"Variable-length data with a maximum length of 2,147,483,647 characters\" />"
+                + "<type label=\"XML\" length=\"0\" sql=\"xml\"  quote=\"'\" bytes=\"n\" note=\"XML\" />"
+                + " <type label=\"uniqueidentifier\" length=\"0\" sql=\"uniqueidentifier\"  quote=\"\" bytes=\"16\" note=\"uniqueidentifier\" />"
+                + "</group>"
+                + "<group label=\"Unicode Character\" color=\"rgb(255,200,200)\">"
+	            + "<type label=\"nChar\" length=\"0\" sql=\"nchar\" quote=\"'\" bytes=\"n\" note=\"Fixed-length Unicode data with a maximum length of 4,000 characters\" />"
+	            + "<type label=\"nVarchar\" length=\"1\" sql=\"nvarchar\" quote=\"'\" bytes=\"m &lt;= n\" note=\"Variable-length Unicode data with a maximum length of 4,000 characters\" />"
+                + "<type label=\"nText\" length=\"1\" sql=\"ntext\" quote=\"'\" bytes=\"&lt;= 2,147,483,647\" note=\"Variable-length Unicode data with a maximum length of 1,073,741,823 characters\" />"
+                + "</group>"
+                + "<group label=\"Date &amp; Time\" color=\"rgb(200,255,200)\">"
+	            + "<type label=\"Datetime\" length=\"0\" sql=\"datetime\" quote=\"\" bytes=\"8\" note=\"Jan 1, 1753 to Dec 31, 9999\" />"
+	            + "<type label=\"SmallDateTime\" length=\"0\" sql=\"smalldatetime\" quote=\"\" bytes=\"4\" note=\"Jan 1, 1900 to Dec 31, 2079\" />"
+                + "</group>"
+                + "<group label=\"Binary\" color=\"rgb(200,200,255)\">"
+	            + "<type label=\"Binary\" length=\"0\" sql=\"binary\" quote=\"'\" bytes=\"n\" note=\"Fixed-length binary data with a maximum length of 8,000 bytes\" />"
+	            + "<type label=\"Varbinary\" length=\"1\" sql=\"varbinary\" quote=\"'\" bytes=\"m &lt;= n\" note=\"Variable-length binary data with a maximum length of 8,000 bytes\" />"
+                + "</group>"
+                + "<group label=\"Miscellaneous\" color=\"rgb(200,220,255)\">"
+	            + "<type label=\"Bit\" length=\"0\" sql=\"bit\" quote=\"\" bytes=\"1\" note=\"Boolean: 1 or 0\" />"
+//                + "<type label=\"Timestamp\"  length=\"0\" sql=\"timestamp\" quote=\"\" bytes=\"8\" note=\"Locally unique binary number updated as a row gets updated\" />"
+                + "</group>"
+                + "</datatypes>";
+    var t;
+
+    $(document).ready(function () {
+        document.onmouseup = function (e) {
+            if (timer) clearTimeout(timer);
+            if (selectrow != true) return;
+            e = e || window.event;
+            var rightarrow = document.getElementById("rightarrowdiv");
+            var temprow = document.getElementById("temprow");
+            var sTables = getClass("div", "table");
+            var des = SQL.Designer;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+            var x = e.pageX || e.clientX + scrollLeft - document.body.clientLeft;
+            var y = e.pageY || e.clientY + scrollTop - document.body.clientTop;
+            temprow.style.display = "none";
+            oldrow.style.backgroundColor = oldrowcolor;
+            selectrow = false;
+            rightarrow.style.display = "none";
+            for (var i = 0; i < sTables.length; i++) {
+                if (sTables[i] != selectedtablediv) {
+                    var tab = new Array();
+                    var pos = new Array();
+                    tab = sTables[i].getElementsByTagName("tbody");
+                    for (var j = 0; j < tab.length; j++) {
+                        pos = getPosition(tab[j]);
+                        if (x > pos[1] && x < pos[1] + tab[j].offsetWidth && y > pos[0] && y < pos[0] + tab[j].offsetHeight) {
+                            if (tab[j].children[0].children[0].children[0].innerHTML != "NewColumn") {
+                                isdrag = true;
+                                $("#removerow").click();
+                                if (delsuccess == false) return;
+                                var keyuptable = des.tables[i];
+                                //                                var RowDes = new SQL.Row(keyuptable, keyuptable.rows[j].data.title, keyuptable.rows[j].data);
+                                if (j + 1 != tab.length) {
+                                    keyuptable.dom.content.insertBefore(RowOrigin.dom.container, keyuptable.rows[j + 1].dom.container);
+                                }
+                                else {
+                                    keyuptable.dom.content.appendChild(RowOrigin.dom.container);
+                                }
+                                //                                keyuptable.dom.content.appendChild(RowOrigin.dom.container);
+                                keyuptable.rows.splice(j + 1, 0, RowOrigin);
+                                RowOrigin.owner = keyuptable;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        document.onmousemove = function (e) {
+            if (selectrow != true) return;
+            e = e || window.event;
+            var mouseintable = false;
+            var rightarrow = document.getElementById("rightarrowdiv");
+            var temprow = document.getElementById("temprow");
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+            var x = e.pageX || e.clientX + scrollLeft - document.body.clientLeft;
+            var y = e.pageY || e.clientY + scrollTop - document.body.clientTop;
+            temprow.style.top = y - mouseY + divY + "px";
+            temprow.style.left = x - mouseX + divX + "px";
+            var sTables = getClass("div", "table");
+            for (var i = 0; i < sTables.length; i++) {
+                if (sTables[i] != selectedtablediv) {
+                    var tab = new Array();
+                    var pos = new Array();
+                    tab = sTables[i].getElementsByTagName("tbody");
+                    for (var j = 0; j < tab.length; j++) {
+                        pos = getPosition(tab[j]);
+                        if (x > pos[1] && x < pos[1] + tab[j].offsetWidth && y > pos[0] && y < pos[0] + tab[j].offsetHeight) {
+                            if (tab[j].children[0].children[0].children[0].innerHTML != "NewColumn") {
+                                mouseintable = true;
+                                rightarrow.style.left = pos[1] - 18 + "px";
+                                rightarrow.style.top = pos[0] + 3 + "px";
+                                rightarrow.style.display = "";
+                                t = tab[j];
+                            }
+                        }
+                    }
+                }
+                if (mouseintable == false) {
+                    rightarrow.style.display = "none";
+                }
+            }
+        }
+        //$("#clientImport").click();
+        //从DataModel中打开ER图
+        if ($.trim($("#HFColumnList").val()) != "") {
+            $("#bar").css("display", "none");
+            $.post("http://dbticket.sh.ctripcorp.com/DDS/DBHandler.ashx",
+                            {
+                                functionName: "CreateER",
+                                dbName: $("#HFDataDictionaryDBName").val(),
+                                TableName: $("#HFDataDictionaryTableName").val()
+                            },
+                             function (data) {
+
+                                 try {
+                                     if (data == "-1") {
+                                         alert("请求数据库信息失败!");
+                                     }
+                                     else if (data == "nodata") {
+                                         alert("没有该表相关的ER数据!");
+                                     }
+                                     else {
+                                         $("#saveload").click();
+                                         $("#divWaiting").css("display", "");
+                                         var xml = template;
+                                         xml += data;
+                                         xml += "</sql>";
+                                         document.getElementById('textarea').value = xml;
+                                         document.getElementById('clientload').click();
+                                         document.getElementById('HFXML').value = data;
+                                         $("#divWaiting").css("display", "none");
+                                     }
+                                 }
+                                 catch (e) {
+                                     alert(e)
+                                 }
+                             });
+        }
+    });
+
+    function getClass(tagName, className) {  //第一个参数 表示是className是所属那个dom标签下,这样为了提高检索效率
+        //如果是火狐择调用火狐的getElementsByClassName 内置函数
+        if (document.getElementsByClassName) {
+            return document.getElementsByClassName(className)
+        }
+        else {
+            var nodes = document.getElementsByTagName(tagName),
+                    ret = []
+            for (i = 0; i < nodes.length; i++) {
+                if (hasClass(nodes[i], className)) { ret.push(nodes[i]) }
+            }
+            return ret;
+        }
+    }
+
+    function hasClass(node, className) {
+        var names = node.className.split(/\s+/) //这个正则表达式是因为class可以有多个,判断是否包含
+        for (j = 0; j < names.length; j++) {
+            if (names[j] == className) return true;
+        }
+        return false;
+    }
+
+    function getPosition(cell) {
+        var pos = new Array();
+        var t = cell.offsetTop;
+        var l = cell.offsetLeft;
+        while (cell = cell.offsetParent) {
+            t += cell.offsetTop;
+            l += cell.offsetLeft;
+        }
+        pos[0] = t;
+        pos[1] = l;
+        return pos;
+    }
+
+   function Export() {
+       $("#Export").click();
+   }
+
+   function SetFramSize() {
+       parent.document.all('designFrm').style.height = document.body.scrollHeight;
+       parent.document.all('designFrm').style.width = document.body.scrollWidth - 600;
+   }
+
+  function ShowObjectChange()
+  {
+       var timstamp = (new Date()).valueOf();
+       //       window.open('DBO.aspx?timstamp=' + timstamp, 'newwindow');
+       var iTop = (window.screen.availHeight - 30 - 600) / 2;
+       var iLeft = (window.screen.availWidth - 10 - 700) / 2; 
+       window.open('DBO.aspx?timstamp=' + timstamp, '_blank', 'height=600,innerHeight=600,width=700,innerWidth=700,top=' + iTop + ',left=' + iLeft + ',toolbar=no,menubar=no,scrollbars=yes,resizeable=no,location=no,status=no');
+
+   }
+
+   function ChangeDiv() {
+       document.getElementById("divDisable").style.height = document.body.offsetHeight + document.body.scrollTop;
+   }
+
+   function ShowBestDesign() {
+       var url = 'BestDesignList.aspx';
+       OpenDialog(url, 500, 150);
+   }
+
+   function OpenDialog(url, width, height) {
+       var params = "dialogWidth:" + width + "px;dialogHeight:" +
+height + "px;center:yes;status:no;help:no";
+       showModalDialog(url, window, params);
+   }
+
+   function mouseover(sender) {
+       if (timer) clearTimeout(timer);
+       sender.style.display = '';
+   }
+
+   function mouseout(sender) {
+       timer = setTimeout(function () {
+           sender.style.display = 'none';
+       }, 400);
+   }
+
+   function ShowOrHideColumns(sender) {
+       var tablediv = getClass("div", "table");
+       if (tablediv.length == 0) return;
+       if (sender.value == "隐藏列名") {
+           for (var j = 0; j < tablediv.length; j++) {
+               var tbody = tablediv[j].getElementsByTagName("tbody");
+               for (var i = 0; i < tbody.length; i++) {
+                   tbody[i].getElementsByTagName("td")[0].style.display = "none";
+               }
+           }
+           sender.value = "显示列名";
+       }
+       else {
+           for (var j = 0; j < tablediv.length; j++) {
+               var tbody = tablediv[j].getElementsByTagName("tbody");
+               for (var i = 0; i < tbody.length; i++) {
+                   tbody[i].getElementsByTagName("td")[0].style.display = "";
+               }
+           }
+           sender.value = "隐藏列名";
+       }
+       $.post("http://dbticket.sh.ctripcorp.com/DDS/DBHandler.ashx",
+                            {
+                                functionName: "InsertUrlHit",
+                                targetURL: escape("BtnShowOrHideColumns"),
+                                hituser: $("#HFServiceID").val(),
+                                isError: false
+                            },
+                             function (data) {
+                                
+                             });
+   }
+
+   function ShowOrHideColumnDesc(sender) {
+       var tablediv = getClass("div", "table");
+       if (tablediv.length == 0) return;
+       if (sender.value == "隐藏列描述") {
+           for (var j = 0; j < tablediv.length; j++) {
+               var tbody = tablediv[j].getElementsByTagName("tbody");
+               for (var i = 0; i < tbody.length; i++) {                 
+                   tbody[i].getElementsByTagName("td")[2].style.display = "none";
+               }
+           }
+           sender.value = "显示列描述";
+       }
+       else {
+           for (var j = 0; j < tablediv.length; j++) {
+               var tbody = tablediv[j].getElementsByTagName("tbody");
+               for (var i = 0; i < tbody.length; i++) {
+                   tbody[i].getElementsByTagName("td")[2].style.display = "";
+               }
+           }
+           sender.value = "隐藏列描述";
+       }
+       $.post("http://dbticket.sh.ctripcorp.com/DDS/DBHandler.ashx",
+                            {
+                                functionName: "InsertUrlHit",
+                                targetURL: "BtnShowOrHideColumnDesc",
+                                hituser: $("#HFServiceID").val(),
+                                isError: false
+                            },
+                             function (data) {
+
+                             });
+   }
+
+	</script>
+</head>
+<body style="visibility: visible;">    <form method="post" action="Default.html" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTExOTY1NDY2NzZkZLjgiT+gV/AXDegwQBnm6epXHs8C">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="28A3C893">
+</div>
+	<div id="area">
+        <div id="tools" onmouseover="mouseover(this)" onmouseout="mouseout(this)" style="display : none;position:absolute">
+            <img id="colname" alt="显示/隐藏 列名" src="refresh.png" title="显示/隐藏 列名" style="cursor:pointer">
+            <img id="coldes" alt="显示/隐藏 列描述" src="refresh.png" title="显示/隐藏 列描述" style="cursor:pointer">
+            <img id="copy" alt="复制" src="add.png" title="复制" style="cursor:pointer">
+            <img id="delT" alt="删除" src="del.png" title="删除" style="cursor:pointer">
+        </div>
+        <div id="temprow" class="temprow" unselectable="on" onselectstart="return false;" style="display : none;position:absolute;cursor:pointer;-moz-user-select: none;">
+
+        </div>
+        <div id="rightarrowdiv" style="display:none;position:absolute">
+            <img id="rightarrow" src="rightarrow.png" alt="插入">
+        </div>
+    <svg width="2000" height="2000"></svg></div>
+
+	<div id="controls">
+		<div id="bar">
+			<div id="toggle" class="on"></div>
+			<input type="button" id="saveload" style="display :none" value="原保存载入">
+			<input type="button" id="Open" class="small" value="打开"><input type="button" id="showSave" value="保存" onclick="OK()" class="small"><input type="button" id="clientImport" class="small" style="display :none" value="导入">
+      
+            <input type="button" id="openWin" style="display :none">
+        <input id="Save" type="button" value="保存" style="display :none">
+			
+            
+		  <input type="button" id="Release" style="display:none" value="提交审核">
+          <hr>
+          <input type="submit" name="Export" value="导出表结构" id="Export" disabled="disabled" class="aspNetDisabled">
+           <hr>
+           <input type="button" id="OpenER" value="生产ER图">
+            <input type="button" id="SaveER" value="保存ER图">
+           <hr>
+			<input type="button" id="addtable" value="添加表">
+			<input type="button" id="tablekeys" value="主键索引" disabled="">
+            <input type="button" id="removetable" style="display:none" value="移除表" disabled="">
+            <input type="button" id="removerow" style="display:none" value="移除列">
+			<input type="button" id="aligntables" value="排列表格">
+            
+			
+			<input type="button" id="foreignconnect" value="连接外部列">
+			<input type="button" id="foreigndisconnect" value="断开外连接" disabled=""> 
+           <hr>
+		
+          <input type="button" id="btnObjectChange" value="DB变更记录" onclick="ShowObjectChange()">
+          <hr>
+          <input type="button" id="btnBestDesgin" value="最佳设计">
+           <hr>
+          <input type="button" id="ExportScript" value="脚本导入">
+          <hr>
+          <input type="button" id="Columns" value="隐藏列名" onclick="ShowOrHideColumns(this)">
+          <hr>
+          <input type="button" id="ColumnDesc" value="显示列描述" onclick="ShowOrHideColumnDesc(this)">
+		</div>
+	
+		<div id="rubberband"></div>
+       
+		<div id="minimap"><div class="port" style="z-index: 1; width: 88px; height: 47px; left: 0px; top: 0px;"></div></div>
+	
+		<div id="background" style="width: 1847px; height: 1026px; left: 0px; top: 0px;"></div>
+	    <div id="savedesign" class="mydiv" style=" top :100px;display:none ">
+         <iframe id="SaveSoluationFrame" name="SaveSoluationFrame" src="SaveSoluation.html" frameborder="0" width="600px" height="200px" scrolling="yes" style="overflow:visible;"></iframe>
+        </div>
+    
+		<div id="window">
+			<div id="windowtitle"><img id="throbber" src="throbber.gif" alt="请等待..." title="请等待..." style="visibility: hidden;"></div>
+			<div id="windowcontent"></div>
+			<input type="button" id="windowok" value="确定">
+			<input type="button" id="windowcancel" value="取消">
+
+            
+
+		</div>
+	</div> <!-- #controls -->
+	
+	
+	
+	
+	
+	 
+	
+	
+	<input id="prevsave" type="button" style=" display :none " value="prevsave">
+	<script type="text/javascript">
+		var d = new SQL.Designer();
+	</script>
+        <input type="hidden" name="HFOpenDesignName" id="HFOpenDesignName">
+         <input type="hidden" name="HFDesignDBName" id="HFDesignDBName" value="-1">
+          <input type="hidden" name="HFServiceID" id="HFServiceID" value="yongzheng">
+          <input type="hidden" name="HFXML" id="HFXML">
+
+          <input type="hidden" name="HFColumnList" id="HFColumnList">
+	   <input type="hidden" name="HFDataDictionaryDBName" id="HFDataDictionaryDBName">
+	   <input type="hidden" name="HFDataDictionaryTableName" id="HFDataDictionaryTableName">
+	   
+         <input type="hidden" name="HFERDB" id="HFERDB">
+           <div id="divWaiting" style="display: none; z-index: 1100; left: 25%; right: 25%; position: absolute;
+     text-align: center; width: 50%; height: 50px; border-right: #009900 1px solid;
+     border-top: #009900 1px solid; border-left: #009900 1px solid; border-bottom: #009900 1px solid;
+     background-color: #f9fff6; left: expression((this.offsetParent.clientWidth/2)-(this.clientWidth/2)+this.offsetParent.scrollLeft);
+     top: expression((this.offsetParent.clientHeight/2)-(this.clientHeight/2)+this.offsetParent.scrollTop);">
+   <br>
+     正在加载ER图,请等待......
+</div>
+<div id="divDisable" style="display: none;width:expression(document.body.offsetWidth);height:expression(document.body.offsetHeight); z-index: 1000; position: absolute;left: 0px; top: 0px;filter:alpha(opacity=50); background-color:White"></div>
+
+        </form>
+
+
+</body></html>

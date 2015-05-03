@@ -1,0 +1,312 @@
+﻿/* 全局CSS定义 background-color:#D6E4EF;*/
+html,body,form,div,span,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,textarea,p,blockquote,th,td,iframe,hr,a{margin:0; padding:0;outline:none;resize: none}
+
+h1,h2,h3,h4,h5,h6{margin:0;padding:0;font-size:12px;font-weight:normal;}
+ol,ul,li{list-style:none;}
+fieldset{border:0;}
+input{outline:none;}
+img{border:0;vertical-align:middle;}
+table{border-collapse:separate;border-spacing:0;outline:none;}
+body{font:12px "Microsoft Yahei", arial, sans-serif !important;overflow:auto;}
+select{outline:none;font-family:"Microsoft Yahei",Verdana,Arial !important;}
+a{font-family:"Microsoft Yahei",Verdana,Arial !important;font-size:12px !important;}
+a:link,a:visited{color:#0088CC;text-decoration:none !important;}
+a:active,a:hover{color:#0088CC;text-decoration:none !important;}
+
+/******************** 通用样式定义 ********************/
+.pageContainer{margin:10px;}
+
+
+/* 顶部工具条 */
+.pageHeader{height:28px;line-height:28px;margin-bottom:10px}
+
+/* 标题 */
+.pageHeader .title{float:left;height:28px;font-weight:bold;color:#00156E;font-size:14px;}
+/* 标题图标 */
+.pageHeader .title.icoList{background:url(/Image/TitleIcon/1.png) no-repeat 3px 4px;padding-left:22px;}
+.pageHeader .title.icoEdit{background:url(/Image/TitleIcon/3.png) no-repeat 3px 4px;padding-left:22px;}
+.pageHeader .title.icoAdd{background:url(/Image/TitleIcon/4.png) no-repeat 3px 4px;padding-left:22px;}
+
+
+/* 操作 */
+.pageHeader .operate{float:right;letter-spacing:1px;}
+.pageHeader .operate li{float:left;margin-left:10px;}
+.pageHeader .operate a{display:block;outline:none;margin:0 0 12px 0;}
+
+.pageHeader .operate .icoSave{background:url(/Image/Operation/save.png) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoDelete{background:url(/Image/Operation/delete.gif) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoAdd{background:url(/Image/Operation/add.png) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoQuery{background:url(/Image/Operation/query.png) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoEdit{background:url(/Image/Operation/edit.png) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoExport{background:url(/Image/Operation/export.png) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoAuthoriz{background:url(/Image/Operation/authoriz.png) no-repeat 0 50%;padding-left:18px;}
+.pageHeader .operate .icoBack{background:url(/Image/Operation/back.png) no-repeat 0 50%;padding-left:18px;}
+
+/*清除浮动*/
+.cf:before,.cf:after{content:""; display:table;}
+.cf:after{ clear:both;}
+.cf{zoom:1;}
+
+
+
+/*列表样式*/
+.list{border-spacing:1px;font-family:"Microsoft Yahei", arial, sans-serif;}
+.list th
+{
+    border:solid 1px #ddd;    
+    padding:7px 5px;
+    text-align:center;
+    background-color:#eee;
+}
+    
+.list td
+{
+    border:solid 1px #ddd;    
+    padding:7px 5px;
+}
+        
+.list tbody tr:hover
+{
+    background-color:#F6F6F6;
+}
+
+
+/*Table表单样式*/
+.tbCommon
+{
+	border-collapse:collapse;
+	background-color:#F6FAFE;
+	margin-left:auto;
+	margin-right:auto;
+}
+.tbCommon .title
+{
+	padding:2px 5px;    
+	border:solid 1px #688CAF;
+	background-color:#C6DAEE;	
+	font-weight:bold;
+	height:26px;
+}
+.tbCommon .subTitle
+{
+	padding:2px 5px;
+	border:solid 1px #688CAF;
+	background-color:#eee;
+	height:25px;
+}
+
+.tbCommon .label
+{
+    width:120px;
+	padding:2px 5px;
+	border:solid 1px #688CAF;
+	background-color:#D0E0F3;
+	text-align:right;
+	height:26px;	
+	padding-right:2px;
+	font-family:"Microsoft Yahei",Verdana,Arial !important;
+}
+
+.tbCommon .control
+{
+	padding:4px 5px;
+	border:solid 1px #688CAF;
+	font-family:"Microsoft Yahei",Verdana,Arial !important;
+}
+/*修正checkbox的label高度 */
+.tbCommon .control label{vertical-align:0px !important;line-height:22px !important;}
+
+.tbCommon .operate
+{
+	padding:2px 5px;
+	border:solid 1px #688CAF;
+	text-align:center;
+	background-color:#E5F1FF;
+	height:26px;
+}
+.tbCommon .operate a      /*按钮间距，这里为了兼容telerik自动加上的外框，只能用a，不能用input */
+{
+	margin-right:40px !important;
+}
+
+.tbCommon .tips
+{
+	color:#aaa;
+	margin-left:3px;
+	_margin-left:5px;
+	
+}
+.tbCommon .introduce
+{
+    line-height:22px;
+}
+
+.tbCommon label         /*表格里的checkbox样式调整*/
+{
+	line-height:22px !important;
+}
+
+.op
+{
+    text-align:center;
+    margin:15px;
+}
+.op input
+{
+    margin-right:40px;
+}
+
+/*数据列表下方的快捷操作*/
+.fastOperate
+{
+	width:100%;
+	border-collapse:collapse;
+	background-color:#F6FAFE;
+	margin:10px auto;
+	font-size:12px;
+}
+
+.fastOperate td
+{
+	padding:4px 0px 4px 4px;
+	border:solid 1px #688CAF;	
+	vertical-align:middle;
+	height:22px;	
+}
+
+.fastOperate .label
+{
+	width:70px;
+	background-color:#D9E4F2;
+	font-weight:bold;
+	color:#333;
+	padding-left:10px;
+}
+.fastOperate img
+{
+	margin-left:4px;
+	margin-right:2px;
+}
+.fastOperate a
+{
+	color:#295394;
+}
+
+/*数据列表下方的操作--Div框*/
+.footOperate
+{
+	text-align:center;
+	margin:15px 0;
+}
+.footOperate a
+{
+	margin-right:20px !important;
+}
+
+
+/*通用div框框*/
+.commonBox
+{
+	border:solid 1px #688CAF;
+	background-color:#F6FAFE;	
+	width:210px;	
+}
+.commonBox .title
+{
+	border-bottom:1px solid #688CAF;
+	background-color:#C6DAEE;
+	font-weight:bold;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	font-size:12px;	
+}
+
+.commonBox .content
+{
+	padding:8px;
+	overflow-x:auto;
+	overflow-y:auto;
+	zoom:1;
+}
+
+.commonBox .operate
+{
+	border-top:1px solid #688CAF;
+	background-color:#E5F1FF;	
+	padding:5px;
+}
+
+
+.txtNormal,.txtShort1,.txtShort2,.txtShort3,.txtShort4,.txtLong1,.txtLong2,.txtLong3,.txtLong4
+{	
+	font-family:"Microsoft Yahei",Verdana,Arial !important;
+	font-size:12px;
+	vertical-align:middle;
+	outline:none;
+	border:solid 1px #ccc;
+    height:20px;
+    padding:2px;
+}
+/*
+input[type="text"]
+{   
+	padding: 0px 3px !important;
+	height:20px !important;
+	line-height:20px !important;    
+	font-family:"宋体",Verdana,Arial !important;
+	vertical-align:middle;    
+}
+*/
+
+.txtNormal{width:140px}
+
+.txtShort1{width:120px}
+.txtShort2{width:100px}
+.txtShort3{width:80px}
+.txtShort4{width:25px}
+
+.txtLong1{width:200px}
+
+.txtLong2{width:300px}
+.txtLong3{width:400px}
+.txtLong4{width:500px}
+
+/*ComboBox*/
+.ddlNormal,.ddlShort1,.ddlShort2,.ddlShort3,.ddlShort4
+{
+    font-family:"Microsoft Yahei",Verdana,Arial !important;
+    font-size:12px;
+    border:solid 1px #ccc;
+    height:26px;      
+    line-height:26px; 
+    vertical-align:middle;     
+    outline:none;    
+}
+.ddlNormal{width:147px;}
+.ddlShort1{width:120px}
+.ddlShort2{width:100px}
+.ddlShort3{width:80px}
+.ddlShort4{width:40px}
+
+/* 操作-按钮 */
+.btn,.btn_blue
+{
+    border:0px !important;
+    font:12px "Microsoft Yahei", arial, sans-serif !important;
+}
+
+.btn {background-color:#4EAA39;height:26px;color:White;margin-top:2px;padding:0 10px 1px 10px;}
+.btn:hover{background-color:#449531;}
+.btn:active{}
+
+.btn_blue {background-color:#73A4D5;height:25px;color:White;margin-top:2px;padding:0px 10px 1px 10px;}
+.btn_blue:hover{background-color:#5488BD;}
+
+
+
+/* AspNetPager分页样式 */
+.pages {  color: #999; margin:15px -5px 0 0;float:right}
+.pages a, .pages .cpb { text-decoration:none;float: left; padding: 3px 9px; border: 1px solid #ddd;background: #ffff;margin:0 2px; font-size:11px; color:#000;}
+.pages a:hover { background-color: #558ECA; color:#fff;border:1px solid #558ECA; text-decoration:none;}
+.pages .cpb { font-weight: bold; color: #fff; background: #558ECA; border:1px solid #558ECA;}

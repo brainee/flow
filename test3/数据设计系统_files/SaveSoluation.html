@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0055)http://dbticket.sh.ctripcorp.com/DDS/SaveSoluation.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+
+</title>
+    	<script type="text/javascript" src="jquery-1.4.1.js"></script>
+        <script language="javascript" type="text/javascript"></script>
+        <script type="text/javascript" language="javascript">
+        function Cancel()
+        {
+	        $(parent.document.getElementById("background")).css("visibility", "hidden");
+           $(parent.document.getElementById("savedesign")).css("display", "none");
+
+
+
+
+        }
+        function SaveSoluation() {
+            var setPartition = false;
+            var partitionTable = '';
+            if ($("#chkPartition").attr("checked")) {
+                $("#gdvDesignTables").find("tbody").find("tr").each(function (i) {
+                    if (i > 0) {
+                        if ($(this).find("td").eq(1).find("select").eq(0).val() != -1
+                        //                        && $.trim($(this).find("td").eq(2).find("input").eq(0).val()) == ""
+                        ) {
+                            partitionTable += $(this).find("td").html() + ','
+                            setPartition = true;
+                        }
+                    }
+                })
+            }
+
+            if (setPartition && partitionTable != '') {
+                if (confirm(partitionTable.substr(0, partitionTable.length - 1) + '确定要设置分区吗?'))
+                    parent.document.getElementById("Save").click();
+            }
+            else {
+                parent.document.getElementById("Save").click();
+            }
+        }
+        function SelectPartition() {
+            if ($("#chkPartition").attr("checked"))
+                $("#gdvDesignTables").css("display", "");
+            else
+                $("#gdvDesignTables").css("display", "none");
+            BindTable();
+        }
+        function GetSelectHtml(id) {
+            var partitionSchemaNameArray = $("#HFPartitionSchemaNameList").val().split(',');
+            var partitionSchemaIDArray = $("#HFPartitionSchemaIDList").val().split(',');
+            var schemaCount = partitionSchemaNameArray.length;
+            var selectHtml = '<select  id="select' + id + '" name="select' + id + '">'
+            selectHtml += '<option value="-1">不分区</option>';
+            for (var i = 0; i < schemaCount; i++) {
+                selectHtml += '<option value="' + partitionSchemaIDArray[i] + '">' + partitionSchemaNameArray[i] + '</option>';
+            }
+            selectHtml += '</select>';
+            return selectHtml;
+        }
+
+        function BindTable() {
+            if ($.trim($("#gdvDesignTables").find("tbody").html()) == "") {
+                var tableArray = $("#HFTableNameList").val().split(',');
+                var tableCount = tableArray.length;
+
+                var firstRow = '<tr align="left" style="background-color: rgb(238, 238, 238); height: 22px;">';
+                firstRow += '<th scope="col">表名</th><th scope="col">分区Schema</th></tr>'//<th scope="col">分区字段</th>
+                $("#gdvDesignTables").find("tbody").append(firstRow);
+                for (var i = 0; i < tableCount; i++) {
+                    var rowHtml = '<tr align="left" style="height: 20px;">';
+                    rowHtml += '<td>' + tableArray[i] + '</td>';
+                    rowHtml += '<td>' + GetSelectHtml(i) + '</td>';
+                    //                    rowHtml += '<td><input type="text" class="Txt" id="partitioncolumn"' + i + ' name="partitioncolumn"' + i + '"> </td>';
+                    rowHtml += '</tr>';
+                    $("#gdvDesignTables").find("tbody").append(rowHtml);
+                }
+            }
+        }
+
+            function SelectTVP() {
+                if ($("#chkTVP").attr("checked"))
+                    $("#gdvTVPTables").css("display", "");
+                else
+                    $("#gdvTVPTables").css("display", "none");
+                BindTVPTable();
+            }
+
+            function GetSelectTVPHtml(id) {
+                var selectHtml = '<select  id="select' + id + '" name="select' + id + '">'
+                selectHtml += '<option value="1">是</option>';
+                selectHtml += '<option value="0">否</option>';
+                selectHtml += '</select>';
+                return selectHtml;
+            }
+
+            function BindTVPTable() {
+                if ($.trim($("#gdvTVPTables").find("tbody").html()) == "") {
+                    var tableArray = $("#HFTableNameList").val().split(',');
+                    var tableCount = tableArray.length;
+                    var firstRow = '<tr align="left" style="background-color: rgb(238, 238, 238); height: 22px;">';
+                    firstRow += '<th scope="col">表名</th><th scope="col">是否生成TVP</th></tr>'
+                    $("#gdvTVPTables").find("tbody").append(firstRow);
+                    for (var i = 0; i < tableCount; i++) {
+                        var rowHtml = '<tr align="left" style="height: 20px;">';
+                        rowHtml += '<td>' + tableArray[i] + '</td>';
+                        rowHtml += '<td>' + GetSelectTVPHtml(i) + '</td>';
+                        rowHtml += '</tr>';
+
+                        $("#gdvTVPTables").find("tbody").append(rowHtml);
+                    } 
+                } 
+            }
+   </script>
+   <link href="css.css" rel="stylesheet" type="text/css"><link href="Screen(1).css" rel="stylesheet" type="text/css"><link href="Screen.css" type="text/css" rel="stylesheet"></head>
+<body>
+    <form method="post" action="http://dbticket.sh.ctripcorp.com/DDS/SaveSoluation.html" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTA1NjMwODQ2OA9kFgICBA9kFgICAw8QDxYGHg1EYXRhVGV4dEZpZWxkBQRuYW1lHg5EYXRhVmFsdWVGaWVsZAUEbmFtZR4LXyFEYXRhQm91bmRnZBAVpQQOX0Nyb3NzQnVJbmZvREINX3RlbXBfT3JkZXJEQghBYmFjdXNEQglBY2NDb3JwREIFQWNjREIMQWNjRmxvd0Jha0RCCUFjY0Zsb3dEQgtBY2NGbHRCYWtEQghBY2NGbHREQg1BY2NIb3RlbEJha0RCCkFjY0hvdGVsREIKQWNjSW5wdXREQgxBY2NvdW50QmFrREIJQWNjb3VudERCDEFjY1Byb2R1Y3REQghBY2NQdWJEQgxBY2NWb3VjaGVyREIMQUNEcml2ZXJOVERCDEFDRHJpdmVyU0hEQg9BZmZpbGlhdGVzQjJCREIKQUhET3JkZXJEQgpBSElPcmRlckRCCEFtcExvZ0RCCEFtcE1nckRCCkFtcE9yZGVyREILQW1wUmVwb3J0REIMQXBwTW9uaXRvckRCCkFwcFRvb2xzREIMQXJjaFNlYXJjaERCD0FyY2hTZWFyY2hMb2dEQgZBdXRoREIKQXV0b0RCX0NmZwhCQlpLUElEQgxCQlpNZXNzYWdlREINQklBbXBSZXBvcnREQg1CSUNNQlJlcG9ydERCDkJJQ29ycFJlcG9ydERCDUJJZmx0cmVwb3J0REINQklGbmNSZXBvcnREQg1CSUh0bFJlcG9ydERCDUJJTUtUUmVwb3J0REIPQklPcmRlclJlcG9ydERCDUJJUEtHUmVwb3J0REIKQklSZXBvcnREQhBCSVVzZXJCZWhhdmlvckRCCUJ1a0RhdGFEQgpDYW1wYWlnbkRCDkNhckJhc2ljRGF0YURCDUNhckNIVmVuZG9yREIFQ2FyREIJQ2FyZEJha0RCBkNhcmREQg1DYXJkUmlza0Jha0RCCkNhcmRSaXNrREIKQ2FyT3JkZXJEQgxDYXJPcmRlcklEREIMQ2FyUHJvZHVjdERCCUNhc2hCYWtEQgZDYXNoREIGQ0JQTURCDENCU1NfTW9uaXRvcg9DQ1N0YWZmQ2FyaW5nREIMQ2Z4U3luY0Fzc0RCDUNoaW5hVHJhdmVsREILQ0h0bE9yZGVyREINQ0h0bE9yZGVySUREQgdjaXRzbWRiD2NpdHNtZGJfcmVzdG9yZRJDbGllbnREZXZpY2VJbmZvREITQ21iRW1haWxNYXJrZXRpbmdEQgpDTUJJbnB1dERCDkNNQk1hcmtldGluZ0RCEUNNQk1hcmtldGluZ0xvZ0RCC0NNQk1lbWJlckRCDkNNQk1lbWJlckxvZ0RCDENNQk1lc3NhZ2VEQhBDTUJNZXNzYWdlVGVzdERCFUNtYk1vYmlsZVZlckNvbnRyb2xEQhFDTUJPdXRCb3VuZFBsYXREQghDTUJQVUJEQgtDTUJSZXBvcnREQgxDTUNhbXBhaWduREIKQ01lc3NhZ2VEQg5DTWVzc2FnZU1ldGFEQgVDTVNEQgxDTXNnUG9zdGVyREIJQ29tbUJha0RCEUNvbW1CYXNlTUREQl9iYWNrBkNvbW1EQg9Db21tb25Qcm9kdWN0REIQQ29vcGVyYXRlT3JkZXJEQgxDb3JwQXBwTG9nREIIQ29ycENSREIKQ29ycEluZm9EQgtDb3JwT3JkZXJEQg1Db3JwUHJvY2Vzc0RCDUNvcnBQcm9kdWN0REIKQ29ycFVzZXJEQgZDcG5zREIOQ3Buc011bHRpQXBwREIJQ3Jhd2xlckRCD0NyYXdsZXJSZXN1bHREQgdDcm1CSURCBUNSTURCD0NydUFjY291bnRCYWtEQgxDcnVBY2NvdW50REIPQ3J1aXNlUHJvZHVjdERCCENUSUFNUERCCUNUSUJhc2VEQhFDVElCdXNpbmVzc1Rhc2tEQgxDVElDb21tTXNnREISQ1RJRGV2aWNlTW9uaXRvckRCCUNUSUluZm9EQgpDVElNYWlsSURCCUNUSVFBTVBEQgdDVElTRURCD0NUSVRhc2tNYW5hZ2VEQglDVElXT01TREIXQ1RJWG1wcFNlc3Npb25NYW5hZ2VyREISQ1RJWG1wcFdvcmtncm91cERCCkNUUk9yZGVyREIMQ1RSUHJvZHVjdERCEUNVbmlmaWVkT3JkZXJJRERCCENVU1JBVERCCkRhdGFBcmNoREISRGF0YUFyY2hEQl9EYXRhX1MwEkRhdGFBcmNoREJfRGF0YV9TMRNEYXRhQXJjaERCX0RhdGFfUzEwE0RhdGFBcmNoREJfRGF0YV9TMTETRGF0YUFyY2hEQl9EYXRhX1MxMhNEYXRhQXJjaERCX0RhdGFfUzEzE0RhdGFBcmNoREJfRGF0YV9TMTQTRGF0YUFyY2hEQl9EYXRhX1MxNRNEYXRhQXJjaERCX0RhdGFfUzE2E0RhdGFBcmNoREJfRGF0YV9TMTcTRGF0YUFyY2hEQl9EYXRhX1MxOBNEYXRhQXJjaERCX0RhdGFfUzE5EkRhdGFBcmNoREJfRGF0YV9TMhJEYXRhQXJjaERCX0RhdGFfUzMSRGF0YUFyY2hEQl9EYXRhX1M0EkRhdGFBcmNoREJfRGF0YV9TNRJEYXRhQXJjaERCX0RhdGFfUzYSRGF0YUFyY2hEQl9EYXRhX1M3EkRhdGFBcmNoREJfRGF0YV9TOBJEYXRhQXJjaERCX0RhdGFfUzkJRGF0YUdvdkRCDURhdGFHb3ZEQl95eGoNRGF0YUdvdlRlbXBEQhdEYXRhTWFpbnRlbmFuY2VTeXN0ZW1EQglEQVRvb2xzREIKRERMTW9uaXRvcg5EZWxpdmVyeUJhc2VEQgpEZWxpdmVyeURCDURlc3RpbmF0aW9uREINRGV2VGVtcGxhdGVEQg1ESVlBc3NlbWJsZURCDERJWUJvb2tpbmdEQgxESVlDb21tZW50REIMRElZQ29udHJvbERCCkRJWUlucHV0REILRElZT25saW5lREIKRElZT3JkZXJEQgxESVlPcmRlcklkREIMRElZUHJvZHVjdERCCERJWVB1YkRCCURJWVJlYWxEQg9ESVlSZWFsc291cmNlREISRElZUmVmUGtnQ29tbWVudERCEkRJWVJlZlBrZ0NvbnRyb2xEQhJESVlSZWZQa2dQcm9kdWN0REILRElZUmVwb3J0REIKRG5yT3JkZXJEQgxEbnJQcm9kdWN0REIKRG93bkxvYWREQg1FQVNfVm91Y2hlckRCCmVCYW5rQmFrREIHZUJhbmtEQg1lQm9va2luZ0Jha0RCCmVCb29raW5nREIFZWRtZGIHRUZvcm1EQgpFbWFpbEJha0RCB0VtYWlsREIKRW1wbG95ZWVEQgpFbmdfQ29tbURCCkVuZ090aGVyREIIRU5HUHViREIMRW50QWNjb3VudERCC0ZhcmVBbGVydERCCUZheFBsYXREQhRGZWF0dXJlQ29udGluZ2VuY3lEQgxGSFhCb29raW5nREIKRklOSU5QVVREQgxGaW5JbnZvaWNlREIIRklOUFVCREILRmluUmVwb3J0REISRmx0QVRQSW5jcmVhbWVudERCEUZsdEFUUE9yaWdpbkJBS0RCDkZsdEFUUE9yaWdpbkRCDEZsdEJvb2tMb2dEQhBGbHRCdXNpbmVzc0xvZ0RCCkZsdENhY2hlREIPRmx0Q2hhbmdlSW5mb0RCCkZsdENsYXNzREIMRmx0Q29tbWVudERCEEZsdENvbW1TaGFyZDAyREILRmx0RG9tTG9nREIIRmx0RmF2REIMRmx0RmF2SW50bERCCEZsdEdkc0RCCkZsdElucHV0REIRRmx0SW5zdXJhbmNlQmFrREIORmx0SW5zdXJhbmNlREINRmx0SW50bEZhcmVEQgxGbHRJbnRsTG9nREIURmx0SW50bE9ubGluZU9yZGVyREIPRmx0SW50bFBvbGljeURCD0ZsdEludGxQUXVlcnlEQhZGbHRJbnRsUHJlUHJvY2Vzc0Jha0RCE0ZsdEludGxQcmVQcm9jZXNzREIURmx0SW50bFJlc291cmNlQmFrREIRRmx0SW50bFJlc291cmNlREIYRmx0SW50bFRyYWRlU3BlY2lhbEJha0RCFUZsdEludGxUcmFkZVNwZWNpYWxEQhRGbHRJbnRUcmFkZVByb2R1Y3REQhBGbHRJbnRUcmFkZVB1YkRCEEZsdExvd2VzdFByaWNlREIPRmx0TWFuYWdlbWVudERCC0ZsdE1hcmtldERCD0ZsdE1lc3NhZ2VCYWtEQgxGbHRNZXNzYWdlREITRmx0TW9iaWxlQnVzaW5lc3NEQgtGbHRNb2JpbGVEQgxGbHRNb25pdG9yREIRRmx0T2ZmbGluZU9yZGVyREIQRmx0T25saW5lT3JkZXJEQg1GbHRPcmRlckJha0RCCkZsdE9yZGVyREISRmx0T3JkZXJEQl9SZXN0b3JlDEZsdE9yZGVySUREQhFGbHRPcmRlclByb2Nlc3NEQg9GbHRQcm9jZXNzTG9nREIMRmx0UHJvZHVjdERCF0ZsdFByb2R1Y3RGbHRPcmRlckJha0RCFEZsdFByb2R1Y3RGbHRPcmRlckRCCEZsdFB1YkRCCkZsdFF1ZXVlREINRmx0UmVhbFRpbWVEQgtGbHRSZXBvcnREQhNGbHRTcGVjaWFsU2hhcmQwMkRCE0ZsdFNwZWNpYWxTaGFyZDAzREIKRmx0VHJhY2tEQhVGbHRUcmFkZUNvbW1Qcm9kdWN0REIURmx0VHJhZGVDb21Qcm9kdWN0REIRRmx0VHJhZGVGaW5hbmNlREIRRmx0VHJhZGVIaXN0b3J5REITRmx0VHJhZGVJbnZlbnRvcnlEQhZGbHRUcmFkZUludmVudG9yeVB1YkRCEUZsdFRyYWRlUHJvZHVjdERCF0ZsdFRyYWRlUHJvZHVjdHB1YkJha0RCFEZsdFRyYWRlUHJvZHVjdFB1YkRCE0ZsdFRyYWRlUHJvZHVjdFMxREIRRmx0VHJhZGVTcGVjaWFsREIQRmx0V2lyZWxlc3NMb2dEQhJGbHRXb3JrZmxvd1N0b3JlREIFRk1QREILRm1wTG9nQmFrREIPRm5jQWNjb3VudEJha0RCDEZuY0FjY291bnREQgxGbmNDRk9yZGVyREIORm5jQ0ZPcmRlcklEREILRm5jRWNCb29rREIMRm5jRWNPcmRlckRCDkZuY0VjT3JkZXJJRERCDkZuY0VjUHJvZHVjdERCE0ZuY0VJbnZvaWNlSW5zcHVyREITRm5jR0NDcm93ZEZ1bmRpbmdEQg1GbmNHQ1NFT01ndERCFEZuY0dpZnRDYXJkQXJjaGl2ZURCCUZuY0lmZXNEQhBGbmNNYWxsQm9va2luZ0RCDkZuY01hbGxPcmRlckRCEEZuY01hbGxPcmRlcklEREIQRm5jTWFsbFByb2R1Y3REQgxGbmNNYWxsUHViREINRm5jTWNwVHJhZGVEQgxGbmNNY3BVc2VyREIPRm5jTW9iaWxlQmFzZURCCUZuY1NDV0NEQhNGcnRGbGlnaHRSZXNvdXJjZURCDkZSVFByb21vdGlvbkRCC0ZydFJlcG9ydERCC0ZydFNlYXJjaERCA2Z0cAZGeEZjREIJRlhGaWxlc0RCEUZ4TW9iaWxlU2VydmljZURCBUdvdkRCDkdyb3VwQ3Jhd2xlckRCDEdyb3VwSW5wdXREQhBHcm91cEludGVyZmFjZURCCkdyb3VwT3JkZXIMR3JvdXBPcmRlckRCDkdyb3VwUHJvZHVjdERCCkdyb3VwUHViREINR1NDb21tdW5pdHlEQghHU0Rlc3REQg9HU0Rlc3RpbmF0aW9uREIKR1NNb2JpbGVEQg1HU09wZXJhdGlvbkRCCkdTUGhvdG9zREIHR1NQT0lEQgtHU1RyYXZlbHNEQghHU1VzZXJEQgdISENmZ0RCDEhIQ3VzdG9tZXJEQgdISEdvdkRCC0hITG9nZ2luZ0RCCUhIT3JkZXJEQgdISFBrZ0RCC0hIUHJvZHVjdERCDEhIVE9yZGVySUREQhFIaHRTa3lzZWFzT3JkZXJEQhNIaHRTa3lzZWFzUHJvZHVjdERCDUhpc3RvcnlEYXRhREIMSG90ZWxJbnB1dERCEEhvdGVsSW50ZXJmYWNlREIWSG90ZWxJbnRlcmZhY2VMb2dCYWtEQhNIb3RlbEludGVyZmFjZUxvZ0RCCkhvdGVsUHViREIESFJEQglIUlNlcnZpY2UISHRsQVBJREINSHRsQXJjaGl2ZXNEQg5IdGxCb2FyZEluZm9EQhBIdGxCdXNpbmVzc0xvZ0RCDUh0bENvbW1SZWFkREIMSHRsQ3Jhd2xlckRCD0h0bERIU01vbml0b3JEQg1IdGxEb3dubG9hZERCDWh0bEZyb250bG9nZGINaHRsZ3JvdXBsb2dkYg1odGxpbnB1dGxvZ2RiEUh0bEludkNvbW11bml0eURCC0h0bE1vYmlsZURCDEh0bE1vbml0b3JEQhFIdGxPZmZsaW5lT3JkZXJEQhBIdGxPbmxpbmVPcmRlckRCDEh0bG9yZGVySUREQg1IdGxPcmRlckxvZ0RCEUh0bE9yZGVyUHJvY2Vzc0RCD0h0bE92c1Byb2R1Y3REQgtIdGxPdnNQdWJEQhBIdGxQYXltZW50SW5mb0RCCEh0bFBNU0RCD2h0bHByb2Nlc3Nsb2dkYhRIdGxQcm9kdWN0RnVuY3Rpb25EQhRIdGxQcm9kdWN0UHJvcGVydHlEQg9odGxwcm9tb3RlbG9nZGIISHRsUHViREISSHRsUXVuYXJQcmljZUFwcERCD0h0bFF1bmFyUHJpY2VEQglIdGxSZXBsREILSHRsUmVwb3J0REIQSFRMUm9vbUluZm9SZWNEQhRIVExSb29tSW5mb1JlY1NhbmREQhFIdGxSb29tc1Byb2R1Y3REQg1IdGxSb29tc1B1YkRCDUh0bFNlcVJ1bGVzREIKSHRsVHVuaXVEQg5IdGxUdW5pdUludGxEQg5IdGxWQ1JTT3JkZXJEQhBIdGxWZW5kb3JQcmljZURCFEh0bFZlbmRvclByaWNlSW50bERCFkh0bFZlbmRvclByaWNlc2hhcmQyREIFSUJFREIISW1hZ2VzREIMSW5zQWNjb3VudERCCkluc0FnZW50REIMSW5zQm9va2luZ0RCCkluc0lucHV0REIKSW5zT3JkZXJEQg9JbnNQcm9jZXNzQmFrREIMSW5zUHJvY2Vzc0RCDEluc1Byb2R1Y3REQghJbnNQdWJEQglJbnNSZXBsREIQSW5zdXJhbmNlQWdlbnREQgtJbnRlcnZpZXdEQgRJVFNNEklWUl9Db2xsZWN0X0luZm9EQgtJVlJPdXRQdXREQgpKb2JBZ2VudERCB0szQWNjREIES0JEQhFMYWJzQXBwbGljYXRpb25EQgpMYWJzT3BlbkRCDkxhYnNQbGF0Zm9ybURCCkxpdmVDaGF0REIHTG9naW5EQgtMUEFjY291bnREQghMUEJQdWJEQghMUENvbW1EQg9MUERlc3RpbmF0aW9uREIJTFBGb3J1bURCDExQSXRpbmVyYXJEQg1MdnBpbmdIb3RlbERCDUx2cGluZ1RyYWluREIOTWFya2V0aW5nQmFrREILTWFya2V0aW5nREIKTUJUT3JkZXJEQgxNQlRQcm9kdWN0REIJTUJUVXNlckRCE01ETUJhc2VDb21wYXRpYmxlREIJTURNQmFzZURCCE1ETVN5c0RCBU1lbURCCk1lcmNoYW50REIJTWljZUFjY0RCDE1pY2VCaXpMb2dEQg1NaWNlQm9va2luZ0RCC01pY2VPcmRlckRCCU1pY2VQdWJEQgtNaXJjb0Jsb2dEQghNaXNCYWtEQgVNaXNEQg5NS1RKRk9yZGVySUREQghNb2JBZHZEQghNb2JpbGVEQg1Nb2JpbGVZb3V0aERCCU1PQk9DRVNEQg9NdWx0aUxhbmd1YWdlREIFTkxQREIMT0FfU2VydmljZURCB09BdXRoREIKb0Jvb2tpbmdEQgxPTEFQX1dlYkpTREITT25saW5lX0ZsdFByb2R1Y3REQgxPbmxpbmVIZWxwREIFT1BTREIKT3JkZXJCYWtEQgdPcmRlckRCC090aGVyUmVwbERCEE92ZXJzZWFQcm9kdWN0REIYT3ZlcnNlYVByb2R1Y3REQl9Cb29raW5nDFBheUJhc2VCYWtEQglQYXlCYXNlREINUGF5QmFzZVRlc3REQgVQYXlEQglQYXlJbmZvREIPUGF5bWVudENvdXBvbkRCDlBheW1lbnRUTVBheURCCVBheVJlcGxEQhZQY2lBY2NvdW50Umlza0RldGFpbERCDVBrZ0FuYWx5c2lzREILUGtnQml6TG9nREISUGtnQ29tbXVuaWNhdGlvbkRCDFBrZ0NvbnRyb2xEQgpQa2dJbnB1dERCDlBrZ0luc0JpekxvZ0RCDlBrZ0ludGVyZmFjZURCD3BrZ01lc3NhZ2VCYWtEQgxwa2dNZXNzYWdlREILUGtnT25saW5lREIQUGtnT25saW5lT3JkZXJEQg1Qa2dPcmRlcmJha0RCClBrZ09yZGVyREIMUGtnb3JkZXJJRERCD1BrZ09yZGVyVHJhY2tEQgxQa2dQcm9kdWN0REIOUGtnUHJvbW90aW9uREIIUGtnUHViREIJUGtnUmVhbERCD1BrZ1JlYWxTb3VyY2VEQglQa2dSZXBsREIPUGtnU2V0dGxlbWVudERCDFBrZ1N1cHBvcnREQglQa2dUb3VyREIJUHJvZHVjdERCC1Byb21vY29kZURCDFBzeWNob2xvZ3lEQgVQdWJEQgRSRERCDFJlY2VpdmVQYXlEQghSZXBvcnREQgVSRlBEQhFSaXNrQ3RybFByZVByb2NEQgxSb29tU3RhdHVzREIPUlRQQ3JlZGl0Q2FyZERCBVJUUERCDFJUUEZpbmFuY2VEQg5SVFBJbnN1cmFuY2VEQgpSVFBPdGhlckRCDlJUUFRoaXJkUGFydERCDVNhbGVzUmVwb3J0REIOU0NIU21hcnRUcmlwREIPU2VydmVyTW9uaXRvckRCB1NHTG9nREIHU2hhcmVEQgpTaG9ydFVybERCDlNIWE1hcmtldGluZ0RCClNIWE9yZGVyREIMU0hYT3JkZXJJRERCEFNIWFBsYXRQcm9kdWN0REIPU0hYUGxhdFZlbmRvckRCBlNpY2NEQglTaWNjREJfTlQKU2ljY0RCX1JwdApTTFRPcmRlckRCDFNMVE9yZGVySUREQgxTTFRQcm9kdWN0REIFU2x5REIIU01TQmFrREIFU01TREIFU09BREIJU29hTXNtcURCDFNxbE1vbml0b3JEQgVTU09EQgtTeXNMb2dCYWtEQghTeXNMb2dEQgp0Qm9va2luZ0RCD1RpY2tldFByb2R1Y3REQg9Ub3VyVGFpbG9yQWNjREITVG91clRhaWxvckJvb2tpbmdEQhFUb3VyVGFpbG9yT3JkZXJEQg9Ub3VyVGFpbG9yUHViREIMVHJhaW5BZG1pbkRCDFRyYWluSW5wdXREQhJUcmFpbk9ubGluZU9yZGVyREIPVHJhaW5PcmRlckRCX3YyDlRyYWlub3JkZXJJRERCDlRyYWluUHJvZHVjdERCClRyYWluUHViREILVHJhaW5SZXBsREINVHJhdmVsTW9uZXlEQhBUVFRIdGxDb21tUmVhZERCB1VlcmR3REIHVUlMb2dEQgtVcGxvYWRpbWdEQgZVc2VyREIJdXRpbGl6ZWRiCnZCb29raW5nREIMVmlzYUJpekxvZ0RCC1Zpc2FPcmRlckRCDVZpc2FQcm9kdWN0REINVm9pY2VQb3J0YWxEQghXZWl4aW5EQglXT1RDYXJkREIJWmlwQ29kZURCFaUEDl9Dcm9zc0J1SW5mb0RCDV90ZW1wX09yZGVyREIIQWJhY3VzREIJQWNjQ29ycERCBUFjY0RCDEFjY0Zsb3dCYWtEQglBY2NGbG93REILQWNjRmx0QmFrREIIQWNjRmx0REINQWNjSG90ZWxCYWtEQgpBY2NIb3RlbERCCkFjY0lucHV0REIMQWNjb3VudEJha0RCCUFjY291bnREQgxBY2NQcm9kdWN0REIIQWNjUHViREIMQWNjVm91Y2hlckRCDEFDRHJpdmVyTlREQgxBQ0RyaXZlclNIREIPQWZmaWxpYXRlc0IyQkRCCkFIRE9yZGVyREIKQUhJT3JkZXJEQghBbXBMb2dEQghBbXBNZ3JEQgpBbXBPcmRlckRCC0FtcFJlcG9ydERCDEFwcE1vbml0b3JEQgpBcHBUb29sc0RCDEFyY2hTZWFyY2hEQg9BcmNoU2VhcmNoTG9nREIGQXV0aERCCkF1dG9EQl9DZmcIQkJaS1BJREIMQkJaTWVzc2FnZURCDUJJQW1wUmVwb3J0REINQklDTUJSZXBvcnREQg5CSUNvcnBSZXBvcnREQg1CSWZsdHJlcG9ydERCDUJJRm5jUmVwb3J0REINQklIdGxSZXBvcnREQg1CSU1LVFJlcG9ydERCD0JJT3JkZXJSZXBvcnREQg1CSVBLR1JlcG9ydERCCkJJUmVwb3J0REIQQklVc2VyQmVoYXZpb3JEQglCdWtEYXRhREIKQ2FtcGFpZ25EQg5DYXJCYXNpY0RhdGFEQg1DYXJDSFZlbmRvckRCBUNhckRCCUNhcmRCYWtEQgZDYXJkREINQ2FyZFJpc2tCYWtEQgpDYXJkUmlza0RCCkNhck9yZGVyREIMQ2FyT3JkZXJJRERCDENhclByb2R1Y3REQglDYXNoQmFrREIGQ2FzaERCBkNCUE1EQgxDQlNTX01vbml0b3IPQ0NTdGFmZkNhcmluZ0RCDENmeFN5bmNBc3NEQg1DaGluYVRyYXZlbERCC0NIdGxPcmRlckRCDUNIdGxPcmRlcklEREIHY2l0c21kYg9jaXRzbWRiX3Jlc3RvcmUSQ2xpZW50RGV2aWNlSW5mb0RCE0NtYkVtYWlsTWFya2V0aW5nREIKQ01CSW5wdXREQg5DTUJNYXJrZXRpbmdEQhFDTUJNYXJrZXRpbmdMb2dEQgtDTUJNZW1iZXJEQg5DTUJNZW1iZXJMb2dEQgxDTUJNZXNzYWdlREIQQ01CTWVzc2FnZVRlc3REQhVDbWJNb2JpbGVWZXJDb250cm9sREIRQ01CT3V0Qm91bmRQbGF0REIIQ01CUFVCREILQ01CUmVwb3J0REIMQ01DYW1wYWlnbkRCCkNNZXNzYWdlREIOQ01lc3NhZ2VNZXRhREIFQ01TREIMQ01zZ1Bvc3RlckRCCUNvbW1CYWtEQhFDb21tQmFzZU1EREJfYmFjawZDb21tREIPQ29tbW9uUHJvZHVjdERCEENvb3BlcmF0ZU9yZGVyREIMQ29ycEFwcExvZ0RCCENvcnBDUkRCCkNvcnBJbmZvREILQ29ycE9yZGVyREINQ29ycFByb2Nlc3NEQg1Db3JwUHJvZHVjdERCCkNvcnBVc2VyREIGQ3Buc0RCDkNwbnNNdWx0aUFwcERCCUNyYXdsZXJEQg9DcmF3bGVyUmVzdWx0REIHQ3JtQklEQgVDUk1EQg9DcnVBY2NvdW50QmFrREIMQ3J1QWNjb3VudERCD0NydWlzZVByb2R1Y3REQghDVElBTVBEQglDVElCYXNlREIRQ1RJQnVzaW5lc3NUYXNrREIMQ1RJQ29tbU1zZ0RCEkNUSURldmljZU1vbml0b3JEQglDVElJbmZvREIKQ1RJTWFpbElEQglDVElRQU1QREIHQ1RJU0VEQg9DVElUYXNrTWFuYWdlREIJQ1RJV09NU0RCF0NUSVhtcHBTZXNzaW9uTWFuYWdlckRCEkNUSVhtcHBXb3JrZ3JvdXBEQgpDVFJPcmRlckRCDENUUlByb2R1Y3REQhFDVW5pZmllZE9yZGVySUREQghDVVNSQVREQgpEYXRhQXJjaERCEkRhdGFBcmNoREJfRGF0YV9TMBJEYXRhQXJjaERCX0RhdGFfUzETRGF0YUFyY2hEQl9EYXRhX1MxMBNEYXRhQXJjaERCX0RhdGFfUzExE0RhdGFBcmNoREJfRGF0YV9TMTITRGF0YUFyY2hEQl9EYXRhX1MxMxNEYXRhQXJjaERCX0RhdGFfUzE0E0RhdGFBcmNoREJfRGF0YV9TMTUTRGF0YUFyY2hEQl9EYXRhX1MxNhNEYXRhQXJjaERCX0RhdGFfUzE3E0RhdGFBcmNoREJfRGF0YV9TMTgTRGF0YUFyY2hEQl9EYXRhX1MxORJEYXRhQXJjaERCX0RhdGFfUzISRGF0YUFyY2hEQl9EYXRhX1MzEkRhdGFBcmNoREJfRGF0YV9TNBJEYXRhQXJjaERCX0RhdGFfUzUSRGF0YUFyY2hEQl9EYXRhX1M2EkRhdGFBcmNoREJfRGF0YV9TNxJEYXRhQXJjaERCX0RhdGFfUzgSRGF0YUFyY2hEQl9EYXRhX1M5CURhdGFHb3ZEQg1EYXRhR292REJfeXhqDURhdGFHb3ZUZW1wREIXRGF0YU1haW50ZW5hbmNlU3lzdGVtREIJREFUb29sc0RCCkRETE1vbml0b3IORGVsaXZlcnlCYXNlREIKRGVsaXZlcnlEQg1EZXN0aW5hdGlvbkRCDURldlRlbXBsYXRlREINRElZQXNzZW1ibGVEQgxESVlCb29raW5nREIMRElZQ29tbWVudERCDERJWUNvbnRyb2xEQgpESVlJbnB1dERCC0RJWU9ubGluZURCCkRJWU9yZGVyREIMRElZT3JkZXJJZERCDERJWVByb2R1Y3REQghESVlQdWJEQglESVlSZWFsREIPRElZUmVhbHNvdXJjZURCEkRJWVJlZlBrZ0NvbW1lbnREQhJESVlSZWZQa2dDb250cm9sREISRElZUmVmUGtnUHJvZHVjdERCC0RJWVJlcG9ydERCCkRuck9yZGVyREIMRG5yUHJvZHVjdERCCkRvd25Mb2FkREINRUFTX1ZvdWNoZXJEQgplQmFua0Jha0RCB2VCYW5rREINZUJvb2tpbmdCYWtEQgplQm9va2luZ0RCBWVkbWRiB0VGb3JtREIKRW1haWxCYWtEQgdFbWFpbERCCkVtcGxveWVlREIKRW5nX0NvbW1EQgpFbmdPdGhlckRCCEVOR1B1YkRCDEVudEFjY291bnREQgtGYXJlQWxlcnREQglGYXhQbGF0REIURmVhdHVyZUNvbnRpbmdlbmN5REIMRkhYQm9va2luZ0RCCkZJTklOUFVUREIMRmluSW52b2ljZURCCEZJTlBVQkRCC0ZpblJlcG9ydERCEkZsdEFUUEluY3JlYW1lbnREQhFGbHRBVFBPcmlnaW5CQUtEQg5GbHRBVFBPcmlnaW5EQgxGbHRCb29rTG9nREIQRmx0QnVzaW5lc3NMb2dEQgpGbHRDYWNoZURCD0ZsdENoYW5nZUluZm9EQgpGbHRDbGFzc0RCDEZsdENvbW1lbnREQhBGbHRDb21tU2hhcmQwMkRCC0ZsdERvbUxvZ0RCCEZsdEZhdkRCDEZsdEZhdkludGxEQghGbHRHZHNEQgpGbHRJbnB1dERCEUZsdEluc3VyYW5jZUJha0RCDkZsdEluc3VyYW5jZURCDUZsdEludGxGYXJlREIMRmx0SW50bExvZ0RCFEZsdEludGxPbmxpbmVPcmRlckRCD0ZsdEludGxQb2xpY3lEQg9GbHRJbnRsUFF1ZXJ5REIWRmx0SW50bFByZVByb2Nlc3NCYWtEQhNGbHRJbnRsUHJlUHJvY2Vzc0RCFEZsdEludGxSZXNvdXJjZUJha0RCEUZsdEludGxSZXNvdXJjZURCGEZsdEludGxUcmFkZVNwZWNpYWxCYWtEQhVGbHRJbnRsVHJhZGVTcGVjaWFsREIURmx0SW50VHJhZGVQcm9kdWN0REIQRmx0SW50VHJhZGVQdWJEQhBGbHRMb3dlc3RQcmljZURCD0ZsdE1hbmFnZW1lbnREQgtGbHRNYXJrZXREQg9GbHRNZXNzYWdlQmFrREIMRmx0TWVzc2FnZURCE0ZsdE1vYmlsZUJ1c2luZXNzREILRmx0TW9iaWxlREIMRmx0TW9uaXRvckRCEUZsdE9mZmxpbmVPcmRlckRCEEZsdE9ubGluZU9yZGVyREINRmx0T3JkZXJCYWtEQgpGbHRPcmRlckRCEkZsdE9yZGVyREJfUmVzdG9yZQxGbHRPcmRlcklEREIRRmx0T3JkZXJQcm9jZXNzREIPRmx0UHJvY2Vzc0xvZ0RCDEZsdFByb2R1Y3REQhdGbHRQcm9kdWN0Rmx0T3JkZXJCYWtEQhRGbHRQcm9kdWN0Rmx0T3JkZXJEQghGbHRQdWJEQgpGbHRRdWV1ZURCDUZsdFJlYWxUaW1lREILRmx0UmVwb3J0REITRmx0U3BlY2lhbFNoYXJkMDJEQhNGbHRTcGVjaWFsU2hhcmQwM0RCCkZsdFRyYWNrREIVRmx0VHJhZGVDb21tUHJvZHVjdERCFEZsdFRyYWRlQ29tUHJvZHVjdERCEUZsdFRyYWRlRmluYW5jZURCEUZsdFRyYWRlSGlzdG9yeURCE0ZsdFRyYWRlSW52ZW50b3J5REIWRmx0VHJhZGVJbnZlbnRvcnlQdWJEQhFGbHRUcmFkZVByb2R1Y3REQhdGbHRUcmFkZVByb2R1Y3RwdWJCYWtEQhRGbHRUcmFkZVByb2R1Y3RQdWJEQhNGbHRUcmFkZVByb2R1Y3RTMURCEUZsdFRyYWRlU3BlY2lhbERCEEZsdFdpcmVsZXNzTG9nREISRmx0V29ya2Zsb3dTdG9yZURCBUZNUERCC0ZtcExvZ0Jha0RCD0ZuY0FjY291bnRCYWtEQgxGbmNBY2NvdW50REIMRm5jQ0ZPcmRlckRCDkZuY0NGT3JkZXJJRERCC0ZuY0VjQm9va0RCDEZuY0VjT3JkZXJEQg5GbmNFY09yZGVySUREQg5GbmNFY1Byb2R1Y3REQhNGbmNFSW52b2ljZUluc3B1ckRCE0ZuY0dDQ3Jvd2RGdW5kaW5nREINRm5jR0NTRU9NZ3REQhRGbmNHaWZ0Q2FyZEFyY2hpdmVEQglGbmNJZmVzREIQRm5jTWFsbEJvb2tpbmdEQg5GbmNNYWxsT3JkZXJEQhBGbmNNYWxsT3JkZXJJRERCEEZuY01hbGxQcm9kdWN0REIMRm5jTWFsbFB1YkRCDUZuY01jcFRyYWRlREIMRm5jTWNwVXNlckRCD0ZuY01vYmlsZUJhc2VEQglGbmNTQ1dDREITRnJ0RmxpZ2h0UmVzb3VyY2VEQg5GUlRQcm9tb3Rpb25EQgtGcnRSZXBvcnREQgtGcnRTZWFyY2hEQgNmdHAGRnhGY0RCCUZYRmlsZXNEQhFGeE1vYmlsZVNlcnZpY2VEQgVHb3ZEQg5Hcm91cENyYXdsZXJEQgxHcm91cElucHV0REIQR3JvdXBJbnRlcmZhY2VEQgpHcm91cE9yZGVyDEdyb3VwT3JkZXJEQg5Hcm91cFByb2R1Y3REQgpHcm91cFB1YkRCDUdTQ29tbXVuaXR5REIIR1NEZXN0REIPR1NEZXN0aW5hdGlvbkRCCkdTTW9iaWxlREINR1NPcGVyYXRpb25EQgpHU1Bob3Rvc0RCB0dTUE9JREILR1NUcmF2ZWxzREIIR1NVc2VyREIHSEhDZmdEQgxISEN1c3RvbWVyREIHSEhHb3ZEQgtISExvZ2dpbmdEQglISE9yZGVyREIHSEhQa2dEQgtISFByb2R1Y3REQgxISFRPcmRlcklEREIRSGh0U2t5c2Vhc09yZGVyREITSGh0U2t5c2Vhc1Byb2R1Y3REQg1IaXN0b3J5RGF0YURCDEhvdGVsSW5wdXREQhBIb3RlbEludGVyZmFjZURCFkhvdGVsSW50ZXJmYWNlTG9nQmFrREITSG90ZWxJbnRlcmZhY2VMb2dEQgpIb3RlbFB1YkRCBEhSREIJSFJTZXJ2aWNlCEh0bEFQSURCDUh0bEFyY2hpdmVzREIOSHRsQm9hcmRJbmZvREIQSHRsQnVzaW5lc3NMb2dEQg1IdGxDb21tUmVhZERCDEh0bENyYXdsZXJEQg9IdGxESFNNb25pdG9yREINSHRsRG93bmxvYWREQg1odGxGcm9udGxvZ2RiDWh0bGdyb3VwbG9nZGINaHRsaW5wdXRsb2dkYhFIdGxJbnZDb21tdW5pdHlEQgtIdGxNb2JpbGVEQgxIdGxNb25pdG9yREIRSHRsT2ZmbGluZU9yZGVyREIQSHRsT25saW5lT3JkZXJEQgxIdGxvcmRlcklEREINSHRsT3JkZXJMb2dEQhFIdGxPcmRlclByb2Nlc3NEQg9IdGxPdnNQcm9kdWN0REILSHRsT3ZzUHViREIQSHRsUGF5bWVudEluZm9EQghIdGxQTVNEQg9odGxwcm9jZXNzbG9nZGIUSHRsUHJvZHVjdEZ1bmN0aW9uREIUSHRsUHJvZHVjdFByb3BlcnR5REIPaHRscHJvbW90ZWxvZ2RiCEh0bFB1YkRCEkh0bFF1bmFyUHJpY2VBcHBEQg9IdGxRdW5hclByaWNlREIJSHRsUmVwbERCC0h0bFJlcG9ydERCEEhUTFJvb21JbmZvUmVjREIUSFRMUm9vbUluZm9SZWNTYW5kREIRSHRsUm9vbXNQcm9kdWN0REINSHRsUm9vbXNQdWJEQg1IdGxTZXFSdWxlc0RCCkh0bFR1bml1REIOSHRsVHVuaXVJbnRsREIOSHRsVkNSU09yZGVyREIQSHRsVmVuZG9yUHJpY2VEQhRIdGxWZW5kb3JQcmljZUludGxEQhZIdGxWZW5kb3JQcmljZXNoYXJkMkRCBUlCRURCCEltYWdlc0RCDEluc0FjY291bnREQgpJbnNBZ2VudERCDEluc0Jvb2tpbmdEQgpJbnNJbnB1dERCCkluc09yZGVyREIPSW5zUHJvY2Vzc0Jha0RCDEluc1Byb2Nlc3NEQgxJbnNQcm9kdWN0REIISW5zUHViREIJSW5zUmVwbERCEEluc3VyYW5jZUFnZW50REILSW50ZXJ2aWV3REIESVRTTRJJVlJfQ29sbGVjdF9JbmZvREILSVZST3V0UHV0REIKSm9iQWdlbnREQgdLM0FjY0RCBEtCREIRTGFic0FwcGxpY2F0aW9uREIKTGFic09wZW5EQg5MYWJzUGxhdGZvcm1EQgpMaXZlQ2hhdERCB0xvZ2luREILTFBBY2NvdW50REIITFBCUHViREIITFBDb21tREIPTFBEZXN0aW5hdGlvbkRCCUxQRm9ydW1EQgxMUEl0aW5lcmFyREINTHZwaW5nSG90ZWxEQg1MdnBpbmdUcmFpbkRCDk1hcmtldGluZ0Jha0RCC01hcmtldGluZ0RCCk1CVE9yZGVyREIMTUJUUHJvZHVjdERCCU1CVFVzZXJEQhNNRE1CYXNlQ29tcGF0aWJsZURCCU1ETUJhc2VEQghNRE1TeXNEQgVNZW1EQgpNZXJjaGFudERCCU1pY2VBY2NEQgxNaWNlQml6TG9nREINTWljZUJvb2tpbmdEQgtNaWNlT3JkZXJEQglNaWNlUHViREILTWlyY29CbG9nREIITWlzQmFrREIFTWlzREIOTUtUSkZPcmRlcklEREIITW9iQWR2REIITW9iaWxlREINTW9iaWxlWW91dGhEQglNT0JPQ0VTREIPTXVsdGlMYW5ndWFnZURCBU5MUERCDE9BX1NlcnZpY2VEQgdPQXV0aERCCm9Cb29raW5nREIMT0xBUF9XZWJKU0RCE09ubGluZV9GbHRQcm9kdWN0REIMT25saW5lSGVscERCBU9QU0RCCk9yZGVyQmFrREIHT3JkZXJEQgtPdGhlclJlcGxEQhBPdmVyc2VhUHJvZHVjdERCGE92ZXJzZWFQcm9kdWN0REJfQm9va2luZwxQYXlCYXNlQmFrREIJUGF5QmFzZURCDVBheUJhc2VUZXN0REIFUGF5REIJUGF5SW5mb0RCD1BheW1lbnRDb3Vwb25EQg5QYXltZW50VE1QYXlEQglQYXlSZXBsREIWUGNpQWNjb3VudFJpc2tEZXRhaWxEQg1Qa2dBbmFseXNpc0RCC1BrZ0JpekxvZ0RCElBrZ0NvbW11bmljYXRpb25EQgxQa2dDb250cm9sREIKUGtnSW5wdXREQg5Qa2dJbnNCaXpMb2dEQg5Qa2dJbnRlcmZhY2VEQg9wa2dNZXNzYWdlQmFrREIMcGtnTWVzc2FnZURCC1BrZ09ubGluZURCEFBrZ09ubGluZU9yZGVyREINUGtnT3JkZXJiYWtEQgpQa2dPcmRlckRCDFBrZ29yZGVySUREQg9Qa2dPcmRlclRyYWNrREIMUGtnUHJvZHVjdERCDlBrZ1Byb21vdGlvbkRCCFBrZ1B1YkRCCVBrZ1JlYWxEQg9Qa2dSZWFsU291cmNlREIJUGtnUmVwbERCD1BrZ1NldHRsZW1lbnREQgxQa2dTdXBwb3J0REIJUGtnVG91ckRCCVByb2R1Y3REQgtQcm9tb2NvZGVEQgxQc3ljaG9sb2d5REIFUHViREIEUkREQgxSZWNlaXZlUGF5REIIUmVwb3J0REIFUkZQREIRUmlza0N0cmxQcmVQcm9jREIMUm9vbVN0YXR1c0RCD1JUUENyZWRpdENhcmREQgVSVFBEQgxSVFBGaW5hbmNlREIOUlRQSW5zdXJhbmNlREIKUlRQT3RoZXJEQg5SVFBUaGlyZFBhcnREQg1TYWxlc1JlcG9ydERCDlNDSFNtYXJ0VHJpcERCD1NlcnZlck1vbml0b3JEQgdTR0xvZ0RCB1NoYXJlREIKU2hvcnRVcmxEQg5TSFhNYXJrZXRpbmdEQgpTSFhPcmRlckRCDFNIWE9yZGVySUREQhBTSFhQbGF0UHJvZHVjdERCD1NIWFBsYXRWZW5kb3JEQgZTaWNjREIJU2ljY0RCX05UClNpY2NEQl9ScHQKU0xUT3JkZXJEQgxTTFRPcmRlcklEREIMU0xUUHJvZHVjdERCBVNseURCCFNNU0Jha0RCBVNNU0RCBVNPQURCCVNvYU1zbXFEQgxTcWxNb25pdG9yREIFU1NPREILU3lzTG9nQmFrREIIU3lzTG9nREIKdEJvb2tpbmdEQg9UaWNrZXRQcm9kdWN0REIPVG91clRhaWxvckFjY0RCE1RvdXJUYWlsb3JCb29raW5nREIRVG91clRhaWxvck9yZGVyREIPVG91clRhaWxvclB1YkRCDFRyYWluQWRtaW5EQgxUcmFpbklucHV0REISVHJhaW5PbmxpbmVPcmRlckRCD1RyYWluT3JkZXJEQl92Mg5UcmFpbm9yZGVySUREQg5UcmFpblByb2R1Y3REQgpUcmFpblB1YkRCC1RyYWluUmVwbERCDVRyYXZlbE1vbmV5REIQVFRUSHRsQ29tbVJlYWREQgdVZXJkd0RCB1VJTG9nREILVXBsb2FkaW1nREIGVXNlckRCCXV0aWxpemVkYgp2Qm9va2luZ0RCDFZpc2FCaXpMb2dEQgtWaXNhT3JkZXJEQg1WaXNhUHJvZHVjdERCDVZvaWNlUG9ydGFsREIIV2VpeGluREIJV09UQ2FyZERCCVppcENvZGVEQhQrA6UEZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZGRkkB1Vq51ekOj3jax03m4pER6Z6Oc=">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="7DABC696">
+</div>
+    <div>
+    <table>
+    <tbody><tr>
+    <td colspan="2"><span style=" color :Red">如果您保存不了,请邮件至RDsjkf@Ctrip.com或电话咨询15777</span></td>
+    </tr>
+    <tr>
+    <td style=" width :100px ;">项目名称</td>
+    <td>
+     <input name="txtReleaseVersion" type="text" id="txtReleaseVersion" class="Txt" style="width:180px;">
+    
+    </td>
+    </tr>
+                 <tr>
+                    <td style=" width :100px;">数据库名称</td>
+                    <td> 
+              
+                        <select name="ddlDBName" id="ddlDBName" class="ddl">
+	<option value="_CrossBuInfoDB">_CrossBuInfoDB</option>
+	<option value="_temp_OrderDB">_temp_OrderDB</option>
+	<option value="AbacusDB">AbacusDB</option>
+	<option value="AccCorpDB">AccCorpDB</option>
+	<option value="AccDB">AccDB</option>
+	<option value="AccFlowBakDB">AccFlowBakDB</option>
+	<option value="AccFlowDB">AccFlowDB</option>
+	<option value="AccFltBakDB">AccFltBakDB</option>
+	<option value="AccFltDB">AccFltDB</option>
+	<option value="AccHotelBakDB">AccHotelBakDB</option>
+	<option value="AccHotelDB">AccHotelDB</option>
+	<option value="AccInputDB">AccInputDB</option>
+	<option value="AccountBakDB">AccountBakDB</option>
+	<option value="AccountDB">AccountDB</option>
+	<option value="AccProductDB">AccProductDB</option>
+	<option value="AccPubDB">AccPubDB</option>
+	<option value="AccVoucherDB">AccVoucherDB</option>
+	<option value="ACDriverNTDB">ACDriverNTDB</option>
+	<option value="ACDriverSHDB">ACDriverSHDB</option>
+	<option value="AffiliatesB2BDB">AffiliatesB2BDB</option>
+	<option value="AHDOrderDB">AHDOrderDB</option>
+	<option value="AHIOrderDB">AHIOrderDB</option>
+	<option value="AmpLogDB">AmpLogDB</option>
+	<option value="AmpMgrDB">AmpMgrDB</option>
+	<option value="AmpOrderDB">AmpOrderDB</option>
+	<option value="AmpReportDB">AmpReportDB</option>
+	<option value="AppMonitorDB">AppMonitorDB</option>
+	<option value="AppToolsDB">AppToolsDB</option>
+	<option value="ArchSearchDB">ArchSearchDB</option>
+	<option value="ArchSearchLogDB">ArchSearchLogDB</option>
+	<option value="AuthDB">AuthDB</option>
+	<option value="AutoDB_Cfg">AutoDB_Cfg</option>
+	<option value="BBZKPIDB">BBZKPIDB</option>
+	<option value="BBZMessageDB">BBZMessageDB</option>
+	<option value="BIAmpReportDB">BIAmpReportDB</option>
+	<option value="BICMBReportDB">BICMBReportDB</option>
+	<option value="BICorpReportDB">BICorpReportDB</option>
+	<option value="BIfltreportDB">BIfltreportDB</option>
+	<option value="BIFncReportDB">BIFncReportDB</option>
+	<option value="BIHtlReportDB">BIHtlReportDB</option>
+	<option value="BIMKTReportDB">BIMKTReportDB</option>
+	<option value="BIOrderReportDB">BIOrderReportDB</option>
+	<option value="BIPKGReportDB">BIPKGReportDB</option>
+	<option value="BIReportDB">BIReportDB</option>
+	<option value="BIUserBehaviorDB">BIUserBehaviorDB</option>
+	<option value="BukDataDB">BukDataDB</option>
+	<option value="CampaignDB">CampaignDB</option>
+	<option value="CarBasicDataDB">CarBasicDataDB</option>
+	<option value="CarCHVendorDB">CarCHVendorDB</option>
+	<option value="CarDB">CarDB</option>
+	<option value="CardBakDB">CardBakDB</option>
+	<option value="CardDB">CardDB</option>
+	<option value="CardRiskBakDB">CardRiskBakDB</option>
+	<option value="CardRiskDB">CardRiskDB</option>
+	<option value="CarOrderDB">CarOrderDB</option>
+	<option value="CarOrderIDDB">CarOrderIDDB</option>
+	<option value="CarProductDB">CarProductDB</option>
+	<option value="CashBakDB">CashBakDB</option>
+	<option value="CashDB">CashDB</option>
+	<option value="CBPMDB">CBPMDB</option>
+	<option value="CBSS_Monitor">CBSS_Monitor</option>
+	<option value="CCStaffCaringDB">CCStaffCaringDB</option>
+	<option value="CfxSyncAssDB">CfxSyncAssDB</option>
+	<option value="ChinaTravelDB">ChinaTravelDB</option>
+	<option value="CHtlOrderDB">CHtlOrderDB</option>
+	<option value="CHtlOrderIDDB">CHtlOrderIDDB</option>
+	<option value="citsmdb">citsmdb</option>
+	<option value="citsmdb_restore">citsmdb_restore</option>
+	<option value="ClientDeviceInfoDB">ClientDeviceInfoDB</option>
+	<option value="CmbEmailMarketingDB">CmbEmailMarketingDB</option>
+	<option value="CMBInputDB">CMBInputDB</option>
+	<option value="CMBMarketingDB">CMBMarketingDB</option>
+	<option value="CMBMarketingLogDB">CMBMarketingLogDB</option>
+	<option value="CMBMemberDB">CMBMemberDB</option>
+	<option value="CMBMemberLogDB">CMBMemberLogDB</option>
+	<option value="CMBMessageDB">CMBMessageDB</option>
+	<option value="CMBMessageTestDB">CMBMessageTestDB</option>
+	<option value="CmbMobileVerControlDB">CmbMobileVerControlDB</option>
+	<option value="CMBOutBoundPlatDB">CMBOutBoundPlatDB</option>
+	<option value="CMBPUBDB">CMBPUBDB</option>
+	<option value="CMBReportDB">CMBReportDB</option>
+	<option value="CMCampaignDB">CMCampaignDB</option>
+	<option value="CMessageDB">CMessageDB</option>
+	<option value="CMessageMetaDB">CMessageMetaDB</option>
+	<option value="CMSDB">CMSDB</option>
+	<option value="CMsgPosterDB">CMsgPosterDB</option>
+	<option value="CommBakDB">CommBakDB</option>
+	<option value="CommBaseMDDB_back">CommBaseMDDB_back</option>
+	<option value="CommDB">CommDB</option>
+	<option value="CommonProductDB">CommonProductDB</option>
+	<option value="CooperateOrderDB">CooperateOrderDB</option>
+	<option value="CorpAppLogDB">CorpAppLogDB</option>
+	<option value="CorpCRDB">CorpCRDB</option>
+	<option value="CorpInfoDB">CorpInfoDB</option>
+	<option value="CorpOrderDB">CorpOrderDB</option>
+	<option value="CorpProcessDB">CorpProcessDB</option>
+	<option value="CorpProductDB">CorpProductDB</option>
+	<option value="CorpUserDB">CorpUserDB</option>
+	<option value="CpnsDB">CpnsDB</option>
+	<option value="CpnsMultiAppDB">CpnsMultiAppDB</option>
+	<option value="CrawlerDB">CrawlerDB</option>
+	<option value="CrawlerResultDB">CrawlerResultDB</option>
+	<option value="CrmBIDB">CrmBIDB</option>
+	<option value="CRMDB">CRMDB</option>
+	<option value="CruAccountBakDB">CruAccountBakDB</option>
+	<option value="CruAccountDB">CruAccountDB</option>
+	<option value="CruiseProductDB">CruiseProductDB</option>
+	<option value="CTIAMPDB">CTIAMPDB</option>
+	<option value="CTIBaseDB">CTIBaseDB</option>
+	<option value="CTIBusinessTaskDB">CTIBusinessTaskDB</option>
+	<option value="CTICommMsgDB">CTICommMsgDB</option>
+	<option value="CTIDeviceMonitorDB">CTIDeviceMonitorDB</option>
+	<option value="CTIInfoDB">CTIInfoDB</option>
+	<option value="CTIMailIDB">CTIMailIDB</option>
+	<option value="CTIQAMPDB">CTIQAMPDB</option>
+	<option value="CTISEDB">CTISEDB</option>
+	<option value="CTITaskManageDB">CTITaskManageDB</option>
+	<option value="CTIWOMSDB">CTIWOMSDB</option>
+	<option value="CTIXmppSessionManagerDB">CTIXmppSessionManagerDB</option>
+	<option value="CTIXmppWorkgroupDB">CTIXmppWorkgroupDB</option>
+	<option value="CTROrderDB">CTROrderDB</option>
+	<option value="CTRProductDB">CTRProductDB</option>
+	<option value="CUnifiedOrderIDDB">CUnifiedOrderIDDB</option>
+	<option value="CUSRATDB">CUSRATDB</option>
+	<option value="DataArchDB">DataArchDB</option>
+	<option value="DataArchDB_Data_S0">DataArchDB_Data_S0</option>
+	<option value="DataArchDB_Data_S1">DataArchDB_Data_S1</option>
+	<option value="DataArchDB_Data_S10">DataArchDB_Data_S10</option>
+	<option value="DataArchDB_Data_S11">DataArchDB_Data_S11</option>
+	<option value="DataArchDB_Data_S12">DataArchDB_Data_S12</option>
+	<option value="DataArchDB_Data_S13">DataArchDB_Data_S13</option>
+	<option value="DataArchDB_Data_S14">DataArchDB_Data_S14</option>
+	<option value="DataArchDB_Data_S15">DataArchDB_Data_S15</option>
+	<option value="DataArchDB_Data_S16">DataArchDB_Data_S16</option>
+	<option value="DataArchDB_Data_S17">DataArchDB_Data_S17</option>
+	<option value="DataArchDB_Data_S18">DataArchDB_Data_S18</option>
+	<option value="DataArchDB_Data_S19">DataArchDB_Data_S19</option>
+	<option value="DataArchDB_Data_S2">DataArchDB_Data_S2</option>
+	<option value="DataArchDB_Data_S3">DataArchDB_Data_S3</option>
+	<option value="DataArchDB_Data_S4">DataArchDB_Data_S4</option>
+	<option value="DataArchDB_Data_S5">DataArchDB_Data_S5</option>
+	<option value="DataArchDB_Data_S6">DataArchDB_Data_S6</option>
+	<option value="DataArchDB_Data_S7">DataArchDB_Data_S7</option>
+	<option value="DataArchDB_Data_S8">DataArchDB_Data_S8</option>
+	<option value="DataArchDB_Data_S9">DataArchDB_Data_S9</option>
+	<option value="DataGovDB">DataGovDB</option>
+	<option value="DataGovDB_yxj">DataGovDB_yxj</option>
+	<option value="DataGovTempDB">DataGovTempDB</option>
+	<option value="DataMaintenanceSystemDB">DataMaintenanceSystemDB</option>
+	<option value="DAToolsDB">DAToolsDB</option>
+	<option value="DDLMonitor">DDLMonitor</option>
+	<option value="DeliveryBaseDB">DeliveryBaseDB</option>
+	<option value="DeliveryDB">DeliveryDB</option>
+	<option value="DestinationDB">DestinationDB</option>
+	<option value="DevTemplateDB">DevTemplateDB</option>
+	<option value="DIYAssembleDB">DIYAssembleDB</option>
+	<option value="DIYBookingDB">DIYBookingDB</option>
+	<option value="DIYCommentDB">DIYCommentDB</option>
+	<option value="DIYControlDB">DIYControlDB</option>
+	<option value="DIYInputDB">DIYInputDB</option>
+	<option value="DIYOnlineDB">DIYOnlineDB</option>
+	<option value="DIYOrderDB">DIYOrderDB</option>
+	<option value="DIYOrderIdDB">DIYOrderIdDB</option>
+	<option value="DIYProductDB">DIYProductDB</option>
+	<option value="DIYPubDB">DIYPubDB</option>
+	<option value="DIYRealDB">DIYRealDB</option>
+	<option value="DIYRealsourceDB">DIYRealsourceDB</option>
+	<option value="DIYRefPkgCommentDB">DIYRefPkgCommentDB</option>
+	<option value="DIYRefPkgControlDB">DIYRefPkgControlDB</option>
+	<option value="DIYRefPkgProductDB">DIYRefPkgProductDB</option>
+	<option value="DIYReportDB">DIYReportDB</option>
+	<option value="DnrOrderDB">DnrOrderDB</option>
+	<option value="DnrProductDB">DnrProductDB</option>
+	<option value="DownLoadDB">DownLoadDB</option>
+	<option value="EAS_VoucherDB">EAS_VoucherDB</option>
+	<option value="eBankBakDB">eBankBakDB</option>
+	<option value="eBankDB">eBankDB</option>
+	<option value="eBookingBakDB">eBookingBakDB</option>
+	<option value="eBookingDB">eBookingDB</option>
+	<option value="edmdb">edmdb</option>
+	<option value="EFormDB">EFormDB</option>
+	<option value="EmailBakDB">EmailBakDB</option>
+	<option value="EmailDB">EmailDB</option>
+	<option value="EmployeeDB">EmployeeDB</option>
+	<option value="Eng_CommDB">Eng_CommDB</option>
+	<option value="EngOtherDB">EngOtherDB</option>
+	<option value="ENGPubDB">ENGPubDB</option>
+	<option value="EntAccountDB">EntAccountDB</option>
+	<option value="FareAlertDB">FareAlertDB</option>
+	<option value="FaxPlatDB">FaxPlatDB</option>
+	<option value="FeatureContingencyDB">FeatureContingencyDB</option>
+	<option value="FHXBookingDB">FHXBookingDB</option>
+	<option value="FININPUTDB">FININPUTDB</option>
+	<option value="FinInvoiceDB">FinInvoiceDB</option>
+	<option value="FINPUBDB">FINPUBDB</option>
+	<option value="FinReportDB">FinReportDB</option>
+	<option value="FltATPIncreamentDB">FltATPIncreamentDB</option>
+	<option value="FltATPOriginBAKDB">FltATPOriginBAKDB</option>
+	<option value="FltATPOriginDB">FltATPOriginDB</option>
+	<option value="FltBookLogDB">FltBookLogDB</option>
+	<option value="FltBusinessLogDB">FltBusinessLogDB</option>
+	<option value="FltCacheDB">FltCacheDB</option>
+	<option value="FltChangeInfoDB">FltChangeInfoDB</option>
+	<option value="FltClassDB">FltClassDB</option>
+	<option value="FltCommentDB">FltCommentDB</option>
+	<option value="FltCommShard02DB">FltCommShard02DB</option>
+	<option value="FltDomLogDB">FltDomLogDB</option>
+	<option value="FltFavDB">FltFavDB</option>
+	<option value="FltFavIntlDB">FltFavIntlDB</option>
+	<option value="FltGdsDB">FltGdsDB</option>
+	<option value="FltInputDB">FltInputDB</option>
+	<option value="FltInsuranceBakDB">FltInsuranceBakDB</option>
+	<option value="FltInsuranceDB">FltInsuranceDB</option>
+	<option value="FltIntlFareDB">FltIntlFareDB</option>
+	<option value="FltIntlLogDB">FltIntlLogDB</option>
+	<option value="FltIntlOnlineOrderDB">FltIntlOnlineOrderDB</option>
+	<option value="FltIntlPolicyDB">FltIntlPolicyDB</option>
+	<option value="FltIntlPQueryDB">FltIntlPQueryDB</option>
+	<option value="FltIntlPreProcessBakDB">FltIntlPreProcessBakDB</option>
+	<option value="FltIntlPreProcessDB">FltIntlPreProcessDB</option>
+	<option value="FltIntlResourceBakDB">FltIntlResourceBakDB</option>
+	<option value="FltIntlResourceDB">FltIntlResourceDB</option>
+	<option value="FltIntlTradeSpecialBakDB">FltIntlTradeSpecialBakDB</option>
+	<option value="FltIntlTradeSpecialDB">FltIntlTradeSpecialDB</option>
+	<option value="FltIntTradeProductDB">FltIntTradeProductDB</option>
+	<option value="FltIntTradePubDB">FltIntTradePubDB</option>
+	<option value="FltLowestPriceDB">FltLowestPriceDB</option>
+	<option value="FltManagementDB">FltManagementDB</option>
+	<option value="FltMarketDB">FltMarketDB</option>
+	<option value="FltMessageBakDB">FltMessageBakDB</option>
+	<option value="FltMessageDB">FltMessageDB</option>
+	<option value="FltMobileBusinessDB">FltMobileBusinessDB</option>
+	<option value="FltMobileDB">FltMobileDB</option>
+	<option value="FltMonitorDB">FltMonitorDB</option>
+	<option value="FltOfflineOrderDB">FltOfflineOrderDB</option>
+	<option value="FltOnlineOrderDB">FltOnlineOrderDB</option>
+	<option value="FltOrderBakDB">FltOrderBakDB</option>
+	<option value="FltOrderDB">FltOrderDB</option>
+	<option value="FltOrderDB_Restore">FltOrderDB_Restore</option>
+	<option value="FltOrderIDDB">FltOrderIDDB</option>
+	<option value="FltOrderProcessDB">FltOrderProcessDB</option>
+	<option value="FltProcessLogDB">FltProcessLogDB</option>
+	<option value="FltProductDB">FltProductDB</option>
+	<option value="FltProductFltOrderBakDB">FltProductFltOrderBakDB</option>
+	<option value="FltProductFltOrderDB">FltProductFltOrderDB</option>
+	<option value="FltPubDB">FltPubDB</option>
+	<option value="FltQueueDB">FltQueueDB</option>
+	<option value="FltRealTimeDB">FltRealTimeDB</option>
+	<option value="FltReportDB">FltReportDB</option>
+	<option value="FltSpecialShard02DB">FltSpecialShard02DB</option>
+	<option value="FltSpecialShard03DB">FltSpecialShard03DB</option>
+	<option value="FltTrackDB">FltTrackDB</option>
+	<option value="FltTradeCommProductDB">FltTradeCommProductDB</option>
+	<option value="FltTradeComProductDB">FltTradeComProductDB</option>
+	<option value="FltTradeFinanceDB">FltTradeFinanceDB</option>
+	<option value="FltTradeHistoryDB">FltTradeHistoryDB</option>
+	<option value="FltTradeInventoryDB">FltTradeInventoryDB</option>
+	<option value="FltTradeInventoryPubDB">FltTradeInventoryPubDB</option>
+	<option value="FltTradeProductDB">FltTradeProductDB</option>
+	<option value="FltTradeProductpubBakDB">FltTradeProductpubBakDB</option>
+	<option value="FltTradeProductPubDB">FltTradeProductPubDB</option>
+	<option value="FltTradeProductS1DB">FltTradeProductS1DB</option>
+	<option value="FltTradeSpecialDB">FltTradeSpecialDB</option>
+	<option value="FltWirelessLogDB">FltWirelessLogDB</option>
+	<option value="FltWorkflowStoreDB">FltWorkflowStoreDB</option>
+	<option value="FMPDB">FMPDB</option>
+	<option value="FmpLogBakDB">FmpLogBakDB</option>
+	<option value="FncAccountBakDB">FncAccountBakDB</option>
+	<option value="FncAccountDB">FncAccountDB</option>
+	<option value="FncCFOrderDB">FncCFOrderDB</option>
+	<option value="FncCFOrderIDDB">FncCFOrderIDDB</option>
+	<option value="FncEcBookDB">FncEcBookDB</option>
+	<option value="FncEcOrderDB">FncEcOrderDB</option>
+	<option value="FncEcOrderIDDB">FncEcOrderIDDB</option>
+	<option value="FncEcProductDB">FncEcProductDB</option>
+	<option value="FncEInvoiceInspurDB">FncEInvoiceInspurDB</option>
+	<option value="FncGCCrowdFundingDB">FncGCCrowdFundingDB</option>
+	<option value="FncGCSEOMgtDB">FncGCSEOMgtDB</option>
+	<option value="FncGiftCardArchiveDB">FncGiftCardArchiveDB</option>
+	<option value="FncIfesDB">FncIfesDB</option>
+	<option value="FncMallBookingDB">FncMallBookingDB</option>
+	<option value="FncMallOrderDB">FncMallOrderDB</option>
+	<option value="FncMallOrderIDDB">FncMallOrderIDDB</option>
+	<option value="FncMallProductDB">FncMallProductDB</option>
+	<option value="FncMallPubDB">FncMallPubDB</option>
+	<option value="FncMcpTradeDB">FncMcpTradeDB</option>
+	<option value="FncMcpUserDB">FncMcpUserDB</option>
+	<option value="FncMobileBaseDB">FncMobileBaseDB</option>
+	<option value="FncSCWCDB">FncSCWCDB</option>
+	<option value="FrtFlightResourceDB">FrtFlightResourceDB</option>
+	<option value="FRTPromotionDB">FRTPromotionDB</option>
+	<option value="FrtReportDB">FrtReportDB</option>
+	<option value="FrtSearchDB">FrtSearchDB</option>
+	<option value="ftp">ftp</option>
+	<option value="FxFcDB">FxFcDB</option>
+	<option value="FXFilesDB">FXFilesDB</option>
+	<option value="FxMobileServiceDB">FxMobileServiceDB</option>
+	<option value="GovDB">GovDB</option>
+	<option value="GroupCrawlerDB">GroupCrawlerDB</option>
+	<option value="GroupInputDB">GroupInputDB</option>
+	<option value="GroupInterfaceDB">GroupInterfaceDB</option>
+	<option value="GroupOrder">GroupOrder</option>
+	<option value="GroupOrderDB">GroupOrderDB</option>
+	<option value="GroupProductDB">GroupProductDB</option>
+	<option value="GroupPubDB">GroupPubDB</option>
+	<option value="GSCommunityDB">GSCommunityDB</option>
+	<option value="GSDestDB">GSDestDB</option>
+	<option value="GSDestinationDB">GSDestinationDB</option>
+	<option value="GSMobileDB">GSMobileDB</option>
+	<option value="GSOperationDB">GSOperationDB</option>
+	<option value="GSPhotosDB">GSPhotosDB</option>
+	<option value="GSPOIDB">GSPOIDB</option>
+	<option value="GSTravelsDB">GSTravelsDB</option>
+	<option value="GSUserDB">GSUserDB</option>
+	<option value="HHCfgDB">HHCfgDB</option>
+	<option value="HHCustomerDB">HHCustomerDB</option>
+	<option value="HHGovDB">HHGovDB</option>
+	<option value="HHLoggingDB">HHLoggingDB</option>
+	<option value="HHOrderDB">HHOrderDB</option>
+	<option value="HHPkgDB">HHPkgDB</option>
+	<option value="HHProductDB">HHProductDB</option>
+	<option value="HHTOrderIDDB">HHTOrderIDDB</option>
+	<option value="HhtSkyseasOrderDB">HhtSkyseasOrderDB</option>
+	<option value="HhtSkyseasProductDB">HhtSkyseasProductDB</option>
+	<option value="HistoryDataDB">HistoryDataDB</option>
+	<option value="HotelInputDB">HotelInputDB</option>
+	<option value="HotelInterfaceDB">HotelInterfaceDB</option>
+	<option value="HotelInterfaceLogBakDB">HotelInterfaceLogBakDB</option>
+	<option value="HotelInterfaceLogDB">HotelInterfaceLogDB</option>
+	<option value="HotelPubDB">HotelPubDB</option>
+	<option value="HRDB">HRDB</option>
+	<option value="HRService">HRService</option>
+	<option value="HtlAPIDB">HtlAPIDB</option>
+	<option value="HtlArchivesDB">HtlArchivesDB</option>
+	<option value="HtlBoardInfoDB">HtlBoardInfoDB</option>
+	<option value="HtlBusinessLogDB">HtlBusinessLogDB</option>
+	<option value="HtlCommReadDB">HtlCommReadDB</option>
+	<option value="HtlCrawlerDB">HtlCrawlerDB</option>
+	<option value="HtlDHSMonitorDB">HtlDHSMonitorDB</option>
+	<option value="HtlDownloadDB">HtlDownloadDB</option>
+	<option value="htlFrontlogdb">htlFrontlogdb</option>
+	<option value="htlgrouplogdb">htlgrouplogdb</option>
+	<option value="htlinputlogdb">htlinputlogdb</option>
+	<option value="HtlInvCommunityDB">HtlInvCommunityDB</option>
+	<option value="HtlMobileDB">HtlMobileDB</option>
+	<option value="HtlMonitorDB">HtlMonitorDB</option>
+	<option value="HtlOfflineOrderDB">HtlOfflineOrderDB</option>
+	<option value="HtlOnlineOrderDB">HtlOnlineOrderDB</option>
+	<option value="HtlorderIDDB">HtlorderIDDB</option>
+	<option value="HtlOrderLogDB">HtlOrderLogDB</option>
+	<option value="HtlOrderProcessDB">HtlOrderProcessDB</option>
+	<option value="HtlOvsProductDB">HtlOvsProductDB</option>
+	<option value="HtlOvsPubDB">HtlOvsPubDB</option>
+	<option value="HtlPaymentInfoDB">HtlPaymentInfoDB</option>
+	<option value="HtlPMSDB">HtlPMSDB</option>
+	<option value="htlprocesslogdb">htlprocesslogdb</option>
+	<option value="HtlProductFunctionDB">HtlProductFunctionDB</option>
+	<option value="HtlProductPropertyDB">HtlProductPropertyDB</option>
+	<option value="htlpromotelogdb">htlpromotelogdb</option>
+	<option value="HtlPubDB">HtlPubDB</option>
+	<option value="HtlQunarPriceAppDB">HtlQunarPriceAppDB</option>
+	<option value="HtlQunarPriceDB">HtlQunarPriceDB</option>
+	<option value="HtlReplDB">HtlReplDB</option>
+	<option value="HtlReportDB">HtlReportDB</option>
+	<option value="HTLRoomInfoRecDB">HTLRoomInfoRecDB</option>
+	<option value="HTLRoomInfoRecSandDB">HTLRoomInfoRecSandDB</option>
+	<option value="HtlRoomsProductDB">HtlRoomsProductDB</option>
+	<option value="HtlRoomsPubDB">HtlRoomsPubDB</option>
+	<option value="HtlSeqRulesDB">HtlSeqRulesDB</option>
+	<option value="HtlTuniuDB">HtlTuniuDB</option>
+	<option value="HtlTuniuIntlDB">HtlTuniuIntlDB</option>
+	<option value="HtlVCRSOrderDB">HtlVCRSOrderDB</option>
+	<option value="HtlVendorPriceDB">HtlVendorPriceDB</option>
+	<option value="HtlVendorPriceIntlDB">HtlVendorPriceIntlDB</option>
+	<option value="HtlVendorPriceshard2DB">HtlVendorPriceshard2DB</option>
+	<option value="IBEDB">IBEDB</option>
+	<option value="ImagesDB">ImagesDB</option>
+	<option value="InsAccountDB">InsAccountDB</option>
+	<option value="InsAgentDB">InsAgentDB</option>
+	<option value="InsBookingDB">InsBookingDB</option>
+	<option value="InsInputDB">InsInputDB</option>
+	<option value="InsOrderDB">InsOrderDB</option>
+	<option value="InsProcessBakDB">InsProcessBakDB</option>
+	<option value="InsProcessDB">InsProcessDB</option>
+	<option value="InsProductDB">InsProductDB</option>
+	<option value="InsPubDB">InsPubDB</option>
+	<option value="InsReplDB">InsReplDB</option>
+	<option value="InsuranceAgentDB">InsuranceAgentDB</option>
+	<option value="InterviewDB">InterviewDB</option>
+	<option value="ITSM">ITSM</option>
+	<option value="IVR_Collect_InfoDB">IVR_Collect_InfoDB</option>
+	<option value="IVROutPutDB">IVROutPutDB</option>
+	<option value="JobAgentDB">JobAgentDB</option>
+	<option value="K3AccDB">K3AccDB</option>
+	<option value="KBDB">KBDB</option>
+	<option value="LabsApplicationDB">LabsApplicationDB</option>
+	<option value="LabsOpenDB">LabsOpenDB</option>
+	<option value="LabsPlatformDB">LabsPlatformDB</option>
+	<option value="LiveChatDB">LiveChatDB</option>
+	<option value="LoginDB">LoginDB</option>
+	<option value="LPAccountDB">LPAccountDB</option>
+	<option value="LPBPubDB">LPBPubDB</option>
+	<option value="LPCommDB">LPCommDB</option>
+	<option value="LPDestinationDB">LPDestinationDB</option>
+	<option value="LPForumDB">LPForumDB</option>
+	<option value="LPItinerarDB">LPItinerarDB</option>
+	<option value="LvpingHotelDB">LvpingHotelDB</option>
+	<option value="LvpingTrainDB">LvpingTrainDB</option>
+	<option value="MarketingBakDB">MarketingBakDB</option>
+	<option value="MarketingDB">MarketingDB</option>
+	<option value="MBTOrderDB">MBTOrderDB</option>
+	<option value="MBTProductDB">MBTProductDB</option>
+	<option value="MBTUserDB">MBTUserDB</option>
+	<option value="MDMBaseCompatibleDB">MDMBaseCompatibleDB</option>
+	<option value="MDMBaseDB">MDMBaseDB</option>
+	<option value="MDMSysDB">MDMSysDB</option>
+	<option value="MemDB">MemDB</option>
+	<option value="MerchantDB">MerchantDB</option>
+	<option value="MiceAccDB">MiceAccDB</option>
+	<option value="MiceBizLogDB">MiceBizLogDB</option>
+	<option value="MiceBookingDB">MiceBookingDB</option>
+	<option value="MiceOrderDB">MiceOrderDB</option>
+	<option value="MicePubDB">MicePubDB</option>
+	<option value="MircoBlogDB">MircoBlogDB</option>
+	<option value="MisBakDB">MisBakDB</option>
+	<option value="MisDB">MisDB</option>
+	<option value="MKTJFOrderIDDB">MKTJFOrderIDDB</option>
+	<option value="MobAdvDB">MobAdvDB</option>
+	<option value="MobileDB">MobileDB</option>
+	<option value="MobileYouthDB">MobileYouthDB</option>
+	<option value="MOBOCESDB">MOBOCESDB</option>
+	<option value="MultiLanguageDB">MultiLanguageDB</option>
+	<option value="NLPDB">NLPDB</option>
+	<option value="OA_ServiceDB">OA_ServiceDB</option>
+	<option value="OAuthDB">OAuthDB</option>
+	<option value="oBookingDB">oBookingDB</option>
+	<option value="OLAP_WebJSDB">OLAP_WebJSDB</option>
+	<option value="Online_FltProductDB">Online_FltProductDB</option>
+	<option value="OnlineHelpDB">OnlineHelpDB</option>
+	<option value="OPSDB">OPSDB</option>
+	<option value="OrderBakDB">OrderBakDB</option>
+	<option value="OrderDB">OrderDB</option>
+	<option value="OtherReplDB">OtherReplDB</option>
+	<option value="OverseaProductDB">OverseaProductDB</option>
+	<option value="OverseaProductDB_Booking">OverseaProductDB_Booking</option>
+	<option value="PayBaseBakDB">PayBaseBakDB</option>
+	<option value="PayBaseDB">PayBaseDB</option>
+	<option value="PayBaseTestDB">PayBaseTestDB</option>
+	<option value="PayDB">PayDB</option>
+	<option value="PayInfoDB">PayInfoDB</option>
+	<option value="PaymentCouponDB">PaymentCouponDB</option>
+	<option value="PaymentTMPayDB">PaymentTMPayDB</option>
+	<option value="PayReplDB">PayReplDB</option>
+	<option value="PciAccountRiskDetailDB">PciAccountRiskDetailDB</option>
+	<option value="PkgAnalysisDB">PkgAnalysisDB</option>
+	<option value="PkgBizLogDB">PkgBizLogDB</option>
+	<option value="PkgCommunicationDB">PkgCommunicationDB</option>
+	<option value="PkgControlDB">PkgControlDB</option>
+	<option value="PkgInputDB">PkgInputDB</option>
+	<option value="PkgInsBizLogDB">PkgInsBizLogDB</option>
+	<option value="PkgInterfaceDB">PkgInterfaceDB</option>
+	<option value="pkgMessageBakDB">pkgMessageBakDB</option>
+	<option value="pkgMessageDB">pkgMessageDB</option>
+	<option value="PkgOnlineDB">PkgOnlineDB</option>
+	<option value="PkgOnlineOrderDB">PkgOnlineOrderDB</option>
+	<option value="PkgOrderbakDB">PkgOrderbakDB</option>
+	<option value="PkgOrderDB">PkgOrderDB</option>
+	<option value="PkgorderIDDB">PkgorderIDDB</option>
+	<option value="PkgOrderTrackDB">PkgOrderTrackDB</option>
+	<option value="PkgProductDB">PkgProductDB</option>
+	<option value="PkgPromotionDB">PkgPromotionDB</option>
+	<option value="PkgPubDB">PkgPubDB</option>
+	<option value="PkgRealDB">PkgRealDB</option>
+	<option value="PkgRealSourceDB">PkgRealSourceDB</option>
+	<option value="PkgReplDB">PkgReplDB</option>
+	<option value="PkgSettlementDB">PkgSettlementDB</option>
+	<option value="PkgSupportDB">PkgSupportDB</option>
+	<option value="PkgTourDB">PkgTourDB</option>
+	<option value="ProductDB">ProductDB</option>
+	<option value="PromocodeDB">PromocodeDB</option>
+	<option value="PsychologyDB">PsychologyDB</option>
+	<option value="PubDB">PubDB</option>
+	<option value="RDDB">RDDB</option>
+	<option value="ReceivePayDB">ReceivePayDB</option>
+	<option value="ReportDB">ReportDB</option>
+	<option value="RFPDB">RFPDB</option>
+	<option value="RiskCtrlPreProcDB">RiskCtrlPreProcDB</option>
+	<option value="RoomStatusDB">RoomStatusDB</option>
+	<option value="RTPCreditCardDB">RTPCreditCardDB</option>
+	<option value="RTPDB">RTPDB</option>
+	<option value="RTPFinanceDB">RTPFinanceDB</option>
+	<option value="RTPInsuranceDB">RTPInsuranceDB</option>
+	<option value="RTPOtherDB">RTPOtherDB</option>
+	<option value="RTPThirdPartDB">RTPThirdPartDB</option>
+	<option value="SalesReportDB">SalesReportDB</option>
+	<option value="SCHSmartTripDB">SCHSmartTripDB</option>
+	<option value="ServerMonitorDB">ServerMonitorDB</option>
+	<option value="SGLogDB">SGLogDB</option>
+	<option value="ShareDB">ShareDB</option>
+	<option value="ShortUrlDB">ShortUrlDB</option>
+	<option value="SHXMarketingDB">SHXMarketingDB</option>
+	<option value="SHXOrderDB">SHXOrderDB</option>
+	<option value="SHXOrderIDDB">SHXOrderIDDB</option>
+	<option value="SHXPlatProductDB">SHXPlatProductDB</option>
+	<option value="SHXPlatVendorDB">SHXPlatVendorDB</option>
+	<option value="SiccDB">SiccDB</option>
+	<option value="SiccDB_NT">SiccDB_NT</option>
+	<option value="SiccDB_Rpt">SiccDB_Rpt</option>
+	<option value="SLTOrderDB">SLTOrderDB</option>
+	<option value="SLTOrderIDDB">SLTOrderIDDB</option>
+	<option value="SLTProductDB">SLTProductDB</option>
+	<option value="SlyDB">SlyDB</option>
+	<option value="SMSBakDB">SMSBakDB</option>
+	<option value="SMSDB">SMSDB</option>
+	<option value="SOADB">SOADB</option>
+	<option value="SoaMsmqDB">SoaMsmqDB</option>
+	<option value="SqlMonitorDB">SqlMonitorDB</option>
+	<option value="SSODB">SSODB</option>
+	<option value="SysLogBakDB">SysLogBakDB</option>
+	<option value="SysLogDB">SysLogDB</option>
+	<option value="tBookingDB">tBookingDB</option>
+	<option value="TicketProductDB">TicketProductDB</option>
+	<option value="TourTailorAccDB">TourTailorAccDB</option>
+	<option value="TourTailorBookingDB">TourTailorBookingDB</option>
+	<option value="TourTailorOrderDB">TourTailorOrderDB</option>
+	<option value="TourTailorPubDB">TourTailorPubDB</option>
+	<option value="TrainAdminDB">TrainAdminDB</option>
+	<option value="TrainInputDB">TrainInputDB</option>
+	<option value="TrainOnlineOrderDB">TrainOnlineOrderDB</option>
+	<option value="TrainOrderDB_v2">TrainOrderDB_v2</option>
+	<option value="TrainorderIDDB">TrainorderIDDB</option>
+	<option value="TrainProductDB">TrainProductDB</option>
+	<option value="TrainPubDB">TrainPubDB</option>
+	<option value="TrainReplDB">TrainReplDB</option>
+	<option value="TravelMoneyDB">TravelMoneyDB</option>
+	<option value="TTTHtlCommReadDB">TTTHtlCommReadDB</option>
+	<option value="UerdwDB">UerdwDB</option>
+	<option value="UILogDB">UILogDB</option>
+	<option value="UploadimgDB">UploadimgDB</option>
+	<option value="UserDB">UserDB</option>
+	<option value="utilizedb">utilizedb</option>
+	<option value="vBookingDB">vBookingDB</option>
+	<option value="VisaBizLogDB">VisaBizLogDB</option>
+	<option value="VisaOrderDB">VisaOrderDB</option>
+	<option value="VisaProductDB">VisaProductDB</option>
+	<option value="VoicePortalDB">VoicePortalDB</option>
+	<option value="WeixinDB">WeixinDB</option>
+	<option value="WOTCardDB">WOTCardDB</option>
+	<option value="ZipCodeDB">ZipCodeDB</option>
+
+</select>      
+                    </td>
+                </tr>
+                 <tr>
+                    <td style=" width :100px;">是否分区</td>
+                    <td>
+                        <input id="chkPartition" type="checkbox" onclick="SelectPartition()"><span style=" color :Red">(是否设置分区,只有新建的表设置才有效)</span>
+                
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style=" width :100px;">是否需要生成TVP</td>
+                    <td>
+                        <input id="chkTVP" type="checkbox" onclick="SelectTVP()"><span style=" color :Red">(是否需要生成TVP)</span>
+                    </td>
+                </tr>
+
+                 <tr>
+                <td colspan="2">
+                <table rules="all" cellspacing="0" border="1" style="width: 100%; border-collapse: collapse;" id="gdvDesignTables">
+		<tbody>
+        </tbody>
+        </table>
+                <table rules="all" cellspacing="0" border="1" style="width: 100%; border-collapse: collapse;" id="gdvTVPTables">
+		<tbody>
+        </tbody>
+        </table>
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <input id="savesoluation" type="button" onclick="SaveSoluation()" value="确定">  <input id="btncancle" type="button" onclick="Cancel()" value="取消">
+                        </td>
+                </tr>
+               
+            </tbody></table>
+            <input type="hidden" name="HFTableNameList" id="HFTableNameList">
+              <input type="hidden" name="HFPartitionSchemaNameList" id="HFPartitionSchemaNameList" value="PartitionSchemeWeek,PartitionSchemeMonth,PartitionSchemeYear">
+              <input type="hidden" name="HFPartitionSchemaIDList" id="HFPartitionSchemaIDList" value="1,2,3">
+    </div>
+
+
+    </form>
+       
+
+
+</body></html>

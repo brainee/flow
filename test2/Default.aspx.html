@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0107)http://dbticket.sh.ctripcorp.com/Default.aspx?mid=m1&sid=m1_2&url=Aspx/InputForm.aspx?StepInstanceID=151058 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+
+</title><link href="./Default.aspx_files/Frame.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="./Default.aspx_files/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="./Default.aspx_files/common.js"></script>
+    <link rel="stylesheet" href="http://dbticket.sh.ctripcorp.com/Script/artDialog4.1.7/skins/default.css?4.1.7"><script type="text/javascript" src="./Default.aspx_files/artDialog.source.js"></script> 
+    <script type="text/javascript" src="./Default.aspx_files/iframeTools.source.js"></script>
+</head>
+<body><div class=" aui_state_focus" style="display: block; position: absolute; width: 866px; left: 105px; top: 141px; z-index: 1988;"><div class="aui_outer"><table class="aui_border"><tbody><tr><td class="aui_nw"></td><td class="aui_n"></td><td class="aui_ne"></td></tr><tr><td class="aui_w"></td><td class="aui_c"><div class="aui_inner"><table class="aui_dialog"><tbody><tr><td colspan="2" class="aui_header"><div class="aui_titleBar"><div class="aui_title" style="cursor: move; display: block;">查看流程图</div><a class="aui_close" href="javascript:/*artDialog*/;" style="display: block;">×</a></div></td></tr><tr><td class="aui_icon" style="display: none;"><div class="aui_iconBg" style="background: none;"></div></td><td class="aui_main" style="width: 843px; height: 556px;"><div class="aui_content aui_state_full" style="padding: 20px 25px;"><div class="aui_loading" style="display: none;"><span>loading..</span></div><iframe src="./Default.aspx_files/ShowPicture.html" name="OpenartDialog14306480478751" frameborder="0" allowtransparency="true" style="width: 100%; height: 100%; border: 0px none;"></iframe></div></td></tr><tr><td colspan="2" class="aui_footer"><div class="aui_buttons" style="display: none;"></div></td></tr></tbody></table></div></td><td class="aui_e"></td></tr><tr><td class="aui_sw"></td><td class="aui_s"></td><td class="aui_se" style="cursor: se-resize;"></td></tr></tbody></table></div></div>
+   
+    <form method="post" action="http://dbticket.sh.ctripcorp.com/Default.aspx?mid=m1&sid=m1_2&url=Aspx%2fInputForm.aspx%3fStepInstanceID%3d151058" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTc2NTc4OTMwMQ9kFgICAw9kFggCAw8PFgIeBFRleHQFGHlvbmd6aGVuZ++8iHZ6eemDkeWLh++8iWRkAgkPFgIeB1Zpc2libGVoZAINDxYCHwFoZAIPDxYCHwFoZGRFMsjSGJIgVMqg8AmYWfgOGEwp5w==">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334">
+</div>
+    <input type="hidden" name="HFParam" id="HFParam" value="UserID=yongzheng&amp;UserName=vzy%e9%83%91%e5%8b%87">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            autoFit("mainframe", 0);
+            initMainFrame();
+        })
+        function OpenDDS(type) {
+            var param = $("#HFParam").val();
+            if (param == "") {
+                alert('域帐号或者用户名的cookies信息丢失,请重新登入重试');
+                //return;
+            }
+            if (type =="sqlserver") {
+                window.open("http://dbticket.sh.ctripcorp.com/DDS/index.aspx?" + param, '查看设计', '80%', '90%')
+            }
+            else {
+                window.open("http://dbticket.sh.ctripcorp.com/DDS/IndexMysql.aspx?" + param, '查看设计', '80%', '90%')
+            }
+            
+        }
+        //初始页mainframe工作区
+        function initMainFrame() {
+            var mid = getUrlParam("mid");
+            var sid = getUrlParam("sid");
+            var url = getUrlParam("url");
+            
+            if (mid == "") {
+                selectTop("m1", "m1_2", url);
+                //selectTop("m7", "m7_1", url);
+            }
+            else if (mid == "dds-sqlserver") {
+                OpenDDS("sqlserver");
+                selectTop("m1", "m1_2", url);
+            }
+            else if (mid == "dds-mysql") {
+                OpenDDS("mysql");
+                selectTop("m1", "m1_2", url);
+            }
+            else {                
+                selectTop(mid, sid, url);
+            }            
+        }
+
+        //顶部菜单选择
+        function selectTop(mid,sid,url) {
+            $("#topNav li").removeClass("select");
+            $("#" + mid).addClass("select");            
+
+            //加载左侧菜单            
+            loadMenu(mid, sid, url);
+        }
+
+        //左边菜单选择
+        function selectLeft(sid) {            
+            $("#leftMenu li").removeClass("lselect");
+            $("#" + sid).addClass("lselect");
+        }
+
+        //加载菜单
+        function loadMenu(mid, sid, initUrl) {
+
+            if (sid == undefined || sid == "") {
+                sid = mid + "_1";
+            }
+            
+            $("#leftMenu").load("LeftMenu.htm #" + mid, function () {
+
+                //绑定左侧菜单点击事件
+                $("#leftMenu li").bind("click", function () {
+                    selectLeft(this.id);
+                });
+
+                //选中左侧菜单
+                $("#" + sid).addClass("lselect");
+
+                //初始化mainframe的url                
+                if (initUrl != undefined && initUrl != "") {
+                    //指定的url
+                    $("#mainframe").attr("src", initUrl);
+                }
+                else {
+                    //使用默认url                    
+                    var url = $("#" + sid + " a").attr("href");
+                    //特殊处理，如果是cdatamodel，怎需要带上userid,username一起传过去
+                    if (mid == "m6") {
+                        url += "?" + $("#HFParam").val();
+                    }
+                    $("#mainframe").attr("src", url);
+                }
+            });
+        }
+
+
+        //获取待办数量
+        function getPendingCount() {
+            $.getJSON("Aspx/Manage/FlowAjaxHandler.ashx?Action=GetPendingCount", function (data) {
+                $("#pendingCount").text("(" + data + ")");
+            })
+        }
+    </script>
+    <div>
+        <!-- 顶部导航 style="box-shadow:0 0 5px #333;position: absolute;width:100%;z-index:999"-->
+        <div class="header">
+            <div class="logo">
+            </div>
+            
+            <div class="info">欢迎 <span id="lbEmployNo">yongzheng（vzy郑勇）</span> &nbsp;|&nbsp; 设置 &nbsp;|&nbsp; 
+                <a onclick="return confirm(&#39;您确定退出系统吗？&#39;);" id="lbtnLogout" href="javascript:__doPostBack('lbtnLogout','')">退出</a></div>
+
+            <div id="topNav" class="nav">
+                <ul style="display:block">
+                    <li id="m1" class="" onclick="selectTop(&#39;m1&#39;,&#39;m1_2&#39;)">我的工作台</li>
+                                        
+                    <li id="m4" onclick="selectTop(&#39;m4&#39;,&#39;m4_1&#39;)" class="select">流程监控</li>
+                    
+                    
+		    <li id="m3" onclick="selectTop(&#39;m3&#39;,&#39;m3_1&#39;)">AllInOne查询</li>
+                    <li id="dds-sqlserver" onclick="OpenDDS(&#39;sqlserver&#39;)">DDS - SqlServer</li>
+                    <li id="dds-mysql" onclick="OpenDDS(&#39;mysql&#39;)">DDS - MySql</li>
+                    <li id="m6" onclick="selectTop(&#39;m6&#39;,&#39;m6_1&#39;)">CDataModel</li>                    
+                </ul>
+                <ul style="display:none">
+                    <li id="m7" onclick="selectTop(&#39;m7&#39;,&#39;m7_1&#39;)">业务线</li>
+                    <li id="Li1" onclick="selectTop(&#39;m8&#39;,&#39;m8_1&#39;)">数据库</li>
+                    <li id="Li2" onclick="selectTop(&#39;m7&#39;,&#39;m7_1&#39;)">DB追踪</li>
+                </ul>
+            </div>
+
+            <div class="search">
+                <div class="search_input">
+                    <input type="text" value="查找流程" onclick="this.value=&#39;&#39;" onblur="if(this.value==&#39;&#39;){this.value=&#39;查找流程&#39;}">
+                </div>
+                <div class="search_button"></div>
+            </div>
+        </div>
+        <!-- 左侧菜单 -->
+        <div id="leftMenu" class="left"><ul id="m4">
+    <li class="t">监控信息</li>
+    <li id="m4_1" class="m lselect"><a href="http://dbticket.sh.ctripcorp.com/aspx/monitor/FlowInstanceList.aspx" target="mainframe">流程监控</a></li>
+    <li class="t">流程报表</li>
+    <li class="m">流程统计</li>
+    <li class="m">超时统计</li>
+    <li class="t">接口报表</li>
+    <li class="m">接口调用成功</li>
+    <li class="m">接口调用失败</li>
+</ul></div>
+        <!-- 右侧工作区 -->
+        <div class="main">
+            <iframe id="mainframe" name="mainframe" style="width: 100%; height: 887px;" frameborder="0" src="./Default.aspx_files/FlowInstanceList.html">
+            </iframe>
+        </div>
+    </div>
+    </form>
+
+<div style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; cursor: move; opacity: 0; background: rgb(255, 255, 255);"></div></body></html>

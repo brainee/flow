@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0095)http://dbticket.sh.ctripcorp.com/DDS/index.aspx?UserID=yongzheng&UserName=vzy%E9%83%91%E5%8B%87 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="P3P" content="CP=&quot;IDC DSP COR CURa ADMa  OUR IND PHY ONL COM STA&quot;"><title>
+	数据设计系统
+</title>
+     <script language="javascript" type="text/javascript" src="./数据设计系统_files/jquery-1.4.2.min.js"></script>
+     <script language="javascript" type="text/javascript">
+
+         var template = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+                + "<sql>"
+                + "<datatypes db=\"mssql\">"
+                + "<group label=\" \" color=\"rgb(246,249,254)\">"
+                + "<type label=\" \" length=\"0\" sql=\" \" re=\"INT\" quote=\"\" bytes=\"1\" note=\"Integer data: 0 to 255\" /></group>"
+                + "<group label=\"Integer\" color=\"rgb(238,238,170)\">"
+                + "<type label=\"TinyInt\" length=\"0\" sql=\"tinyint\" re=\"INT\" quote=\"\" bytes=\"1\" note=\"Integer data: 0 to 255\" />"
+	            + "<type label=\"SmallInt\" length=\"0\" sql=\"smallint\" re=\"INT\" quote=\"\" bytes=\"2\" note=\"Integer data: -32,768 to 32,767\" />"
+	            + "<type label=\"Int\" length=\"0\" sql=\"int\" re=\"INT\" quote=\"\" bytes=\"4\" note=\"Integer data: -2,147,483,648 to 2,147,483,647\" />"
+	            + "<type label=\"BigInt\" length=\"0\" sql=\"bigint\" re=\"INT\" quote=\"\" bytes=\"8\" note=\"Integer data: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807\" />"
+                + "</group>"
+                + "<group label=\"Monetary\" color=\"rgb(238,238,170)\">"
+	            + "<type label=\"Money\" length=\"0\" sql=\"money\" re=\"FLOAT\" quote=\"\" bytes=\"8\" note=\"Integer data: -922,337,203,685,477.5808 to 922,337,203,685,477.5807\" />"
+	            + "<type label=\"SmallMoney\" length=\"0\" sql=\"smallmoney\" re=\"FLOAT\" quote=\"\" bytes=\"4\" note=\"-214,748.3648 to 214,748.3647\" />"
+                + "</group>"
+                + "<group label=\"Numeric\" color=\"rgb(238,238,170)\">"
+	            + "<type label=\"Float\" length=\"0\" sql=\"float\" re=\"FLOAT\" quote=\"\" bytes=\"8\" note=\"Floating precision number data: -4.94E+324 to 4.94E+324\" />"
+	            + "<type label=\"Decimal\" length=\"1\" sql=\"decimal\" re=\"DEC\" quote=\"\" bytes=\"n*\" note=\"Fixed precision and scale numeric data: -10^38 +1 to 10^38 -1 (decimal and numeric are synonyms)\" />"
+	            + "<type label=\"Numeric\" length=\"1\" sql=\"numeric\" re=\"DEC\" quote=\"\" bytes=\"n*\" note=\"Fixed precision and scale numeric data: -10^38 +1 to 10^38 -1 (decimal and numeric are synonyms)\" />"
+                + "</group>"
+                + "<group label=\"Character\" color=\"rgb(255,200,200)\">"
+	            + "<type label=\"Char\" length=\"0\" sql=\"char\" quote=\"'\" bytes=\"n\" note=\"Fixed-length character data with a maximum length of 8,000 characters\" />"
+	            + "<type label=\"Varchar\" length=\"1\" sql=\"varchar\" quote=\"'\" bytes=\"m &lt;= n\" note=\"Variable-length data with a maximum of 8,000 characters\" />"
+	            + "<type label=\"Text\" length=\"1\" sql=\"text\"  quote=\"'\"  bytes=\"&lt;= 2,147,483,647\" note=\"Variable-length data with a maximum length of 2,147,483,647 characters\" />"
+                + "<type label=\"XML\" length=\"0\" sql=\"xml\"  quote=\"'\" bytes=\"n\" note=\"XML\" />"
+                + " <type label=\"uniqueidentifier\" length=\"0\" sql=\"uniqueidentifier\"  quote=\"\" bytes=\"16\" note=\"uniqueidentifier\" />"
+                + "</group>"
+                + "<group label=\"Unicode Character\" color=\"rgb(255,200,200)\">"
+	            + "<type label=\"nChar\" length=\"0\" sql=\"nchar\" quote=\"'\" bytes=\"n\" note=\"Fixed-length Unicode data with a maximum length of 4,000 characters\" />"
+	            + "<type label=\"nVarchar\" length=\"1\" sql=\"nvarchar\" quote=\"'\" bytes=\"m &lt;= n\" note=\"Variable-length Unicode data with a maximum length of 4,000 characters\" />"
+                + "<type label=\"nText\" length=\"1\" sql=\"ntext\" quote=\"'\" bytes=\"&lt;= 2,147,483,647\" note=\"Variable-length Unicode data with a maximum length of 1,073,741,823 characters\" />"
+                + "</group>"
+                + "<group label=\"Date &amp; Time\" color=\"rgb(200,255,200)\">"
+	            + "<type label=\"Datetime\" length=\"0\" sql=\"datetime\" quote=\"\" bytes=\"8\" note=\"Jan 1, 1753 to Dec 31, 9999\" />"
+	            + "<type label=\"SmallDateTime\" length=\"0\" sql=\"smalldatetime\" quote=\"\" bytes=\"4\" note=\"Jan 1, 1900 to Dec 31, 2079\" />"
+                + "</group>"
+                + "<group label=\"Binary\" color=\"rgb(200,200,255)\">"
+	            + "<type label=\"Binary\" length=\"0\" sql=\"binary\" quote=\"'\" bytes=\"n\" note=\"Fixed-length binary data with a maximum length of 8,000 bytes\" />"
+	            + "<type label=\"Varbinary\" length=\"1\" sql=\"varbinary\" quote=\"'\" bytes=\"m &lt;= n\" note=\"Variable-length binary data with a maximum length of 8,000 bytes\" />"
+                + "</group>"
+                + "<group label=\"Miscellaneous\" color=\"rgb(200,220,255)\">"
+	            + "<type label=\"Bit\" length=\"0\" sql=\"bit\" quote=\"\" bytes=\"1\" note=\"Boolean: 1 or 0\" />"
+                + "<type label=\"Timestamp\"  length=\"0\" sql=\"timestamp\" quote=\"\" bytes=\"8\" note=\"Locally unique binary number updated as a row gets updated\" />"
+                + "</group>"
+                + "</datatypes>";
+
+        function switchSysBar(){ 
+            if ($("#switch").attr("src")=="images/left.gif")
+            { 
+                $("#switch").attr("src","images/right.gif");
+                $("#leftFrm").css("display","none"); 
+            } 
+            else
+            { 
+                $("#switch").attr("src","images/left.gif");
+                $("#leftFrm").css("display",""); 
+            }
+        }
+
+        window.parent.switchSysBar();
+
+        function sleep(numberMillis) {
+            var now = new Date();
+            var exitTime = now.getTime() + numberMillis;
+            while (true) {
+                now = new Date();
+                if (now.getTime() > exitTime)
+                    return;
+            }
+        }
+
+        $(document).ready(function () {
+            if ($("#HFListID").val() != "" && $("#HFDesignName").val() != "") {
+                var designID = $("#HFListID").val();
+                var designName = $("#HFDesignName").val();
+                var designDBName = $("#HFDBName").val();
+                $.post("http://dbticket.sh.ctripcorp.com/DDS/DBHandler.ashx",
+                            {
+                                functionName: "Open",
+                                listID: designID
+                            },
+                             function (data) {
+                                 try {
+                                     if (data == "-1") {
+                                         alert("请求数据库信息失败!");
+                                     }
+                                     else {
+                                         $('iframe').load(function () {
+                                             //                                         $("#saveload").click();
+                                             //                                             alert(window.frames["designFrm"].document.getElementById("saveload"));
+                                             window.frames["designFrm"].document.getElementById("saveload").click();
+                                             var xml = template;
+                                             xml += data;
+                                             xml += "</sql>";
+                                             window.frames["designFrm"].document.getElementById('textarea').value = xml;
+                                             window.frames["designFrm"].document.getElementById('clientload').click();
+                                             window.frames["designFrm"].document.getElementById('HFOpenDesignName').value = designName;
+                                             window.frames["designFrm"].document.getElementById('HFDesignDBName').value = designDBName;
+                                             window.frames["designFrm"].document.getElementById('HFXML').value = data;
+                                             //                                             var btn = window.frames["designFrm"].document.getElementById('Export');
+                                             //                                             btn.disabled = false;
+                                         });
+                                     }
+                                 }
+                                 catch (e) {
+                                     alert(e)
+                                 }
+                             });
+            }
+            else if ($("#HFListID").val() != "" && $("#HFDesignName").val() == "") {
+                var designID = $("#HFListID").val();
+                var designName = $("#HFDesignName").val();
+                var designDBName = $("#HFDBName").val();
+                $.post("http://dbticket.sh.ctripcorp.com/DDS/DBHandler.ashx",
+                            {
+                                functionName: "OpenCDM",
+                                listID: designID
+                            },
+                             function (data) {
+                                 try {
+                                     if (data == "-1") {
+                                         alert("请求数据库信息失败!");
+                                     }
+                                     else {
+                                         $('iframe').load(function () {
+                                             //                                         $("#saveload").click();
+                                             //                                             alert(window.frames["designFrm"].document.getElementById("saveload"));
+                                             window.frames["designFrm"].document.getElementById("saveload").click();
+                                             var xml = template;
+                                             xml += data;
+                                             xml += "</sql>";
+                                             window.frames["designFrm"].document.getElementById('textarea').value = xml;
+                                             window.frames["designFrm"].document.getElementById('clientload').click();
+                                             window.frames["designFrm"].document.getElementById('HFOpenDesignName').value = designName;
+                                             window.frames["designFrm"].document.getElementById('HFDesignDBName').value = designDBName;
+                                             window.frames["designFrm"].document.getElementById('HFXML').value = data;
+                                             //                                             var btn = window.frames["designFrm"].document.getElementById('Export');
+                                             //                                             btn.disabled = false;
+                                         });
+                                     }
+                                 }
+                                 catch (e) {
+                                     alert(e)
+                                 }
+                             });
+            }
+        });
+
+
+	</script>
+	<style type="text/css">
+	.navPoint {
+    color: white;
+   
+    font-family: Webdings;
+    font-size: 9pt;
+    
+}
+	</style>
+<link href="./数据设计系统_files/Screen.css" type="text/css" rel="stylesheet"></head>
+<body style="margin-left :0px; margin-top :0px;width:100%;" scroll="no">
+    <form method="post" action="http://dbticket.sh.ctripcorp.com/DDS/index.aspx?UserID=yongzheng&UserName=vzy%u90d1%u52c7" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUIMjc4NTg4MDhkZNFa6db91UpedoqSfkAXtoBpCA2z">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="EE9E5EE6">
+</div>
+
+
+    <table style="width:100%;">   
+    <tbody><tr>
+    <td id="leftFrm" style="vertical-align :top; background-color :#EEEEEE ;width:230px;">
+      <iframe src="./数据设计系统_files/ExportDB.html" id="leftDBFrm" name="leftDBFrm" frameborder="0" width="230px" height="800px" ;="" scrolling="yes"></iframe>
+      </td>
+      <td valign="top" onclick="switchSysBar()" style="width: 6px;">
+          <span title="关闭/打开左栏" id="switchPoint" class="navPoint">
+          <img height="40" width="6" id="switch" src="./数据设计系统_files/left.gif"></span>
+    </td>
+    <td id="rightFrm" style="vertical-align :top; background-color :#EEEEEE ;width:100%;height:100%;">
+             <iframe id="designFrm" name="designFrm" frameborder="0" height="100%" width="100%" scrolling="yes" style="overflow: visible; height: 1026px;" src="./数据设计系统_files/Default.html"></iframe>
+ </td>
+
+          </tr>
+    
+    </tbody></table>
+    <input type="hidden" name="HFListID" id="HFListID">
+    <input type="hidden" name="HFDesignName" id="HFDesignName">
+    <input type="hidden" name="HFDBName" id="HFDBName">
+    </form>
+    <script type="text/javascript">
+
+
+        var hh = document.documentElement.clientHeight;
+        document.getElementById("designFrm").style.height = hh + "px";
+
+        
+
+</script>
+
+
+</body></html>
