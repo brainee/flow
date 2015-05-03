@@ -2,14 +2,41 @@
 <html>
 <head>
     <title></title>
+    <link rel="stylesheet" href="lib/site/1.1/release/framework.min.css">
+    <link rel="stylesheet" href="lib/site/site.css">
 </head>
 <body>
-    <canvas id="canvas" width="1200" height="500" style="border:1px red solid;"></canvas>
+    <div class="w_wrapper1" style="min-width:980px;">   
+        <div class="w_header">
+            <div class="w_pageTitle w_ac">abd</div>
+        </div>
+        <div class="w_content"> 
+<!--             <div class="w_layoutB_180"> 
+                <div class="w_leftFix" style="background:;"> 
+                    <div>a</div>
+                </div> 
+                <div class="w_fluid"> 
+                    <div class="w_block" id="main">                 
+                        <canvas id="canvas" width="1200" height="500" style="border:1px red solid;"></canvas>
+                    </div>
+                </div>
+            </div> -->
+            <div class="w_layoutE"> 
+                <div class="w_fluid"> 
+                    <div class="w_block" id="main">                 
+                        <canvas id="canvas" width="1200" height="500" style="border:1px red solid;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w_footer">
+        </div>
+    </div>
 
     <script src="lib/fabric.js"></script>
     <script src="lib/jquery-1.3.2.js"></script>
     <script src="lib/underscore.js"></script>
-    <script src="lib/site.js"></script>
+    <script src="lib/site/site.js"></script>
     <script src="lib/page.js"></script>
     <script>
         // var canvas = new fabric.StaticCanvas('canvas');
@@ -28,6 +55,7 @@
                 if(res.returnCode=='success'&&res.data&&!isNaN(res.data.workFlowID)){
                     iWorkFlow=res.data.workFlowID;  
                     startDraw();
+                    $('.w_pageTitle').html(res.data.workFlowName);
                 }else{                    
                     alert('还没有创建任务！');
                 }               
